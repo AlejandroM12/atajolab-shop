@@ -118,6 +118,28 @@ test.describe("pedido", () => {
   });
 });
 
+test("productos sin precio cerrado: presupuesto y sin total ficticio", async ({ page }) => {
+  await page.goto("/productos/sticker-qr/");
+  await expect(page.getByTestId("product-price")).toHaveText("Solicitar presupuesto");
+  await page.getByRole("button", { name: "Agregar al pedido" }).click();
+  await page.goto("/pedido/");
+  await expect(page.getByTestId("line-price")).toContainText("A presupuestar");
+  await expect(page.getByTestId("order-totals")).not.toContainText(/total/i);
+  await expect(page.getByText("no mostramos un total")).toBeVisible();
+  const msg = await waMessage(page, /Enviar pedido por WhatsApp/);
+  expect(msg).toContain("Precio: a presupuestar");
+  expect(msg).not.toContain("TOTAL");
+});
+
+test("todos los enlaces de WhatsApp usan el número oficial", async ({ page }) => {
+  for (const path of ["/", "/contacto/", "/productos/sticker-qr/", "/personalizados/"]) {
+    await page.goto(path);
+    const hrefs = await page.locator('a[href*="wa.me"]').evaluateAll((els) => els.map((e) => (e as HTMLAnchorElement).href));
+    expect(hrefs.length, path).toBeGreaterThan(0);
+    for (const h of hrefs) expect(h.startsWith(WA), `${path}: ${h}`).toBe(true);
+  }
+});
+
 test("formulario de productos personalizados genera el mensaje", async ({ page }) => {
   await page.goto("/personalizados/");
   await page.getByLabel("¿Qué necesitás?").fill("Llaveros con QR");

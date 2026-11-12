@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { isOrderable } from "@/lib/catalog";
+import { formatARS, lineTotal, priceLabel, priceSummary, QUOTE_LABEL, unitPrice } from "@/lib/pricing";
 import {
   clampQuantity,
   createDefaultSelection,
@@ -54,6 +55,28 @@ function Field({
   );
 }
 
+function PriceBlock({ product, selection }: { product: Product; selection: Selection }) {
+  const unit = unitPrice(product, selection.variants);
+  const total = lineTotal(product, selection);
+  return (
+    <div className="mb-5" aria-live="polite">
+      <p className="text-2xl font-semibold" data-testid="product-price">
+        {unit !== null ? formatARS(unit) : priceLabel(priceSummary(product))}
+        {unit !== null && <span className="ml-1.5 text-sm font-normal text-ink-soft">por unidad</span>}
+      </p>
+      {unit !== null && total !== null && selection.quantity > 1 && (
+        <p className="mt-0.5 text-sm text-ink-soft" data-testid="product-subtotal">
+          {selection.quantity} unidades: <strong className="text-ink">{formatARS(total)}</strong>
+        </p>
+      )}
+      {unit === null && priceSummary(product).kind !== "quote" && (
+        <p className="mt-0.5 text-sm text-ink-soft">Elegí una opción para ver el precio, o {QUOTE_LABEL.toLowerCase()}.</p>
+      )}
+      {product.priceNote && <p className="mt-0.5 text-sm text-ink-soft">{product.priceNote}</p>}
+    </div>
+  );
+}
+
 export function ProductConfigurator({ product }: { product: Product }) {
   const [selection, setSelection] = useState<Selection>(() => createDefaultSelection(product));
   const [showErrors, setShowErrors] = useState(false);
@@ -72,6 +95,8 @@ export function ProductConfigurator({ product }: { product: Product }) {
 
   if (!orderable) {
     return (
+      <>
+      <PriceBlock product={product} selection={selection} />
       <section aria-labelledby="config-title" className="rounded-lg border border-line bg-white p-5">
         <h2 id="config-title" className="text-xl font-semibold">
           {product.status === "proximamente" ? "Próximamente" : "No disponible por ahora"}
@@ -86,10 +111,13 @@ export function ProductConfigurator({ product }: { product: Product }) {
           />
         </div>
       </section>
+      </>
     );
   }
 
   return (
+    <>
+    <PriceBlock product={product} selection={selection} />
     <section aria-labelledby="config-title" className="rounded-lg border border-line bg-white p-5 sm:p-6">
       <h2 id="config-title" className="text-xl font-semibold">
         Personalizá tu producto
@@ -132,6 +160,7 @@ export function ProductConfigurator({ product }: { product: Product }) {
               {group.options.map((o) => (
                 <option key={o.id} value={o.id}>
                   {o.label}
+                  {o.price !== undefined ? ` · ${formatARS(o.price)}` : ""}
                 </option>
               ))}
             </select>
@@ -307,5 +336,6 @@ export function ProductConfigurator({ product }: { product: Product }) {
         </div>
       </form>
     </section>
+    </>
   );
 }

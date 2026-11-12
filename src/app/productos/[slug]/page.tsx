@@ -95,11 +95,6 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
           </p>
           <h1 className="mt-1 text-2xl font-semibold leading-tight sm:text-3xl">{product.name}</h1>
           <p className="mt-2 text-base text-ink-soft">{product.shortDescription}</p>
-          <p className="mt-4 text-xl font-semibold">
-            {product.price
-              ? `$${product.price.amount.toLocaleString("es-AR")}`
-              : "Consultar precio"}
-          </p>
           <div className="mt-6">
             <ProductConfigurator product={product} />
           </div>

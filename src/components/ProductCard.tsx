@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getCategory, STATUS_LABELS, TECH_LABELS } from "@/lib/catalog";
+import { priceLabel, priceSummary } from "@/lib/pricing";
 import type { Product } from "@/lib/types";
 import { ProductVisual } from "./ProductVisual";
 
@@ -46,9 +47,7 @@ export function ProductCard({ product }: { product: Product }) {
         </h3>
         <p className="mt-1 line-clamp-2 text-sm text-ink-soft">{product.shortDescription}</p>
         <p className="mt-auto pt-2 text-sm font-semibold">
-          {product.price
-            ? `$${product.price.amount.toLocaleString("es-AR")}`
-            : "Consultar precio"}
+          {priceLabel(priceSummary(product))}
         </p>
       </div>
     </article>

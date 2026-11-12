@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { getCategory, getAllProducts, TECH_LABELS } from "@/lib/catalog";
+import { formatARS, lineTotal, orderTotals, unitPrice } from "@/lib/pricing";
 import { describeVariants } from "@/lib/selection";
 import { useCart } from "@/lib/useCart";
 import type { CartItem } from "@/lib/cart";
@@ -12,7 +14,7 @@ import { buildOrderMessage } from "@/lib/whatsapp";
 import { ButtonLink, buttonClass } from "./ui";
 import { WhatsAppButton } from "./WhatsAppButton";
 
-const inputCls = "min-h-11 w-full rounded-xl border border-line bg-white px-3 py-2 text-base";
+const inputCls = "min-h-11 w-full rounded-md border border-line bg-white px-3 py-2 text-base";
 
 function itemDetails(product: Product, item: CartItem): string[] {
   const f = item.selection.fields;
@@ -40,6 +42,13 @@ export function CartView() {
     customerCity: cart.customerCity,
     notes: cart.notes,
   });
+
+  const totals = orderTotals(
+    cart.items.flatMap((item) => {
+      const product = products.find((p) => p.id === item.selection.productId);
+      return product ? [{ product, selection: item.selection }] : [];
+    }),
+  );
 
   if (!hydrated) {
     return <p className="py-10 text-ink-soft">Cargando tu pedido…</p>;
@@ -74,14 +83,24 @@ export function CartView() {
             const qtyId = `qty-${item.id}`;
             return (
               <li key={item.id} className="flex gap-4 rounded-lg border border-line bg-white p-4">
-                <ProductVisual
-                  kind={product.visual}
-                  technology={product.technology}
-                  accent={category?.accent ?? "#ff6a13"}
-                  label=""
-                  showTag={false}
-                  className="hidden h-24 w-32 shrink-0 rounded-xl sm:block"
-                />
+                {product.images[0]?.src ? (
+                  <Image
+                    src={product.images[0].src}
+                    alt=""
+                    width={256}
+                    height={192}
+                    className="hidden h-24 w-32 shrink-0 rounded-md object-cover sm:block"
+                  />
+                ) : (
+                  <ProductVisual
+                    kind={product.visual}
+                    technology={product.technology}
+                    accent={category?.accent ?? "#ff6a13"}
+                    label=""
+                    showTag={false}
+                    className="hidden h-24 w-32 shrink-0 rounded-md sm:block"
+                  />
+                )}
                 <div className="min-w-0 flex-1">
                   <h3 className="text-lg font-semibold leading-snug">
                     <Link href={`/productos/${product.slug}/`} className="hover:underline">
@@ -125,7 +144,7 @@ export function CartView() {
                           if (Number.isFinite(e.target.valueAsNumber))
                             setQuantity(item.id, e.target.valueAsNumber);
                         }}
-                        className="min-h-11 w-20 rounded-xl border border-line bg-white px-2 text-center text-base"
+                        className="min-h-11 w-20 rounded-md border border-line bg-white px-2 text-center text-base"
                       />
                       <button
                         type="button"
@@ -137,6 +156,18 @@ export function CartView() {
                         +
                       </button>
                     </div>
+                    <p className="ml-auto text-right text-sm" data-testid="line-price">
+                      {unitPrice(product, item.selection.variants) !== null ? (
+                        <>
+                          <span className="block text-ink-soft">
+                            {formatARS(unitPrice(product, item.selection.variants)!)} c/u
+                          </span>
+                          <strong>{formatARS(lineTotal(product, item.selection)!)}</strong>
+                        </>
+                      ) : (
+                        <strong>A presupuestar</strong>
+                      )}
+                    </p>
                     <button
                       type="button"
                       onClick={() => remove(item.id)}
@@ -194,8 +225,28 @@ export function CartView() {
           {cart.items.length} {cart.items.length === 1 ? "producto" : "productos"} · {units}{" "}
           {units === 1 ? "unidad" : "unidades"}
         </p>
-        <p className="mt-1 text-sm text-ink-soft">
-          Precio final a confirmar: te pasamos el presupuesto por WhatsApp.
+        <dl className="mt-4 space-y-1.5 text-sm" data-testid="order-totals">
+          {totals.pricedCount > 0 && (
+            <div className="flex justify-between gap-3">
+              <dt>{totals.total !== null ? "Total estimado" : "Subtotal de productos con precio"}</dt>
+              <dd className="font-semibold" data-testid="order-subtotal">
+                {formatARS(totals.pricedSubtotal)}
+              </dd>
+            </div>
+          )}
+          {totals.quoteCount > 0 && (
+            <div className="flex justify-between gap-3 text-ink-soft">
+              <dt>A presupuestar</dt>
+              <dd>
+                {totals.quoteCount} {totals.quoteCount === 1 ? "producto" : "productos"}
+              </dd>
+            </div>
+          )}
+        </dl>
+        <p className="mt-2 text-sm text-ink-soft">
+          {totals.total !== null
+            ? "Importe estimado: el precio final, el diseño y la entrega se confirman por WhatsApp."
+            : "Hay productos sin precio cerrado, por eso no mostramos un total. Te pasamos el presupuesto por WhatsApp."}
         </p>
 
         <div className="mt-5 grid gap-4">

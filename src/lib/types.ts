@@ -54,6 +54,8 @@ export interface Category {
   benefit: string;
   description: string;
   visual: VisualKind;
+  /** Imagen representativa bajo /public. */
+  image?: string;
   /** Color de acento de las ilustraciones (hex). */
   accent: string;
   order: number;

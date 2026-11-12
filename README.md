@@ -89,7 +89,7 @@ Editá `src/data/products.ts` y agregá un objeto `Product` (tipo en `src/lib/ty
   benefits: ["..."],
   images: [{ alt: "Descripción", illustrative: true }],
   technology: "qr",            // "qr" | "nfc" | "qr-nfc"
-  visual: "sticker",           // ilustración mientras no haya foto
+  visual: "sticker",           // silueta de respaldo si no hay imagen
   customizations: ["businessName", "destinationUrl", "notes"],  // solo los campos que apliquen
   quantity: { min: 1, max: 500 },
   status: "por-encargo",       // "consultar" | "por-encargo" | "proximamente" | "no-disponible"
@@ -103,18 +103,23 @@ Editá `src/data/products.ts` y agregá un objeto `Product` (tipo en `src/lib/ty
 - Los estados `proximamente` y `no-disponible` no se pueden agregar al pedido (solo consultar).
 - Nuevas categorías: `src/data/categories.ts`.
 
-## Cómo agregar imágenes
+## Imágenes
 
-Mientras no haya fotografías propias, la tienda muestra una silueta neutra del tipo de objeto, con la nota discreta "Imagen de referencia". Para reemplazarlas:
+Todas las imágenes de producto, categoría y portada son **renders ilustrativos originales** (modelos 3D generados con three.js; los códigos QR codifican `https://atajolab.dev`). **No son fotografías de productos fabricados.** Se muestran con la aclaración "Imagen ilustrativa. El diseño final puede variar." en la portada y en las fichas, y en el pie del sitio.
 
-1. Copiá la imagen a `public/productos/<slug>/` (por ejemplo `frente.jpg`).
-2. En el producto, completá `images`:
+Están en `public/productos/<slug>.webp`, `public/categorias/<slug>.webp` y `public/hero.webp` (WebP, 1200×900 / 1600×1000).
+
+Para reemplazar un render por una fotografía real:
+
+1. Guardá la foto en `public/productos/<slug>.webp` (o `.jpg`), proporción 4:3.
+2. En el producto, ajustá `images` en `src/data/products.ts`:
    ```ts
-   images: [
-     { src: "/productos/sticker-qr/frente.jpg", alt: "Sticker QR pegado en una vidriera", illustrative: false },
-   ]
+   images: [{ src: "/productos/sticker-qr.webp", alt: "Sticker QR pegado en una vidriera", illustrative: false }],
    ```
-3. Usá `illustrative: true` para renders o ilustraciones y `false` solo para fotografías de productos efectivamente fabricados. Con `src` definido se usa la imagen; sin `src`, la ilustración.
+   Con `illustrative: false` desaparece la aclaración sobre la imagen. Usá `true` solo para renders o ilustraciones.
+3. Sumá más imágenes al arreglo para armar la galería (frente, detalle, uso).
+
+Si un producto no define `src`, se muestra una silueta neutra como último recurso (`ProductVisual`).
 
 Imagen social por defecto: `public/og-default.png` (1200×630).
 
@@ -147,7 +152,7 @@ El sitio es 100% estático; el resultado del build está en `out/`.
 - Sin pagos online, sin carga de archivos (el logo se envía por WhatsApp), sin cuentas de usuario.
 - El pedido vive en el navegador del cliente (`localStorage`): no se comparte entre dispositivos.
 - Sin precios, materiales, medidas, plazos ni cobertura de envíos definidos.
-- Imágenes ilustrativas (no hay fotografías propias todavía).
+- Imágenes: renders ilustrativos; faltan fotografías propias de productos fabricados.
 - Solo español (argentino). La estructura permite sumar otros idiomas, pero no hay selector.
 - Carta digital editable y validación de accesos para eventos: **no implementados** (ver `docs/`).
 

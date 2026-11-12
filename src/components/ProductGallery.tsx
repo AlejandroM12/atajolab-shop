@@ -24,10 +24,10 @@ export function ProductGallery({
       <div className="overflow-hidden rounded-lg border border-line bg-paper-2">
         {current?.src ? (
           <div className="relative aspect-[4/3]">
-            <Image src={current.src} alt={current.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-contain" priority />
+            <Image src={current.src} alt={current.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" priority />
             {current.illustrative && (
-              <span className="absolute bottom-1.5 right-2 text-[10px] text-ink-soft">
-                Imagen de referencia
+              <span className="absolute bottom-2 right-2 rounded bg-white/90 px-1.5 py-0.5 text-[11px] text-ink-soft">
+                Imagen ilustrativa. El diseño final puede variar.
               </span>
             )}
           </div>
@@ -54,7 +54,7 @@ export function ProductGallery({
                 className={`h-16 w-20 overflow-hidden rounded-md border ${i === index ? "border-ink" : "border-line"}`}
               >
                 {img.src ? (
-                  <Image src={img.src} alt="" width={80} height={64} className="h-full w-full object-cover" />
+                  <Image src={img.src} alt="" width={160} height={120} className="h-full w-full object-cover" />
                 ) : (
                   <ProductVisual kind={kind} technology={technology} accent={accent} label="" showTag={false} className="h-full w-full" />
                 )}

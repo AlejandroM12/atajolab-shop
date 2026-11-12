@@ -3,7 +3,7 @@ import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 import Link from "next/link";
 import { ContactCta } from "@/components/ContactCta";
 import { ProductCard } from "@/components/ProductCard";
-import { ProductVisual } from "@/components/ProductVisual";
+import Image from "next/image";
 import {
   CategoryGrid,
   FaqPreview,
@@ -50,12 +50,18 @@ export default function Home() {
             </p>
           </div>
           <div className="hidden overflow-hidden rounded-lg border border-line lg:block">
-            <ProductVisual
-              kind="stand"
-              technology="qr-nfc"
-              label="Soporte de acrílico para mostrador"
-              className="aspect-[16/10]"
+            <Image
+              src="/hero.webp"
+              alt="Render ilustrativo de un soporte de acrílico para reseñas, un cartel de mesa, un sticker y una tarjeta NFC con QR"
+              width={1600}
+              height={1000}
+              priority
+              sizes="(min-width: 1024px) 45vw, 100vw"
+              className="aspect-[16/10] w-full object-cover"
             />
+            <p className="border-t border-line px-3 py-1.5 text-[11px] text-ink-soft">
+              Imagen ilustrativa. El diseño final puede variar.
+            </p>
           </div>
         </Container>
       </section>

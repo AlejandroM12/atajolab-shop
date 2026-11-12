@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getCategory, STATUS_LABELS, TECH_LABELS } from "@/lib/catalog";
 import type { Product } from "@/lib/types";
@@ -10,14 +11,25 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="group relative flex h-full flex-col">
       <div className="overflow-hidden rounded-lg border border-line transition-colors group-hover:border-ink/40 group-focus-within:border-ink/40">
-        <ProductVisual
-          kind={product.visual}
-          technology={product.technology}
-          accent={category?.accent}
-          label={image?.alt ?? product.name}
-          className="aspect-[4/3]"
-          showTag={false}
-        />
+        {image?.src ? (
+          <Image
+            src={image.src}
+            alt={image.alt}
+            width={1200}
+            height={900}
+            sizes="(min-width: 1024px) 33vw, 50vw"
+            className="aspect-[4/3] w-full object-cover"
+          />
+        ) : (
+          <ProductVisual
+            kind={product.visual}
+            technology={product.technology}
+            accent={category?.accent}
+            label={image?.alt ?? product.name}
+            className="aspect-[4/3]"
+            showTag={false}
+          />
+        )}
       </div>
       <div className="flex flex-1 flex-col pt-3">
         <p className="text-xs text-ink-soft">

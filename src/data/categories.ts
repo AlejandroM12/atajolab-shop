@@ -3,6 +3,7 @@ import type { Category } from "@/lib/types";
 export const CATEGORIES: Category[] = [
   {
     slug: "resenas-google",
+    image: "/categorias/resenas-google.webp",
     name: "Reseñas de Google",
     benefit: "Facilitá que tus clientes dejen una reseña en Google.",
     description:
@@ -13,6 +14,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     slug: "menus-restaurantes",
+    image: "/categorias/menus-restaurantes.webp",
     name: "Menús para restaurantes y bares",
     benefit: "Mostrá tu carta desde el celular de tus clientes.",
     description:
@@ -23,6 +25,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     slug: "eventos",
+    image: "/categorias/eventos.webp",
     name: "Eventos",
     benefit: "Compartí información y organizá mejor la identificación de tus invitados.",
     description:
@@ -33,6 +36,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     slug: "tarjetas-digitales",
+    image: "/categorias/tarjetas-digitales.webp",
     name: "Tarjetas digitales",
     benefit: "Compartí tus datos de contacto con un escaneo o un toque.",
     description:
@@ -43,6 +47,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     slug: "stickers-etiquetas",
+    image: "/categorias/stickers-etiquetas.webp",
     name: "Stickers y etiquetas",
     benefit: "Llevá cualquier enlace a cualquier superficie.",
     description:

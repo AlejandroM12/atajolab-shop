@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ANTICIPO_TEXT, BENEFITS, BUY_STEPS, FAQS, QR_NFC } from "@/data/content";
 import { getCategories } from "@/lib/catalog";
@@ -18,12 +19,18 @@ export function CategoryGrid() {
             <li key={c.slug}>
               <Link href={`/categorias/${c.slug}/`} className="group block">
                 <span className="block overflow-hidden rounded-lg border border-line transition-colors group-hover:border-ink/40">
-                  <ProductVisual
-                    kind={c.visual}
-                    label=""
-                    showTag={false}
-                    className="aspect-[4/3]"
-                  />
+                  {c.image ? (
+                    <Image
+                      src={c.image}
+                      alt=""
+                      width={1200}
+                      height={900}
+                      sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
+                      className="aspect-[4/3] w-full object-cover"
+                    />
+                  ) : (
+                    <ProductVisual kind={c.visual} label="" showTag={false} className="aspect-[4/3]" />
+                  )}
                 </span>
                 <span className="mt-2 block text-sm font-semibold group-hover:underline">
                   {c.name}

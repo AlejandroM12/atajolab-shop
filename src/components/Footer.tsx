@@ -62,7 +62,7 @@ export function Footer() {
         </nav>
       </Container>
       <div className="border-t border-line py-4 text-center text-xs text-ink-soft">
-        © {new Date().getFullYear()} AtajoLab. Las imágenes de productos son de referencia hasta contar con fotografías propias.
+        © {new Date().getFullYear()} AtajoLab. Imágenes ilustrativas: el diseño final puede variar.
       </div>
     </footer>
   );

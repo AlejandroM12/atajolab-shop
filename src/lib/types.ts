@@ -1,0 +1,92 @@
+export type Technology = "qr" | "nfc" | "qr-nfc";
+
+/**
+ * Estado comercial. "consultar" NO implica stock: todo se confirma por WhatsApp.
+ */
+export type CommercialStatus = "consultar" | "por-encargo" | "proximamente" | "no-disponible";
+
+/** Ilustración usada mientras no existan fotografías propias. */
+export type VisualKind =
+  | "stand"
+  | "sticker"
+  | "card"
+  | "sign"
+  | "lanyard"
+  | "badge"
+  | "label"
+  | "menu";
+
+export type CustomizationField =
+  | "businessName"
+  | "customText"
+  | "destinationUrl"
+  | "color"
+  | "hasLogo"
+  | "notes";
+
+export interface Faq {
+  question: string;
+  answer: string;
+}
+
+export interface ProductImage {
+  /** Ruta bajo /public. Si falta, se muestra la ilustración del producto. */
+  src?: string;
+  alt: string;
+  /** true = render o ilustración, no una fotografía de un producto fabricado. */
+  illustrative: boolean;
+}
+
+export interface VariantOption {
+  id: string;
+  label: string;
+}
+
+export interface VariantGroup {
+  id: string;
+  label: string;
+  options: VariantOption[];
+}
+
+export interface Category {
+  slug: string;
+  name: string;
+  benefit: string;
+  description: string;
+  visual: VisualKind;
+  /** Color de acento de las ilustraciones (hex). */
+  accent: string;
+  order: number;
+}
+
+export interface Product {
+  id: string;
+  slug: string;
+  name: string;
+  categorySlug: string;
+  shortDescription: string;
+  /** Párrafos de la descripción completa. */
+  description: string[];
+  benefits: string[];
+  images: ProductImage[];
+  technology: Technology;
+  visual: VisualKind;
+  /** Solo si están confirmados. Si no existen, la interfaz los omite. */
+  materials?: string[];
+  dimensions?: string;
+  /** Solo opciones confirmadas como disponibles. */
+  variantGroups?: VariantGroup[];
+  customizations: CustomizationField[];
+  /** Etiqueta propia para el campo de texto personalizado. */
+  customTextLabel?: string;
+  quantity: { min: number; max: number };
+  /** Opcional. No se inventan precios: si falta, se muestra "A cotizar". */
+  price?: { amount: number; currency: "ARS" };
+  status: CommercialStatus;
+  featured: boolean;
+  order: number;
+  faqs?: Faq[];
+  keywords?: string[];
+}
+
+export type SortKey = "destacados" | "nombre";

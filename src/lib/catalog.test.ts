@@ -1,0 +1,127 @@
+import { describe, expect, it } from "vitest";
+import {
+  DEFAULT_FILTERS,
+  filterProducts,
+  filtersToSearchParams,
+  getAllProducts,
+  getCategories,
+  getProduct,
+  isOrderable,
+  normalizeText,
+  parseFilters,
+} from "./catalog";
+
+const all = getAllProducts();
+
+describe("catálogo", () => {
+  it("tiene productos con slugs e ids únicos", () => {
+    expect(new Set(all.map((p) => p.slug)).size).toBe(all.length);
+    expect(new Set(all.map((p) => p.id)).size).toBe(all.length);
+  });
+
+  it("cada producto pertenece a una categoría existente", () => {
+    const slugs = getCategories().map((c) => c.slug);
+    for (const p of all) expect(slugs).toContain(p.categorySlug);
+  });
+
+  it("no inventa precios, materiales ni medidas", () => {
+    for (const p of all) {
+      expect(p.price).toBeUndefined();
+      expect(p.materials).toBeUndefined();
+      expect(p.dimensions).toBeUndefined();
+    }
+  });
+
+  it("encuentra productos por slug", () => {
+    expect(getProduct("sticker-qr")?.name).toBe("Sticker QR");
+    expect(getProduct("no-existe")).toBeUndefined();
+  });
+
+  it("solo permite pedir productos consultables o por encargo", () => {
+    expect(isOrderable({ status: "consultar" })).toBe(true);
+    expect(isOrderable({ status: "por-encargo" })).toBe(true);
+    expect(isOrderable({ status: "proximamente" })).toBe(false);
+    expect(isOrderable({ status: "no-disponible" })).toBe(false);
+  });
+});
+
+describe("búsqueda y filtros", () => {
+  it("normaliza acentos y mayúsculas", () => {
+    expect(normalizeText("  Reseñas  DE Google ")).toBe("resenas de google");
+  });
+
+  it("busca sin importar acentos", () => {
+    const r = filterProducts(all, { ...DEFAULT_FILTERS, q: "resenas" });
+    expect(r.length).toBeGreaterThan(0);
+    expect(r.every((p) => p.categorySlug === "resenas-google" || /resena/.test(normalizeText(p.name)))).toBe(true);
+  });
+
+  it("exige todos los términos de la búsqueda", () => {
+    const r = filterProducts(all, { ...DEFAULT_FILTERS, q: "soporte mesa" });
+    expect(r.map((p) => p.slug)).toEqual(
+      expect.arrayContaining(["soporte-qr-mesa", "soporte-qr-nfc-mesa"]),
+    );
+    expect(r.every((p) => /soporte/i.test(p.name) && /mesa/i.test(p.name))).toBe(true);
+  });
+
+  it("devuelve vacío cuando no hay coincidencias", () => {
+    expect(filterProducts(all, { ...DEFAULT_FILTERS, q: "zzzz" })).toEqual([]);
+  });
+
+  it("filtra por categoría", () => {
+    const r = filterProducts(all, { ...DEFAULT_FILTERS, categoria: "eventos" });
+    expect(r.length).toBeGreaterThan(0);
+    expect(r.every((p) => p.categorySlug === "eventos")).toBe(true);
+  });
+
+  it("filtra por tecnología incluyendo los productos QR + NFC", () => {
+    const nfc = filterProducts(all, { ...DEFAULT_FILTERS, tecnologia: "nfc" });
+    expect(nfc.every((p) => p.technology === "nfc" || p.technology === "qr-nfc")).toBe(true);
+    expect(nfc.some((p) => p.technology === "qr-nfc")).toBe(true);
+    const qr = filterProducts(all, { ...DEFAULT_FILTERS, tecnologia: "qr" });
+    expect(qr.some((p) => p.technology === "nfc")).toBe(false);
+  });
+
+  it("filtra por disponibilidad comercial", () => {
+    const r = filterProducts(all, { ...DEFAULT_FILTERS, estado: "proximamente" });
+    expect(r.length).toBeGreaterThan(0);
+    expect(r.every((p) => p.status === "proximamente")).toBe(true);
+  });
+
+  it("ordena por nombre", () => {
+    const r = filterProducts(all, { ...DEFAULT_FILTERS, orden: "nombre" });
+    const names = r.map((p) => p.name);
+    expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b, "es")));
+  });
+
+  it("ordena destacados primero", () => {
+    const r = filterProducts(all, DEFAULT_FILTERS);
+    const firstNonFeatured = r.findIndex((p) => !p.featured);
+    expect(r.slice(firstNonFeatured).some((p) => p.featured)).toBe(false);
+  });
+});
+
+describe("filtros en la URL", () => {
+  it("ida y vuelta conserva los filtros", () => {
+    const filters = {
+      q: "soporte",
+      categoria: "eventos",
+      tecnologia: "qr" as const,
+      estado: "por-encargo" as const,
+      orden: "nombre" as const,
+    };
+    const params = filtersToSearchParams(filters);
+    expect(parseFilters(new URLSearchParams(params.toString()))).toEqual(filters);
+  });
+
+  it("omite valores por defecto", () => {
+    expect(filtersToSearchParams(DEFAULT_FILTERS).toString()).toBe("");
+  });
+
+  it("ignora valores inválidos", () => {
+    const f = parseFilters(
+      new URLSearchParams("categoria=xx&tecnologia=zz&estado=nada&orden=raro"),
+    );
+    expect(f).toEqual(DEFAULT_FILTERS);
+  });
+});

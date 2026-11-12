@@ -17,7 +17,7 @@ export function Logo({ light = false }: { light?: boolean }) {
         <span className="rounded-[2px] bg-white" />
       </span>
       <span className={light ? "text-white" : "text-ink"}>
-        AtajoLab <span className="text-brand">Shop</span>
+        AtajoLab <span className={light ? "text-brand" : "text-brand-dark"}>Shop</span>
       </span>
     </Link>
   );

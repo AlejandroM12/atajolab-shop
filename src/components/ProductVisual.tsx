@@ -183,7 +183,11 @@ export function ProductVisual({
       className={`relative overflow-hidden ${className}`}
       style={{ backgroundColor: `color-mix(in srgb, ${accent} 14%, #faf7f2)` }}
     >
-      <svg viewBox="0 0 400 300" role="img" aria-label={label} className="h-full w-full">
+      <svg
+        viewBox="0 0 400 300"
+        {...(label ? { role: "img", "aria-label": label } : { "aria-hidden": true })}
+        className="h-full w-full"
+      >
         <circle cx="340" cy="46" r="70" fill={accent} opacity="0.12" />
         <circle cx="50" cy="270" r="54" fill={accent} opacity="0.12" />
         <Scene kind={kind} accent={accent} />

@@ -214,7 +214,7 @@ export function ProductConfigurator({ product }: { product: Product }) {
           <label className="flex min-h-11 items-start gap-3 rounded-xl border border-line p-3">
             <input
               type="checkbox"
-              className="mt-0.5 h-5 w-5 accent-[#c94d00]"
+              className="mt-0.5 h-5 w-5 accent-[#a33d00]"
               checked={selection.fields.hasLogo}
               onChange={(e) => setField("hasLogo", e.target.checked)}
             />

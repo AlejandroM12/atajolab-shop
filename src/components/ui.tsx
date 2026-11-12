@@ -13,7 +13,7 @@ export type ButtonVariant = "primary" | "secondary" | "whatsapp" | "ghost";
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: "bg-brand text-ink hover:bg-brand-dark hover:text-white",
   secondary: "border-2 border-ink bg-transparent text-ink hover:bg-ink hover:text-white",
-  whatsapp: "bg-[#128c4a] text-white hover:bg-[#0c6b37]",
+  whatsapp: "bg-[#0f7a40] text-white hover:bg-[#0b5f31]",
   ghost: "text-ink hover:bg-paper-2",
 };
 

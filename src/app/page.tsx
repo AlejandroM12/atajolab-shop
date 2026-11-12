@@ -49,7 +49,7 @@ export default function Home() {
             <ProductVisual kind="stand" technology="qr-nfc" accent="#ff6a13" label="" showTag={false} className="aspect-square rounded-3xl" />
             <ProductVisual kind="card" technology="nfc" accent="#d6336c" label="" showTag={false} className="mt-8 aspect-square rounded-3xl" />
             <ProductVisual kind="sticker" technology="qr" accent="#1c7ed6" label="" showTag={false} className="-mt-4 aspect-square rounded-3xl" />
-            <ProductVisual kind="menu" technology="qr" accent="#0b8f7e" label="" showTag={false} className="aspect-square rounded-3xl" />
+            <ProductVisual kind="menu" technology="qr" accent="#0a6f62" label="" showTag={false} className="aspect-square rounded-3xl" />
             <p className="col-span-2 text-center text-xs text-ink-soft">Ilustraciones de referencia, no fotografías de productos.</p>
           </div>
         </Container>

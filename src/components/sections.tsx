@@ -183,7 +183,7 @@ export function MenuPlatformTeaser() {
       <Container>
         <div className="grid items-center gap-8 rounded-3xl bg-teal p-8 text-white sm:p-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <p className="mb-2 inline-flex rounded-full bg-white/20 px-3 py-1 text-xs font-bold uppercase tracking-widest">
+            <p className="mb-2 inline-flex rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-widest text-teal">
               En preparación
             </p>
             <h2 className="text-3xl font-bold sm:text-4xl">Carta digital editable</h2>

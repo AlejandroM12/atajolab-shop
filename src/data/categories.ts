@@ -18,7 +18,7 @@ export const CATEGORIES: Category[] = [
     description:
       "Soportes de mesa, stickers y carteles con QR o NFC que abren tu menú digital, tu PDF o la página que prefieras.",
     visual: "menu",
-    accent: "#0b8f7e",
+    accent: "#0a6f62",
     order: 2,
   },
   {

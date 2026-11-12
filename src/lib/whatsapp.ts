@@ -1,6 +1,7 @@
 import { SITE } from "@/data/site";
 import type { CartItem } from "./cart";
 import { describeVariants, type Selection } from "./selection";
+import { formatARS, lineTotal, orderTotals, unitPrice } from "./pricing";
 import type { Product } from "./types";
 
 /**
@@ -46,7 +47,7 @@ export function isMessageTooLong(message: string): boolean {
   return encodeURIComponent(message).length > MAX_ENCODED_MESSAGE_LENGTH;
 }
 
-type ProductLike = Pick<Product, "name" | "variantGroups" | "customTextLabel">;
+type ProductLike = Pick<Product, "name" | "variantGroups" | "customTextLabel" | "price">;
 
 function selectionLines(product: ProductLike, selection: Selection): string[] {
   const f = selection.fields;
@@ -58,6 +59,13 @@ function selectionLines(product: ProductLike, selection: Selection): string[] {
   if (f.color.trim()) lines.push(`Color preferido: ${f.color.trim()}`);
   if (f.hasLogo) lines.push("Logo: tengo un logo para enviar por este chat");
   if (f.notes.trim()) lines.push(`Observaciones: ${f.notes.trim()}`);
+  const unit = unitPrice(product, selection.variants);
+  if (unit === null) {
+    lines.push("Precio: a presupuestar");
+  } else {
+    lines.push(`Precio unitario: ${formatARS(unit)}`);
+    lines.push(`Subtotal: ${formatARS(lineTotal(product, selection)!)}`);
+  }
   return lines;
 }
 
@@ -85,6 +93,17 @@ export function buildOrderMessage({ items, customerName, customerCity, notes }: 
   items.forEach(({ product, item }, i) => {
     lines.push(`${i + 1}. ${product.name}`, ...selectionLines(product, item.selection), "");
   });
+
+  const totals = orderTotals(items.map(({ product, item }) => ({ product, selection: item.selection })));
+  if (totals.total !== null) {
+    lines.push(`TOTAL ESTIMADO: ${formatARS(totals.total)}`, "");
+  } else if (totals.pricedCount > 0) {
+    lines.push(
+      `Subtotal de productos con precio: ${formatARS(totals.pricedSubtotal)}`,
+      `Productos a presupuestar: ${totals.quoteCount}`,
+      "",
+    );
+  }
 
   const data: string[] = [];
   if (customerName?.trim()) data.push(`Nombre: ${customerName.trim()}`);

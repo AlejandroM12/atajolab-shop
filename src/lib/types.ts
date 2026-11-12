@@ -40,6 +40,8 @@ export interface ProductImage {
 export interface VariantOption {
   id: string;
   label: string;
+  /** Precio unitario en ARS cuando se elige esta opción. Solo si está confirmado. */
+  price?: number;
 }
 
 export interface VariantGroup {
@@ -82,8 +84,13 @@ export interface Product {
   /** Etiqueta propia para el campo de texto personalizado. */
   customTextLabel?: string;
   quantity: { min: number; max: number };
-  /** Opcional. No se inventan precios: si falta, se muestra "A cotizar". */
+  /**
+   * Precio unitario base en ARS. Opcional: no se inventan precios. Sin precio (ni opciones con
+   * precio) el producto se vende "a presupuesto".
+   */
   price?: { amount: number; currency: "ARS" };
+  /** Aclaración comercial junto al precio (p. ej. qué incluye o qué se cotiza aparte). */
+  priceNote?: string;
   status: CommercialStatus;
   featured: boolean;
   order: number;

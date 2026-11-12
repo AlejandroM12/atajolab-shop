@@ -126,3 +126,38 @@ describe("consultas individuales", () => {
     expect(m).toContain("Localidad: Clorinda");
   });
 });
+
+describe("mensajes con precios", () => {
+  const priced = {
+    name: "Soporte de prueba",
+    price: { amount: 10000, currency: "ARS" as const },
+    variantGroups: [{ id: "t", label: "Tamaño", options: [{ id: "g", label: "Grande", price: 15000 }] }],
+  };
+  const quote = { name: "Producto a medida", variantGroups: [], price: undefined };
+  const sel = (quantity: number, variants: Record<string, string> = {}) => ({ selection: { ...createDefaultSelection(sticker), quantity, variants } });
+  const flat = (m: string) => m.replace(/\s/g, " ");
+
+  it("la consulta incluye precio unitario y subtotal si hay precio", () => {
+    const m = flat(buildProductInquiryMessage(priced, { ...createDefaultSelection(sticker), quantity: 2, variants: { t: "g" } }));
+    expect(m).toContain("Hola, quiero consultar por el producto Soporte de prueba.");
+    expect(m).toContain("Precio unitario: $ 15.000");
+    expect(m).toContain("Subtotal: $ 30.000");
+  });
+  it("sin precio indica que se presupuesta", () => {
+    expect(buildProductInquiryMessage(quote, createDefaultSelection(sticker))).toContain("Precio: a presupuestar");
+  });
+  it("el pedido con todo cotizado informa el total", () => {
+    const m = flat(buildOrderMessage({ items: [{ product: priced, item: sel(2) }, { product: priced, item: sel(1, { t: "g" }) }] }));
+    expect(m).toContain("TOTAL ESTIMADO: $ 35.000");
+  });
+  it("el pedido mixto no informa total y detalla lo que se presupuesta", () => {
+    const m = flat(buildOrderMessage({ items: [{ product: priced, item: sel(1) }, { product: quote, item: sel(3) }] }));
+    expect(m).not.toContain("TOTAL");
+    expect(m).toContain("Subtotal de productos con precio: $ 10.000");
+    expect(m).toContain("Productos a presupuestar: 1");
+  });
+  it("el pedido sin precios no muestra importes", () => {
+    const m = buildOrderMessage({ items: [{ product: quote, item: sel(1) }] });
+    expect(m).not.toContain("$");
+  });
+});

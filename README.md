@@ -43,7 +43,7 @@ El mensaje nunca se envía solo: se abre WhatsApp con el texto escrito y el clie
 
 ## Precios
 
-No hay precios cargados: ningún importe fue confirmado, por eso toda la tienda muestra **"Solicitar presupuesto"**. La estructura ya está lista (ver `src/lib/pricing.ts`):
+No hay precios cargados: ningún importe fue aprobado, por eso toda la tienda muestra **"Solicitar presupuesto"**. La propuesta de precios (pendiente de aprobación) está en [`docs/ESTUDIO_PRECIOS_ARGENTINA.md`](docs/ESTUDIO_PRECIOS_ARGENTINA.md). La estructura ya está lista (ver `src/lib/pricing.ts`):
 
 ```ts
 // src/data/products.ts
@@ -63,7 +63,7 @@ variantGroups: [{
 - Con variantes con precios distintos: el listado muestra "Desde $ X" y la ficha actualiza el precio al elegir la variante. Si hay varias opciones con precio, se usa la mayor.
 - Sin precio (ni variantes con precio): "Solicitar presupuesto".
 - El pedido suma subtotales. **El total solo se muestra si todos los productos tienen precio**; si alguno requiere presupuesto se informa el subtotal de los productos con precio y cuántos quedan a presupuestar, sin total.
-- Los importes viajan en el mensaje de WhatsApp (precio unitario, subtotal y total estimado). No hay pagos online; el anticipo del 50% se coordina por WhatsApp.
+- Los importes viajan en el mensaje de WhatsApp (precio unitario, subtotal y total estimado). No hay pagos online; las condiciones de pago se acuerdan con cada cliente por WhatsApp antes de confirmar el pedido.
 
 ## Scripts
 

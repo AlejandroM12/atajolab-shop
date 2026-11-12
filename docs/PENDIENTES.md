@@ -12,7 +12,9 @@ Nada de esto se inventó en el MVP. Mientras no esté definido, la web lo comuni
 | Stock | No se afirma; "disponible para consultar" no es stock | `status` |
 | Plazos de fabricación y entrega | No se prometen | `/condiciones-comerciales/` |
 | Cobertura y costo de envíos | "Consultanos tu localidad" | `/condiciones-comerciales/`, FAQ en `src/data/content.ts` |
-| Medios de pago y datos para abonar el anticipo | Se coordina por WhatsApp | `/condiciones-comerciales/` |
+| Medios de pago aceptados y datos para abonar | Se acuerdan con cada cliente antes de confirmar el pedido (no hay un anticipo fijo) | `/condiciones-comerciales/` |
+| Tarifas, transportistas y plazos de envío (envíos a todo el país) | "Envíos a todo el país"; el costo se informa antes de confirmar | `/condiciones-comerciales/` |
+| Precios en ARS | Propuesta en `docs/ESTUDIO_PRECIOS_ARGENTINA.md`, pendiente de aprobación | `src/data/products.ts` |
 | Cambios, cancelaciones, devoluciones y garantía | Listado como "pendiente de definir" | `/condiciones-comerciales/` (requiere revisión) |
 | Fotografías de productos fabricados | Ilustraciones etiquetadas | `images` de cada producto |
 | Cuentas de redes sociales | No se muestran | `src/components/Footer.tsx` |

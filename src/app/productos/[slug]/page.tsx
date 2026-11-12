@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProductConfigurator } from "@/components/ProductConfigurator";
 import { ProductGallery } from "@/components/ProductGallery";
 import { Container } from "@/components/ui";
+import { MADE_TO_ORDER_TEXT, SHIPPING_BANNER, SHIPPING_TEXT } from "@/data/content";
 import {
   getAllProducts,
   getCategory,
@@ -57,6 +58,13 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
   if (!product) notFound();
   const category = getCategory(product.categorySlug);
   const related = getRelatedProducts(product);
+  const personalization = [
+    product.customizations.includes("businessName") && "nombre del negocio",
+    product.customizations.includes("customText") && (product.customTextLabel ?? "texto personalizado").toLowerCase(),
+    product.customizations.includes("destinationUrl") && "enlace de destino",
+    product.customizations.includes("color") && "color preferido",
+    product.customizations.includes("hasLogo") && "logo",
+  ].filter((x): x is string => typeof x === "string");
 
   return (
     <Container className="py-8 sm:py-12">
@@ -103,6 +111,7 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
           </p>
           <h1 className="mt-1 text-2xl font-semibold leading-tight sm:text-3xl">{product.name}</h1>
           <p className="mt-2 text-base text-ink-soft">{product.shortDescription}</p>
+          <p className="mt-2 text-sm font-medium text-ink">{SHIPPING_BANNER}</p>
           <div className="mt-6">
             <ProductConfigurator product={product} />
           </div>
@@ -111,26 +120,30 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
         <div>
-          <h2 className="text-xl font-semibold">Sobre este producto</h2>
+          <h2 className="text-xl font-semibold">Descripción</h2>
           <div className="mt-3 space-y-3 text-ink-soft">
             {product.description.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
           </div>
 
-          <h2 className="mt-10 text-xl font-semibold">Beneficios</h2>
-          <ul className="mt-3 space-y-2">
-            {product.benefits.map((b) => (
-              <li key={b} className="flex gap-2">
-                <span aria-hidden className="mt-1 text-ink-soft">✓</span>
-                <span>{b}</span>
-              </li>
-            ))}
-          </ul>
+          {product.benefits.length > 0 && (
+            <>
+              <h2 className="mt-10 text-xl font-semibold">Ideal para</h2>
+              <ul className="mt-3 space-y-2 text-ink-soft">
+                {product.benefits.map((b) => (
+                  <li key={b} className="flex gap-2">
+                    <span aria-hidden className="text-ink">•</span>
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
 
           {product.faqs && product.faqs.length > 0 && (
             <>
-              <h2 className="mt-10 text-xl font-semibold">Preguntas sobre este producto</h2>
+              <h2 className="mt-10 text-xl font-semibold">Preguntas frecuentes</h2>
               <div className="mt-3 divide-y divide-line rounded-lg border border-line bg-white">
                 {product.faqs.map((f) => (
                   <details key={f.question} className="group p-4">
@@ -145,31 +158,38 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
 
         <aside className="space-y-4">
           <section className="rounded-lg border border-line bg-white p-5">
-            <h2 className="text-lg font-semibold">Tecnología</h2>
-            <p className="mt-2 text-sm text-ink-soft">{TECH_EXPLAIN[product.technology]}</p>
-          </section>
-          <section className="rounded-lg border border-line bg-white p-5">
             <h2 className="text-lg font-semibold">Características</h2>
-            <dl className="mt-2 space-y-2 text-sm">
+            <dl className="mt-2 space-y-3 text-sm">
               <div>
-                <dt className="font-semibold">Materiales</dt>
-                <dd className="text-ink-soft">
-                  {product.materials?.length ? product.materials.join(", ") : "A confirmar al presupuestar."}
-                </dd>
+                <dt className="font-semibold">Tecnología</dt>
+                <dd className="text-ink-soft">{TECH_EXPLAIN[product.technology]}</dd>
               </div>
-              <div>
-                <dt className="font-semibold">Medidas</dt>
-                <dd className="text-ink-soft">{product.dimensions ?? "A confirmar al presupuestar."}</dd>
-              </div>
+              {personalization.length > 0 && (
+                <div>
+                  <dt className="font-semibold">Personalizable</dt>
+                  <dd className="text-ink-soft">
+                    {personalization.join(", ").replace(/^./, (c) => c.toUpperCase())}.
+                  </dd>
+                </div>
+              )}
+              {product.materials?.length ? (
+                <div>
+                  <dt className="font-semibold">Materiales</dt>
+                  <dd className="text-ink-soft">{product.materials.join(", ")}</dd>
+                </div>
+              ) : null}
+              {product.dimensions ? (
+                <div>
+                  <dt className="font-semibold">Medidas</dt>
+                  <dd className="text-ink-soft">{product.dimensions}</dd>
+                </div>
+              ) : null}
             </dl>
           </section>
           <section className="rounded-lg border border-line bg-white p-5">
-            <h2 className="text-lg font-semibold">Fabricación</h2>
-            <p className="mt-2 text-sm text-ink-soft">
-              Trabajamos con productos personalizados por encargo. Una vez confirmado el presupuesto
-              y las condiciones, solicitamos un anticipo del 50% para comenzar la fabricación.
-              Plazos y entrega se coordinan en cada caso.
-            </p>
+            <h2 className="text-lg font-semibold">{SHIPPING_BANNER}</h2>
+            <p className="mt-2 text-sm text-ink-soft">{SHIPPING_TEXT}</p>
+            <p className="mt-2 text-sm text-ink-soft">{MADE_TO_ORDER_TEXT}</p>
             <p className="mt-2 text-sm">
               <Link href="/como-comprar/" className="font-semibold underline">
                 Ver cómo comprar

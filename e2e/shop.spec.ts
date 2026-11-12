@@ -175,7 +175,39 @@ test("A medida ofrece AtajoLab QR (enlace externo) y el formulario de producto f
   await expect(qr).toHaveAttribute("target", "_blank");
   await expect(qr).toHaveAttribute("rel", /noopener/);
   await expect(page.getByRole("heading", { name: "¿Tenés una idea que no aparece en nuestro catálogo?" })).toBeVisible();
-  await expect(page.getByText("anticipo del 50% para comenzar")).toBeVisible();
+  await expect(page.getByText("condiciones de pago y las opciones de envío")).toBeVisible();
+});
+
+test("contenido comercial: envíos a todo el país y sin anticipo fijo", async ({ page }) => {
+  const paths = [
+    "/", "/productos/", "/productos/sticker-qr/", "/como-comprar/", "/contacto/", "/personalizados/",
+    "/preguntas-frecuentes/", "/condiciones-comerciales/", "/pedido/",
+  ];
+  for (const path of paths) {
+    await page.goto(path);
+    const body = await page.locator("body").innerText();
+    expect(body, `${path} no debe mencionar anticipo ni porcentajes de pago`).not.toMatch(/anticipo|50 ?%|saldo/i);
+  }
+  for (const path of ["/", "/productos/sticker-qr/", "/como-comprar/", "/contacto/"]) {
+    await page.goto(path);
+    await expect(page.getByText("Envíos a todo el país").first(), path).toBeVisible();
+  }
+});
+
+test("la portada no lleva la leyenda de imagen ilustrativa; las fichas sí", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByText("Imagen ilustrativa. El diseño final puede variar.")).toHaveCount(0);
+  await page.goto("/productos/sticker-qr/");
+  await expect(page.getByText("Imagen ilustrativa. El diseño final puede variar.").first()).toBeVisible();
+});
+
+test("las fichas no muestran secciones vacías ni textos genéricos", async ({ page }) => {
+  await page.goto("/productos/tarjeta-nfc/");
+  const body = await page.locator("body").innerText();
+  expect(body).not.toContain("A confirmar al presupuestar");
+  expect(body).not.toContain("Beneficios");
+  await expect(page.getByRole("heading", { name: "Descripción" })).toBeVisible();
+  await expect(page.getByText("no es un perfil digital editable")).toBeVisible();
 });
 
 test("formulario de productos personalizados genera el mensaje", async ({ page }) => {

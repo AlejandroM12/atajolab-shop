@@ -21,13 +21,13 @@ export function ProductGallery({
 
   return (
     <div>
-      <div className="overflow-hidden rounded-2xl border border-line">
+      <div className="overflow-hidden rounded-lg border border-line bg-paper-2">
         {current?.src ? (
           <div className="relative aspect-[4/3]">
-            <Image src={current.src} alt={current.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" priority />
+            <Image src={current.src} alt={current.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-contain" priority />
             {current.illustrative && (
-              <span className="absolute bottom-2 left-2 rounded-full bg-white/85 px-2 py-0.5 text-[11px] font-semibold text-ink-soft">
-                Imagen ilustrativa
+              <span className="absolute bottom-1.5 right-2 text-[10px] text-ink-soft">
+                Imagen de referencia
               </span>
             )}
           </div>
@@ -51,7 +51,7 @@ export function ProductGallery({
                 onClick={() => setIndex(i)}
                 aria-label={`Ver imagen ${i + 1}: ${img.alt}`}
                 aria-current={i === index}
-                className={`h-16 w-20 overflow-hidden rounded-lg border-2 ${i === index ? "border-brand" : "border-line"}`}
+                className={`h-16 w-20 overflow-hidden rounded-md border ${i === index ? "border-ink" : "border-line"}`}
               >
                 {img.src ? (
                   <Image src={img.src} alt="" width={80} height={64} className="h-full w-full object-cover" />

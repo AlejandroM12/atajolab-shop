@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #faf7f2;
-  --paper-2: #f2ece2;
-  --ink: #0e1a2b;
-  --ink-soft: #3b4a5f;
-  --line: #e2d9ca;
+  --paper: #ffffff;
+  --paper-2: #f5f5f4;
+  --ink: #1a1a1a;
+  --ink-soft: #525252;
+  --line: #e5e5e3;
   --brand: #ff6a13;
-  --brand-dark: #a33d00;
-  --teal: #0a6f62;
+  --brand-dark: #b34700;
+  --teal: #404040;
 }
 
 @theme inline {
@@ -21,7 +21,7 @@
   --color-brand-dark: var(--brand-dark);
   --color-teal: var(--teal);
   --font-sans: var(--font-body);
-  --font-display: var(--font-heading);
+  --font-display: var(--font-body);
 }
 
 html {
@@ -39,8 +39,8 @@ h1,
 h2,
 h3,
 .font-display {
-  font-family: var(--font-heading), system-ui, sans-serif;
-  letter-spacing: -0.02em;
+  font-family: var(--font-body), system-ui, sans-serif;
+  letter-spacing: -0.015em;
 }
 
 :focus-visible {

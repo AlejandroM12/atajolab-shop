@@ -11,14 +11,14 @@ export function Container({
 export type ButtonVariant = "primary" | "secondary" | "whatsapp" | "ghost";
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: "bg-brand text-ink hover:bg-brand-dark hover:text-white",
-  secondary: "border-2 border-ink bg-transparent text-ink hover:bg-ink hover:text-white",
+  primary: "bg-brand text-ink hover:bg-ink hover:text-white",
+  secondary: "border border-ink/80 bg-white text-ink hover:bg-ink hover:text-white",
   whatsapp: "bg-[#0f7a40] text-white hover:bg-[#0b5f31]",
   ghost: "text-ink hover:bg-paper-2",
 };
 
 export function buttonClass(variant: ButtonVariant = "primary", extra = "") {
-  return `inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${VARIANTS[variant]} ${extra}`;
+  return `inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 py-2.5 text-[15px] font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${VARIANTS[variant]} ${extra}`;
 }
 
 export function ButtonLink({
@@ -57,14 +57,14 @@ export function Badge({
   tone?: "neutral" | "brand" | "teal" | "muted";
 }) {
   const tones = {
-    neutral: "bg-paper-2 text-ink",
-    brand: "bg-brand/15 text-brand-dark",
-    teal: "bg-teal/15 text-teal",
-    muted: "bg-ink/10 text-ink-soft",
+    neutral: "bg-paper-2 text-ink-soft",
+    brand: "bg-paper-2 text-ink-soft",
+    teal: "bg-paper-2 text-ink-soft",
+    muted: "bg-paper-2 text-ink-soft",
   };
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${tones[tone]}`}
+      className={`inline-flex items-center rounded px-2 py-0.5 text-xs font-medium ${tones[tone]}`}
     >
       {children}
     </span>
@@ -85,12 +85,12 @@ export function SectionHeading({
   return (
     <div className="max-w-2xl">
       {eyebrow && (
-        <p className="mb-2 text-sm font-bold uppercase tracking-widest text-brand-dark">
+        <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-brand-dark">
           {eyebrow}
         </p>
       )}
-      <Tag className="text-3xl font-bold leading-tight sm:text-4xl">{title}</Tag>
-      {children && <p className="mt-3 text-lg text-ink-soft">{children}</p>}
+      <Tag className="text-2xl font-semibold leading-tight sm:text-3xl">{title}</Tag>
+      {children && <p className="mt-2 text-base text-ink-soft">{children}</p>}
     </div>
   );
 }

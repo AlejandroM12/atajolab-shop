@@ -72,8 +72,8 @@ export function ProductConfigurator({ product }: { product: Product }) {
 
   if (!orderable) {
     return (
-      <section aria-labelledby="config-title" className="rounded-2xl border border-line bg-white p-5">
-        <h2 id="config-title" className="text-xl font-bold">
+      <section aria-labelledby="config-title" className="rounded-lg border border-line bg-white p-5">
+        <h2 id="config-title" className="text-xl font-semibold">
           {product.status === "proximamente" ? "Próximamente" : "No disponible por ahora"}
         </h2>
         <p className="mt-2 text-ink-soft">
@@ -90,8 +90,8 @@ export function ProductConfigurator({ product }: { product: Product }) {
   }
 
   return (
-    <section aria-labelledby="config-title" className="rounded-2xl border border-line bg-white p-5 sm:p-6">
-      <h2 id="config-title" className="text-xl font-bold">
+    <section aria-labelledby="config-title" className="rounded-lg border border-line bg-white p-5 sm:p-6">
+      <h2 id="config-title" className="text-xl font-semibold">
         Personalizá tu producto
       </h2>
       <p className="mt-1 text-sm text-ink-soft">
@@ -244,7 +244,7 @@ export function ProductConfigurator({ product }: { product: Product }) {
           <div className="flex w-fit items-center gap-2">
             <button
               type="button"
-              className="grid h-11 w-11 place-items-center rounded-full border border-line text-xl font-bold hover:bg-paper-2 disabled:opacity-40"
+              className="grid h-11 w-11 place-items-center rounded-md border border-line text-xl font-semibold hover:bg-paper-2 disabled:opacity-40"
               onClick={() => setQuantity(selection.quantity - 1)}
               disabled={selection.quantity <= product.quantity.min}
               aria-label="Restar una unidad"
@@ -265,7 +265,7 @@ export function ProductConfigurator({ product }: { product: Product }) {
             />
             <button
               type="button"
-              className="grid h-11 w-11 place-items-center rounded-full border border-line text-xl font-bold hover:bg-paper-2 disabled:opacity-40"
+              className="grid h-11 w-11 place-items-center rounded-md border border-line text-xl font-semibold hover:bg-paper-2 disabled:opacity-40"
               onClick={() => setQuantity(selection.quantity + 1)}
               disabled={selection.quantity >= product.quantity.max}
               aria-label="Sumar una unidad"
@@ -293,13 +293,13 @@ export function ProductConfigurator({ product }: { product: Product }) {
 
         <div role="status" aria-live="polite">
           {added && (
-            <p className="rounded-xl bg-teal/10 p-3 text-sm font-medium text-teal">
+            <p className="rounded-md bg-paper-2 p-3 text-sm font-medium text-ink">
               ¡Listo! Agregamos este producto a tu pedido.{" "}
-              <Link href="/pedido/" className="font-bold underline">
+              <Link href="/pedido/" className="font-semibold underline">
                 Ver mi pedido
               </Link>{" "}
               ·{" "}
-              <Link href="/productos/" className="font-bold underline">
+              <Link href="/productos/" className="font-semibold underline">
                 Seguir viendo productos
               </Link>
             </p>

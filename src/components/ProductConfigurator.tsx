@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { isOrderable } from "@/lib/catalog";
 import {
@@ -10,7 +11,9 @@ import {
   type Selection,
   type SelectionFields,
 } from "@/lib/selection";
+import { useCart } from "@/lib/useCart";
 import type { Product } from "@/lib/types";
+import { buttonClass } from "./ui";
 
 const inputCls =
   "min-h-11 w-full rounded-xl border border-line bg-white px-3 py-2 text-base placeholder:text-ink-soft/60 aria-[invalid=true]:border-red-600";
@@ -51,6 +54,8 @@ function Field({
 export function ProductConfigurator({ product }: { product: Product }) {
   const [selection, setSelection] = useState<Selection>(() => createDefaultSelection(product));
   const [showErrors, setShowErrors] = useState(false);
+  const [added, setAdded] = useState(false);
+  const { add } = useCart();
   const { errors } = validateSelection(product, selection);
   const visibleErrors = showErrors ? errors : {};
   const has = (f: (typeof product.customizations)[number]) => product.customizations.includes(f);
@@ -90,6 +95,15 @@ export function ProductConfigurator({ product }: { product: Product }) {
         onSubmit={(e) => {
           e.preventDefault();
           setShowErrors(true);
+          setAdded(false);
+          const result = validateSelection(product, selection);
+          if (!result.valid) {
+            const first = Object.keys(result.errors)[0];
+            document.getElementById(first)?.focus();
+            return;
+          }
+          add(product, selection);
+          setAdded(true);
         }}
       >
         {(product.variantGroups ?? []).map((group) => (
@@ -251,6 +265,25 @@ export function ProductConfigurator({ product }: { product: Product }) {
             </button>
           </div>
         </Field>
+
+        <button type="submit" className={buttonClass("primary", "w-full")}>
+          Agregar al pedido
+        </button>
+
+        <div role="status" aria-live="polite">
+          {added && (
+            <p className="rounded-xl bg-teal/10 p-3 text-sm font-medium text-teal">
+              ¡Listo! Agregamos este producto a tu pedido.{" "}
+              <Link href="/pedido/" className="font-bold underline">
+                Ver mi pedido
+              </Link>{" "}
+              ·{" "}
+              <Link href="/productos/" className="font-bold underline">
+                Seguir viendo productos
+              </Link>
+            </p>
+          )}
+        </div>
       </form>
     </section>
   );

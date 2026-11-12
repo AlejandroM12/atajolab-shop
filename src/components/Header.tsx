@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { NAV_LINKS } from "@/data/site";
+import { CartLink } from "./CartLink";
 import { Container } from "./ui";
 import { Logo } from "./Logo";
 import { MobileNav } from "./MobileNav";
@@ -21,12 +22,7 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <Link
-            href="/pedido/"
-            className="inline-flex min-h-11 items-center gap-2 rounded-full bg-ink px-4 text-sm font-semibold text-white hover:bg-ink-soft"
-          >
-            Mi pedido
-          </Link>
+          <CartLink />
           <MobileNav />
         </div>
       </Container>

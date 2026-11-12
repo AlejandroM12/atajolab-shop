@@ -182,3 +182,33 @@ Para precios por tamaño: `variantGroups[].options[].price`. Los productos sin p
 - Los precios de Mercado Libre provienen de resultados de búsqueda sin fecha de captura.
 - Las "ventas sugeridas" de Argentina NFC son recomendaciones de reventa, no precios observados en el mercado.
 - No se relevaron costos propios de AtajoLab. Toda cifra marcada como estimada es una hipótesis.
+
+## 13. Actualización del 12/11/2026 — modelo híbrido y datos nuevos
+
+AtajoLab adopta un **modelo de producción híbrido** (control propio de diseño, personalización, especificaciones y calidad; pedidos chicos personalizados internamente y pedidos grandes con fabricantes o imprentas). El detalle operativo está en [`PLAN_PRODUCCION.md`](PLAN_PRODUCCION.md). Públicamente **no se afirma contar con una fábrica propia**.
+
+### Datos nuevos verificados (12/11/2026)
+
+| Fuente | Dato |
+| --- | --- |
+| [Mebac Jujuy](https://mebac.com.ar/jujuy/producto/acrilico-cristal-3-mm-122x244cm/) | Acrílico cristal 3 mm, placa 122 × 244 cm: **$167.989** (2 mm: $107.767). Por placa entera. |
+| [Todomicro](https://www.todomicro.com.ar/999-tarjeta-1356-mhz-nfc-ntag215.html) | Tarjeta NFC NTAG215 PVC blanco: $4.185 (1 u.), **$2.790 (10+)**, $2.565 (50+), $2.385 (100+). Sin stock. |
+| [IDSHOP](https://www.idshop.com.ar/productos/etiquetas-circulares-nfc-ntag213-pack-100-un/) | Etiquetas NFC NTAG213 30 mm ×100: $321.176 (≈ $3.212/u). Sin stock. |
+| [Sofite](https://sofite.com.ar/) | Stickers 5 × 5 cm ×100: $16.200; 7 × 7 cm ×100: $30.500. Envío gratis desde $300.000. |
+| Argentina NFC | Chips NTAG213 desde **$390 c/u, mín. 100** (ya relevado). |
+
+### Qué cambia en el análisis
+
+- **Costos de material:** el costo de acrílico de un soporte de 10 × 15 cm + base se calcula en **≈ $1.612** a partir del precio verificado de la placa (con 70 % de rendimiento supuesto). Reemplaza el rango genérico de la sección 4.
+- **Chips NFC:** el chip a $390 (mín. 100) es **mucho más barato** que las etiquetas y tarjetas NFC en blanco que venden las casas locales ($2.385–4.185 por tarjeta; $3.212 por etiqueta). Por eso conviene separar **chip** (insumo barato) de **tarjeta PVC terminada**.
+- **Márgenes indicativos** (detalle en el plan; con mano de obra, embalaje y cantidades como **estimaciones**, sin envío ni impuestos): soportes de reseñas, **≈ 61 % (QR) y ≈ 72 % (QR + NFC)** en producción interna de 10 u.; tarjetas **≈ 67–70 %**.
+
+### Alertas sobre los precios propuestos (no aplicadas)
+
+1. **Soporte QR de mesa** (p-005): con producción interna deja **≈ 39 %** a $10.900 (10–24 u.) y **≈ 30 %** a $9.500 (25+). Revisar el precio o producir en serie con terceros.
+2. **Soporte QR + NFC de mesa** (p-006) tercerizado a $10.000: **margen ≈ 27 %** a $15.900 (25+). Revisar precio o proveedor.
+3. **Stickers QR** (p-017): con un proveedor de lote de 100, **menos de 25 unidades no es rentable** (margen 3,7 % en 10 u. al precio de $1.800). Proponer **cantidad mínima de 25** o producción propia.
+4. **Sticker QR/NFC** (p-003) tercerizado: margen **33–37 %** a $8.500 / $7.500; revisar escala.
+5. **Tarjetas**: la impresión sobre PVC con chip **no tiene proveedor argentino verificado**; los márgenes del 67–70 % dependen de una terminación con vinilo laminado (calidad inferior a la impresión directa).
+
+Los precios públicos de la tienda **no se modificaron**.

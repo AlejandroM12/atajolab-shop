@@ -16,7 +16,10 @@ export const metadata: Metadata = {
     siteName: SITE.name,
     locale: SITE.locale,
     type: "website",
+    images: [{ url: "/og-default.png", width: 1200, height: 630, alt: "AtajoLab Shop: productos QR y NFC personalizados" }],
   },
+  alternates: { canonical: "/" },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = { themeColor: "#faf7f2" };

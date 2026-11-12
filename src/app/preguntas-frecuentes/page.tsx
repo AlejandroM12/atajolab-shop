@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { faqJsonLd } from "@/lib/seo";
 import { FaqList } from "@/components/sections";
 import { ContactCta } from "@/components/ContactCta";
 import { Container, SectionHeading } from "@/components/ui";
@@ -14,6 +16,7 @@ export const metadata: Metadata = {
 export default function FaqPage() {
   return (
     <Container className="py-10 sm:py-14">
+      <JsonLd data={faqJsonLd(FAQS)} />
       <SectionHeading as="h1" eyebrow="Ayuda" title="Preguntas frecuentes">
         Respondemos lo que ya sabemos. Lo que todavía no está definido, lo decimos.
       </SectionHeading>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductConfigurator } from "@/components/ProductConfigurator";
 import { ProductGallery } from "@/components/ProductGallery";
@@ -50,6 +52,17 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
 
   return (
     <Container className="py-8 sm:py-12">
+      <JsonLd
+        data={[
+          productJsonLd(product, category),
+          breadcrumbJsonLd([
+            { name: "Inicio", path: "/" },
+            { name: "Productos", path: "/productos/" },
+            ...(category ? [{ name: category.name, path: `/categorias/${category.slug}/` }] : []),
+            { name: product.name, path: `/productos/${product.slug}/` },
+          ]),
+        ]}
+      />
       <nav aria-label="Ruta de navegación" className="mb-6 text-sm text-ink-soft">
         <Link href="/productos/" className="underline hover:text-ink">
           Productos

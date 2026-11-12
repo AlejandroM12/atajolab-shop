@@ -1,3 +1,5 @@
+import { JsonLd } from "@/components/JsonLd";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 import { ContactCta } from "@/components/ContactCta";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductVisual } from "@/components/ProductVisual";
@@ -19,6 +21,7 @@ export default function Home() {
 
   return (
     <>
+      <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
       <section className="overflow-hidden border-b border-line">
         <Container className="grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[1.1fr_1fr] lg:py-20">
           <div>

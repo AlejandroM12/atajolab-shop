@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { ProductCard } from "@/components/ProductCard";
 import { Container, SectionHeading } from "@/components/ui";
 import { getCategories, getCategory, getProductsByCategory } from "@/lib/catalog";
@@ -32,6 +34,13 @@ export default async function CategoriaPage({ params }: PageProps<"/categorias/[
 
   return (
     <Container className="py-10 sm:py-14">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Inicio", path: "/" },
+          { name: "Productos", path: "/productos/" },
+          { name: category.name, path: `/categorias/${slug}/` },
+        ])}
+      />
       <nav aria-label="Ruta de navegación" className="mb-6 text-sm text-ink-soft">
         <Link href="/productos/" className="underline hover:text-ink">
           Productos

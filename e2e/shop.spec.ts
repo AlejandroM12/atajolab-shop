@@ -142,7 +142,7 @@ test("todos los enlaces de WhatsApp usan el número oficial", async ({ page }) =
 
 test("A medida ofrece AtajoLab QR (enlace externo) y el formulario de producto físico", async ({ page }) => {
   await page.goto("/personalizados/");
-  const qr = page.getByRole("link", { name: "Crear mi QR" });
+  const qr = page.getByRole("link", { name: "Crear mi QR", exact: true });
   await expect(qr).toHaveAttribute("href", "https://qr.atajolab.dev");
   await expect(qr).toHaveAttribute("target", "_blank");
   await expect(qr).toHaveAttribute("rel", /noopener/);

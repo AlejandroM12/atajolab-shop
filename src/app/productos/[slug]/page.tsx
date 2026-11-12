@@ -32,7 +32,15 @@ export async function generateMetadata({
     title: product.name,
     description: product.shortDescription,
     alternates: { canonical: `/productos/${slug}/` },
-    openGraph: { title: product.name, description: product.shortDescription, type: "website" },
+    openGraph: {
+      title: product.name,
+      description: product.shortDescription,
+      type: "website",
+      // Si el producto no tiene imagen propia se hereda la imagen social por defecto del layout.
+      ...(product.images[0]?.src
+        ? { images: [{ url: product.images[0].src, width: 1200, height: 900, alt: product.images[0].alt }] }
+        : {}),
+    },
   };
 }
 

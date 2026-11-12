@@ -10,6 +10,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run --passWithNoTests",
     "test:e2e": "playwright test",
+    "deploy": "npm run build && npx --yes wrangler@4 pages deploy out --project-name atajolab-shop --branch main",
     "check": "npm run lint && npm run typecheck && npm test && npm run build"
   },
   "dependencies": {

@@ -4,9 +4,9 @@ Nada de esto se inventó en el MVP. Mientras no esté definido, la web lo comuni
 
 | Dato | Dónde se refleja hoy | Dónde completarlo |
 | --- | --- | --- |
-| Número de WhatsApp | Botones de consulta/pedido deshabilitados con aviso | `NEXT_PUBLIC_WHATSAPP_NUMBER` |
+| ~~Número de WhatsApp~~ | Resuelto: +54 9 370 5204454 | `src/data/site.ts` (o `NEXT_PUBLIC_WHATSAPP_NUMBER`) |
 | Email de contacto (opcional) | Alternativa si falta WhatsApp | `NEXT_PUBLIC_CONTACT_EMAIL` |
-| Precios | "Precio a cotizar" | `price` en `src/data/products.ts` |
+| Precios (ARS) | "Solicitar presupuesto". La estructura ya soporta precio base, precio por variante, "desde", subtotal y total | `price` y `variantGroups[].options[].price` en `src/data/products.ts` |
 | Materiales y medidas | "A confirmar al presupuestar" | `materials`, `dimensions` |
 | Variantes disponibles (tamaños, colores, formatos) | No se muestran selectores | `variantGroups` |
 | Stock | No se afirma; "disponible para consultar" no es stock | `status` |

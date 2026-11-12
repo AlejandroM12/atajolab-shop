@@ -150,6 +150,15 @@ test("el prefetch estático de Next.js no genera 404", async ({ page }) => {
   expect(failed).toEqual([]);
 });
 
+test("las fichas comparten la imagen del producto en Open Graph", async ({ page }) => {
+  await page.goto("/productos/sticker-qr/");
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    "content",
+    "https://tienda.atajolab.dev/productos/sticker-qr.webp",
+  );
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://tienda.atajolab.dev/productos/sticker-qr/");
+});
+
 test("todos los enlaces de WhatsApp usan el número oficial", async ({ page }) => {
   for (const path of ["/", "/contacto/", "/productos/sticker-qr/", "/personalizados/"]) {
     await page.goto(path);

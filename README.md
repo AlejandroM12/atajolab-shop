@@ -25,25 +25,45 @@ npm run dev                  # http://localhost:3000
 
 ## Variables de entorno
 
-| Variable | Obligatoria | Descripción |
-| --- | --- | --- |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Sí, para habilitar pedidos | Número en formato internacional, solo dígitos (sin `+`, espacios ni guiones). Para Argentina móvil: `54` + `9` + código de área sin 0 + número, p. ej. `549370XXXXXXX`. |
-| `NEXT_PUBLIC_SITE_URL` | No | URL pública (canonical, sitemap, Open Graph). Por defecto `https://tienda.atajolab.dev`. |
-| `NEXT_PUBLIC_CONTACT_EMAIL` | No | Alternativa de contacto si WhatsApp no está configurado. |
+Todas son **opcionales**: el sitio funciona sin definir ninguna.
+
+| Variable | Descripción |
+| --- | --- |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Reemplaza el número comercial. Formato internacional, solo dígitos (sin `+`, espacios ni guiones). Por defecto se usa el número oficial `5493705204454` (+54 9 370 5204454), definido en `src/data/site.ts`. |
+| `NEXT_PUBLIC_SITE_URL` | URL pública (canonical, sitemap, Open Graph). Por defecto `https://tienda.atajolab.dev`. |
+| `NEXT_PUBLIC_CONTACT_EMAIL` | Muestra un email de contacto adicional. |
 
 Las variables `NEXT_PUBLIC_*` se incorporan **en el build**: después de cambiarlas hay que volver a generar el sitio.
 
-### Qué pasa si falta el número de WhatsApp
+### WhatsApp
 
-No se generan enlaces rotos. Los botones muestran un aviso ("Los pedidos por WhatsApp todavía no están habilitados"), ofrecen enviar el mensaje por email (si `NEXT_PUBLIC_CONTACT_EMAIL` existe) o **copiar el mensaje**, y los botones secundarios llevan a `/contacto/`.
+Una sola fuente de verdad: `getWhatsAppNumber()` en `src/lib/whatsapp.ts`. Todos los botones y enlaces (`WhatsAppButton`, `WhatsAppLink`) y los mensajes (`buildProductInquiryMessage`, `buildOrderMessage`, `buildCustomRequestMessage`, `buildGeneralInquiryMessage`) salen de ese módulo. El enlace es `https://wa.me/5493705204454?text=<mensaje codificado>`.
 
-### Cómo habilitar los pedidos por WhatsApp
+El mensaje nunca se envía solo: se abre WhatsApp con el texto escrito y el cliente lo envía. Abrir WhatsApp **no** vacía el pedido. Si el número configurado fuera inválido, los botones ofrecen copiar el mensaje (o email, si existe).
 
-1. Definir `NEXT_PUBLIC_WHATSAPP_NUMBER` (en `.env.local` para desarrollo y en las variables de entorno de Cloudflare Pages para producción).
-2. Volver a hacer el build/deploy.
-3. Probar desde la ficha de un producto y desde `/pedido/` que el enlace sea `https://wa.me/<número>?text=...`.
+## Precios
 
-El mensaje nunca se envía solo: se abre WhatsApp con el texto escrito y el cliente lo envía. Abrir WhatsApp **no** vacía el pedido.
+No hay precios cargados: ningún importe fue confirmado, por eso toda la tienda muestra **"Solicitar presupuesto"**. La estructura ya está lista (ver `src/lib/pricing.ts`):
+
+```ts
+// src/data/products.ts
+price: { amount: 12500, currency: "ARS" },       // precio unitario base
+priceNote: "El diseño final se cotiza aparte.",  // opcional
+
+variantGroups: [{
+  id: "tamano", label: "Tamaño",
+  options: [
+    { id: "chico",  label: "Chico",  price: 8000 },   // precio por variante
+    { id: "grande", label: "Grande", price: 15000 },
+  ],
+}],
+```
+
+- Con precio base: tarjeta, ficha y pedido muestran el importe; la ficha calcula el subtotal según la cantidad.
+- Con variantes con precios distintos: el listado muestra "Desde $ X" y la ficha actualiza el precio al elegir la variante. Si hay varias opciones con precio, se usa la mayor.
+- Sin precio (ni variantes con precio): "Solicitar presupuesto".
+- El pedido suma subtotales. **El total solo se muestra si todos los productos tienen precio**; si alguno requiere presupuesto se informa el subtotal de los productos con precio y cuántos quedan a presupuestar, sin total.
+- Los importes viajan en el mensaje de WhatsApp (precio unitario, subtotal y total estimado). No hay pagos online; el anticipo del 50% se coordina por WhatsApp.
 
 ## Scripts
 
@@ -127,24 +147,40 @@ Imagen social por defecto: `public/og-default.png` (1200×630).
 
 ## Despliegue en Cloudflare Pages
 
-El sitio es 100% estático; el resultado del build está en `out/`.
+El sitio es 100% estático; el resultado del build está en `out/` (`npm run build`). `.node-version` fija Node 22 y `wrangler.toml` declara `pages_build_output_dir = "out"`.
 
-1. En Cloudflare: **Workers & Pages → Create → Pages → Connect to Git** y elegí `AlejandroM12/atajolab-shop`.
-2. Configuración de build:
-   - Framework preset: *None* (o *Next.js (Static HTML Export)*)
-   - Build command: `npm run build`
-   - Build output directory: `out`
-   - Variable `NODE_VERSION`: `20` (o superior)
-3. Variables de entorno (Production y Preview): `NEXT_PUBLIC_WHATSAPP_NUMBER`, y opcionalmente `NEXT_PUBLIC_SITE_URL` y `NEXT_PUBLIC_CONTACT_EMAIL`.
-4. Deploy. Verificá primero en la URL `*.pages.dev`.
+### Opción A: conectar el repositorio (recomendada)
 
-### Subdominio `tienda.atajolab.dev`
+1. Cloudflare → **Workers & Pages → Create → Pages → Connect to Git** → `AlejandroM12/atajolab-shop`.
+2. Build command: `npm run build` · Build output directory: `out` · Production branch: `main`.
+3. No hace falta ninguna variable de entorno (el número de WhatsApp ya está configurado). Opcionales: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CONTACT_EMAIL`.
+4. Deploy y verificar primero en la URL `*.pages.dev`.
+
+### Opción B: subida directa desde tu máquina
+
+```bash
+npx wrangler login          # abre el navegador para autorizar
+npm run deploy              # build + wrangler pages deploy out
+```
+
+La primera vez, Wrangler pregunta si crear el proyecto `atajolab-shop`.
+
+### Dominio `tienda.atajolab.dev`
 
 1. En el proyecto de Pages: **Custom domains → Set up a custom domain** → `tienda.atajolab.dev`.
-2. Si `atajolab.dev` ya está en Cloudflare, el registro CNAME se crea automáticamente; si no, creá un CNAME `tienda` → `<proyecto>.pages.dev`.
+2. Si `atajolab.dev` ya está en Cloudflare, el CNAME se crea solo; si no, creá `tienda` → `<proyecto>.pages.dev`.
 3. Esperá a que el certificado SSL quede activo.
 
 > Este repositorio no modifica DNS ni configuraciones de Cloudflare: esos pasos se hacen manualmente.
+
+### Verificación posterior al despliegue
+
+- `https://tienda.atajolab.dev/` carga con imágenes y sin errores en consola.
+- `/sitemap.xml` y `/robots.txt` responden y apuntan al dominio final.
+- Un botón de WhatsApp abre `https://wa.me/5493705204454?text=...` con el mensaje precompletado.
+- Agregar un producto, recargar `/pedido/` y comprobar que el pedido persiste.
+- `/personalizados/`: "Crear mi QR" abre `https://qr.atajolab.dev`.
+- Una URL inexistente muestra la página 404 de la tienda.
 
 `public/_headers` agrega cabeceras de seguridad básicas y caché para los assets de Next.
 
@@ -153,7 +189,7 @@ El sitio es 100% estático; el resultado del build está en `out/`.
 - Catálogo en archivos locales; sin CMS, base de datos ni panel.
 - Sin pagos online, sin carga de archivos (el logo se envía por WhatsApp), sin cuentas de usuario.
 - El pedido vive en el navegador del cliente (`localStorage`): no se comparte entre dispositivos.
-- Sin precios, materiales, medidas, plazos ni cobertura de envíos definidos.
+- Sin precios, materiales, medidas, plazos ni cobertura de envíos confirmados (la estructura de precios ya está lista).
 - Imágenes: renders ilustrativos; faltan fotografías propias de productos fabricados.
 - Solo español (argentino). La estructura permite sumar otros idiomas, pero no hay selector.
 - Carta digital editable y validación de accesos para eventos: **no implementados** (ver `docs/`).

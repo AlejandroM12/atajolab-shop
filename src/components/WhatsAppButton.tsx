@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { SITE } from "@/data/site";
 import {
@@ -30,6 +31,7 @@ export function WhatsAppButton({
   className = "",
   beforeOpen,
   disabled = false,
+  compact = false,
 }: {
   message: string;
   label?: string;
@@ -37,6 +39,8 @@ export function WhatsAppButton({
   className?: string;
   beforeOpen?: () => boolean;
   disabled?: boolean;
+  /** Sin WhatsApp configurado, enlaza a /contacto/ en lugar de mostrar el aviso completo. */
+  compact?: boolean;
 }) {
   const [copied, setCopied] = useState<"ok" | "error" | null>(null);
   const number = getWhatsAppNumber();
@@ -73,6 +77,14 @@ export function WhatsAppButton({
         )}
         {tooLong}
       </div>
+    );
+  }
+
+  if (compact) {
+    return (
+      <Link href="/contacto/" className={cls}>
+        {label}
+      </Link>
     );
   }
 

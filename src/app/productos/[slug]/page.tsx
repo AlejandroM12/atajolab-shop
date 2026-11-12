@@ -6,7 +6,7 @@ import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductConfigurator } from "@/components/ProductConfigurator";
 import { ProductGallery } from "@/components/ProductGallery";
-import { Badge, Container } from "@/components/ui";
+import { Container } from "@/components/ui";
 import {
   getAllProducts,
   getCategory,
@@ -78,26 +78,27 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
       </nav>
 
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className="lg:sticky lg:top-20 lg:self-start">
         <ProductGallery
           images={product.images}
           kind={product.visual}
           technology={product.technology}
           accent={category?.accent ?? "#ff6a13"}
         />
+        </div>
 
         <div>
-          <div className="flex flex-wrap gap-1.5">
-            <Badge tone="brand">{TECH_LABELS[product.technology]}</Badge>
-            <Badge tone={product.status === "proximamente" || product.status === "no-disponible" ? "muted" : "teal"}>
-              {STATUS_LABELS[product.status]}
-            </Badge>
-          </div>
-          <h1 className="mt-3 text-3xl font-bold leading-tight sm:text-4xl">{product.name}</h1>
-          <p className="mt-3 text-lg text-ink-soft">{product.shortDescription}</p>
-          <p className="mt-4 text-lg font-bold text-brand-dark">
+          <p className="text-sm text-ink-soft">
+            {TECH_LABELS[product.technology]}
+            {(product.status === "proximamente" || product.status === "no-disponible") &&
+              ` · ${STATUS_LABELS[product.status]}`}
+          </p>
+          <h1 className="mt-1 text-2xl font-semibold leading-tight sm:text-3xl">{product.name}</h1>
+          <p className="mt-2 text-base text-ink-soft">{product.shortDescription}</p>
+          <p className="mt-4 text-xl font-semibold">
             {product.price
               ? `$${product.price.amount.toLocaleString("es-AR")}`
-              : "Precio a cotizar"}
+              : "Consultar precio"}
           </p>
           <div className="mt-6">
             <ProductConfigurator product={product} />
@@ -105,20 +106,20 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
         </div>
       </div>
 
-      <div className="mt-14 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
+      <div className="mt-12 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
         <div>
-          <h2 className="text-2xl font-bold">Sobre este producto</h2>
+          <h2 className="text-xl font-semibold">Sobre este producto</h2>
           <div className="mt-3 space-y-3 text-ink-soft">
             {product.description.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
           </div>
 
-          <h2 className="mt-10 text-2xl font-bold">Beneficios</h2>
+          <h2 className="mt-10 text-xl font-semibold">Beneficios</h2>
           <ul className="mt-3 space-y-2">
             {product.benefits.map((b) => (
               <li key={b} className="flex gap-2">
-                <span aria-hidden className="mt-1 text-teal">✓</span>
+                <span aria-hidden className="mt-1 text-ink-soft">✓</span>
                 <span>{b}</span>
               </li>
             ))}
@@ -126,8 +127,8 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
 
           {product.faqs && product.faqs.length > 0 && (
             <>
-              <h2 className="mt-10 text-2xl font-bold">Preguntas sobre este producto</h2>
-              <div className="mt-3 divide-y divide-line rounded-2xl border border-line bg-white">
+              <h2 className="mt-10 text-xl font-semibold">Preguntas sobre este producto</h2>
+              <div className="mt-3 divide-y divide-line rounded-lg border border-line bg-white">
                 {product.faqs.map((f) => (
                   <details key={f.question} className="group p-4">
                     <summary className="cursor-pointer font-semibold">{f.question}</summary>
@@ -140,12 +141,12 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
         </div>
 
         <aside className="space-y-4">
-          <section className="rounded-2xl border border-line bg-white p-5">
-            <h2 className="text-lg font-bold">Tecnología</h2>
+          <section className="rounded-lg border border-line bg-white p-5">
+            <h2 className="text-lg font-semibold">Tecnología</h2>
             <p className="mt-2 text-sm text-ink-soft">{TECH_EXPLAIN[product.technology]}</p>
           </section>
-          <section className="rounded-2xl border border-line bg-white p-5">
-            <h2 className="text-lg font-bold">Características</h2>
+          <section className="rounded-lg border border-line bg-white p-5">
+            <h2 className="text-lg font-semibold">Características</h2>
             <dl className="mt-2 space-y-2 text-sm">
               <div>
                 <dt className="font-semibold">Materiales</dt>
@@ -159,8 +160,8 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
               </div>
             </dl>
           </section>
-          <section className="rounded-2xl border border-line bg-white p-5">
-            <h2 className="text-lg font-bold">Fabricación</h2>
+          <section className="rounded-lg border border-line bg-white p-5">
+            <h2 className="text-lg font-semibold">Fabricación</h2>
             <p className="mt-2 text-sm text-ink-soft">
               Trabajamos con productos personalizados por encargo. Una vez confirmado el presupuesto
               y las condiciones, solicitamos un anticipo del 50% para comenzar la fabricación.
@@ -177,10 +178,10 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
 
       {related.length > 0 && (
         <section className="mt-16" aria-labelledby="related">
-          <h2 id="related" className="text-2xl font-bold">
+          <h2 id="related" className="text-xl font-semibold">
             También te puede interesar
           </h2>
-          <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-3">
             {related.map((p) => (
               <li key={p.id}>
                 <ProductCard product={p} />

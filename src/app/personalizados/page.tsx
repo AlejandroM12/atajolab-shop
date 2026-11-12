@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function PersonalizadosPage() {
   return (
-    <Container className="py-10 sm:py-14">
+    <Container className="py-8 sm:py-12">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr]">
         <div>
           <SectionHeading as="h1" eyebrow="A medida" title="¿Tenés una idea que no aparece en nuestro catálogo?">

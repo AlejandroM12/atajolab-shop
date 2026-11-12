@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function FaqPage() {
   return (
-    <Container className="py-10 sm:py-14">
+    <Container className="py-8 sm:py-12">
       <JsonLd data={faqJsonLd(FAQS)} />
       <SectionHeading as="h1" eyebrow="Ayuda" title="Preguntas frecuentes">
         Respondemos lo que ya sabemos. Lo que todavía no está definido, lo decimos.

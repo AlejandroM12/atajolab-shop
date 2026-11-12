@@ -13,13 +13,13 @@ export const metadata: Metadata = {
 
 export default function ContactoPage() {
   return (
-    <Container className="py-10 sm:py-14">
+    <Container className="py-8 sm:py-12">
       <SectionHeading as="h1" eyebrow="Contacto" title="Hablemos de tu negocio">
         La forma más rápida de consultar es por WhatsApp.
       </SectionHeading>
       <div className="mt-8 grid max-w-3xl gap-5 sm:grid-cols-2">
-        <section aria-labelledby="wa" className="rounded-2xl border border-line bg-white p-6">
-          <h2 id="wa" className="text-xl font-bold">
+        <section aria-labelledby="wa" className="rounded-lg border border-line bg-white p-6">
+          <h2 id="wa" className="text-xl font-semibold">
             WhatsApp
           </h2>
           <p className="mt-2 mb-4 text-sm text-ink-soft">
@@ -27,8 +27,8 @@ export default function ContactoPage() {
           </p>
           <WhatsAppButton message={buildGeneralInquiryMessage()} className="w-full" />
         </section>
-        <section aria-labelledby="otros" className="rounded-2xl border border-line bg-white p-6">
-          <h2 id="otros" className="text-xl font-bold">
+        <section aria-labelledby="otros" className="rounded-lg border border-line bg-white p-6">
+          <h2 id="otros" className="text-xl font-semibold">
             Otros medios
           </h2>
           <ul className="mt-2 space-y-2 text-sm text-ink-soft">

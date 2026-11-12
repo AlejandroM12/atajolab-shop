@@ -20,7 +20,7 @@ export function CustomRequestForm() {
     <form
       noValidate
       onSubmit={(e) => e.preventDefault()}
-      className="grid gap-4 rounded-2xl border border-line bg-white p-5 sm:p-6"
+      className="grid gap-4 rounded-lg border border-line bg-white p-5 sm:p-6"
     >
       <div>
         <label htmlFor="need" className="mb-1 block text-sm font-semibold">

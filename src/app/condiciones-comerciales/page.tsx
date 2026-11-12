@@ -21,11 +21,11 @@ const PENDIENTES = [
 
 export default function CondicionesPage() {
   return (
-    <Container className="py-10 sm:py-14">
+    <Container className="py-8 sm:py-12">
       <SectionHeading as="h1" eyebrow="Información" title="Condiciones comerciales" />
       <div className="mt-8 grid max-w-3xl gap-6">
-        <section aria-labelledby="definidas" className="rounded-2xl border border-line bg-white p-6">
-          <h2 id="definidas" className="text-2xl font-bold">
+        <section aria-labelledby="definidas" className="rounded-lg border border-line bg-white p-6">
+          <h2 id="definidas" className="text-2xl font-semibold">
             Lo que ya está definido
           </h2>
           <ul className="mt-3 space-y-3 text-ink-soft">
@@ -47,8 +47,8 @@ export default function CondicionesPage() {
             </li>
           </ul>
         </section>
-        <section aria-labelledby="pendientes" className="rounded-2xl border border-dashed border-line bg-paper-2 p-6">
-          <h2 id="pendientes" className="text-2xl font-bold">
+        <section aria-labelledby="pendientes" className="rounded-lg border border-dashed border-line bg-paper-2 p-6">
+          <h2 id="pendientes" className="text-2xl font-semibold">
             Pendiente de definir
           </h2>
           <p className="mt-2 text-ink-soft">

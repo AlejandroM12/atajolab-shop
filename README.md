@@ -105,7 +105,7 @@ Editá `src/data/products.ts` y agregá un objeto `Product` (tipo en `src/lib/ty
 
 ## Cómo agregar imágenes
 
-Mientras no haya fotografías propias, la tienda muestra ilustraciones generadas, etiquetadas como "Imagen ilustrativa". Para reemplazarlas:
+Mientras no haya fotografías propias, la tienda muestra una silueta neutra del tipo de objeto, con la nota discreta "Imagen de referencia". Para reemplazarlas:
 
 1. Copiá la imagen a `public/productos/<slug>/` (por ejemplo `frente.jpg`).
 2. En el producto, completá `images`:

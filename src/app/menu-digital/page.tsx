@@ -20,8 +20,8 @@ const IDEAS = [
 
 export default function MenuDigitalPage() {
   return (
-    <Container className="py-10 sm:py-14">
-      <p className="mb-4 inline-flex rounded-full bg-teal/15 px-3 py-1 text-sm font-bold text-teal">
+    <Container className="py-8 sm:py-12">
+      <p className="mb-4 inline-flex rounded bg-paper-2 px-2 py-0.5 text-xs font-semibold text-ink-soft">
         Servicio en preparación · todavía no disponible
       </p>
       <SectionHeading as="h1" title="Carta digital editable para bares y restaurantes">
@@ -30,7 +30,7 @@ export default function MenuDigitalPage() {
 
       <div className="mt-10 grid gap-10 lg:grid-cols-2">
         <section aria-labelledby="idea">
-          <h2 id="idea" className="text-2xl font-bold">
+          <h2 id="idea" className="text-2xl font-semibold">
             Lo que estamos pensando
           </h2>
           <p className="mt-3 text-ink-soft">
@@ -40,14 +40,14 @@ export default function MenuDigitalPage() {
           <ul className="mt-4 space-y-3">
             {IDEAS.map((i) => (
               <li key={i} className="flex gap-2">
-                <span aria-hidden className="mt-1 text-teal">✓</span>
+                <span aria-hidden className="mt-1 text-ink-soft">✓</span>
                 <span>{i}</span>
               </li>
             ))}
           </ul>
         </section>
-        <section aria-labelledby="hoy" className="rounded-2xl border border-line bg-white p-6">
-          <h2 id="hoy" className="text-2xl font-bold">
+        <section aria-labelledby="hoy" className="rounded-lg border border-line bg-white p-6">
+          <h2 id="hoy" className="text-2xl font-semibold">
             Qué podés hacer hoy
           </h2>
           <p className="mt-3 text-ink-soft">

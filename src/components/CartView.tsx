@@ -47,13 +47,13 @@ export function CartView() {
 
   if (cart.items.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-line bg-white p-10 text-center">
-        <h2 className="text-xl font-bold">Todavía no agregaste productos</h2>
+      <div className="rounded-lg border border-dashed border-line bg-white p-10 text-center">
+        <h2 className="text-xl font-semibold">Todavía no agregaste productos</h2>
         <p className="mx-auto mt-2 max-w-md text-ink-soft">
           Explorá el catálogo, personalizá lo que te interese y armá tu pedido.
         </p>
         <div className="mt-6 flex justify-center">
-          <ButtonLink href="/productos/">Explorar productos</ButtonLink>
+          <ButtonLink href="/productos/">Ver productos</ButtonLink>
         </div>
       </div>
     );
@@ -73,7 +73,7 @@ export function CartView() {
             const details = itemDetails(product, item);
             const qtyId = `qty-${item.id}`;
             return (
-              <li key={item.id} className="flex gap-4 rounded-2xl border border-line bg-white p-4">
+              <li key={item.id} className="flex gap-4 rounded-lg border border-line bg-white p-4">
                 <ProductVisual
                   kind={product.visual}
                   technology={product.technology}
@@ -83,7 +83,7 @@ export function CartView() {
                   className="hidden h-24 w-32 shrink-0 rounded-xl sm:block"
                 />
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-lg font-bold leading-snug">
+                  <h3 className="text-lg font-semibold leading-snug">
                     <Link href={`/productos/${product.slug}/`} className="hover:underline">
                       {product.name}
                     </Link>
@@ -107,7 +107,7 @@ export function CartView() {
                         onClick={() => setQuantity(item.id, item.selection.quantity - 1)}
                         disabled={item.selection.quantity <= product.quantity.min}
                         aria-label={`Restar una unidad de ${product.name}`}
-                        className="grid h-11 w-11 place-items-center rounded-full border border-line text-xl font-bold hover:bg-paper-2 disabled:opacity-40"
+                        className="grid h-11 w-11 place-items-center rounded-md border border-line text-xl font-semibold hover:bg-paper-2 disabled:opacity-40"
                       >
                         −
                       </button>
@@ -132,7 +132,7 @@ export function CartView() {
                         onClick={() => setQuantity(item.id, item.selection.quantity + 1)}
                         disabled={item.selection.quantity >= product.quantity.max}
                         aria-label={`Sumar una unidad de ${product.name}`}
-                        className="grid h-11 w-11 place-items-center rounded-full border border-line text-xl font-bold hover:bg-paper-2 disabled:opacity-40"
+                        className="grid h-11 w-11 place-items-center rounded-md border border-line text-xl font-semibold hover:bg-paper-2 disabled:opacity-40"
                       >
                         +
                       </button>
@@ -140,7 +140,7 @@ export function CartView() {
                     <button
                       type="button"
                       onClick={() => remove(item.id)}
-                      className="min-h-11 rounded-full px-3 text-sm font-semibold text-red-700 underline hover:bg-red-50"
+                      className="min-h-11 rounded-md px-3 text-sm font-semibold text-red-700 underline hover:bg-red-50"
                     >
                       Eliminar<span className="sr-only"> {product.name}</span>
                     </button>
@@ -188,8 +188,8 @@ export function CartView() {
         </div>
       </section>
 
-      <aside className="h-fit rounded-2xl border border-line bg-white p-5 lg:sticky lg:top-24">
-        <h2 className="text-xl font-bold">Resumen</h2>
+      <aside className="h-fit rounded-lg border border-line bg-white p-5 lg:sticky lg:top-24">
+        <h2 className="text-xl font-semibold">Resumen</h2>
         <p className="mt-2 text-sm text-ink-soft" role="status">
           {cart.items.length} {cart.items.length === 1 ? "producto" : "productos"} · {units}{" "}
           {units === 1 ? "unidad" : "unidades"}

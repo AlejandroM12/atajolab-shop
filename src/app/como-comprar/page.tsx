@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function ComoComprarPage() {
   return (
-    <Container className="py-10 sm:py-14">
+    <Container className="py-8 sm:py-12">
       <SectionHeading as="h1" eyebrow="Cómo comprar" title="Del pedido a la entrega, paso a paso">
         Todos nuestros productos se fabrican por encargo. No hay pagos online en la web: todo se
         coordina por WhatsApp.
@@ -20,8 +20,8 @@ export default function ComoComprarPage() {
       <div className="mt-8">
         <BuySteps />
       </div>
-      <section aria-labelledby="anticipo" className="mt-12 rounded-2xl border border-line bg-white p-6">
-        <h2 id="anticipo" className="text-2xl font-bold">
+      <section aria-labelledby="anticipo" className="mt-12 rounded-lg border border-line bg-white p-6">
+        <h2 id="anticipo" className="text-2xl font-semibold">
           Sobre el anticipo
         </h2>
         <p className="mt-2 text-ink-soft">{ANTICIPO_TEXT}</p>
@@ -31,7 +31,7 @@ export default function ComoComprarPage() {
         </p>
       </section>
       <div className="mt-10 flex flex-wrap gap-3">
-        <ButtonLink href="/productos/">Explorar productos</ButtonLink>
+        <ButtonLink href="/productos/">Ver productos</ButtonLink>
         <ButtonLink href="/condiciones-comerciales/" variant="secondary">
           Condiciones comerciales
         </ButtonLink>

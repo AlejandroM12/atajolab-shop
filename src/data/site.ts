@@ -14,6 +14,5 @@ export const NAV_LINKS = [
   { href: "/productos/", label: "Productos" },
   { href: "/personalizados/", label: "Personalizados" },
   { href: "/como-comprar/", label: "Cómo comprar" },
-  { href: "/preguntas-frecuentes/", label: "Preguntas" },
   { href: "/contacto/", label: "Contacto" },
 ] as const;

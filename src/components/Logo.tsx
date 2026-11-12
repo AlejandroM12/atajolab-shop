@@ -4,12 +4,12 @@ export function Logo({ light = false }: { light?: boolean }) {
   return (
     <Link
       href="/"
-      className="flex items-center gap-2.5 font-display text-lg font-bold"
+      className="flex items-center gap-2 text-[17px] font-semibold tracking-tight"
       aria-label="AtajoLab Shop, ir al inicio"
     >
       <span
         aria-hidden
-        className="grid h-9 w-9 grid-cols-2 gap-[3px] rounded-lg bg-brand p-1.5"
+        className="grid h-7 w-7 grid-cols-2 gap-[3px] rounded-md bg-brand p-1.5"
       >
         <span className="rounded-[2px] bg-white" />
         <span className="rounded-[2px] bg-white/40" />

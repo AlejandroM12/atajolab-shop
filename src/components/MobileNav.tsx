@@ -21,7 +21,7 @@ export function MobileNav() {
         aria-expanded={open}
         aria-controls="mobile-menu"
         onClick={() => setOpen((o) => !o)}
-        className="grid h-11 w-11 place-items-center rounded-full border border-line hover:bg-paper-2"
+        className="grid h-11 w-11 place-items-center rounded-md border border-line hover:bg-paper-2"
       >
         <span className="sr-only">{open ? "Cerrar menú" : "Abrir menú"}</span>
         <svg
@@ -41,7 +41,7 @@ export function MobileNav() {
         <nav
           id="mobile-menu"
           aria-label="Principal móvil"
-          className="absolute inset-x-0 top-16 border-b border-line bg-paper px-4 pb-4 shadow-lg"
+          className="absolute inset-x-0 top-14 border-b border-line bg-white px-4 pb-4"
         >
           <ul className="flex flex-col">
             {NAV_LINKS.map((l) => (
@@ -49,7 +49,7 @@ export function MobileNav() {
                 <Link
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="block border-b border-line py-3.5 text-lg font-semibold"
+                  className="block border-b border-line py-3.5 text-base font-medium"
                 >
                   {l.label}
                 </Link>

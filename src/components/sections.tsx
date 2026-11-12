@@ -8,46 +8,37 @@ import { Container, SectionHeading } from "./ui";
 export function CategoryGrid() {
   const categories = getCategories();
   return (
-    <section aria-labelledby="cats" className="py-16">
+    <section aria-labelledby="cats" className="py-10">
       <Container>
-        <SectionHeading eyebrow="Categorías" title="¿Qué querés resolver?">
-          Elegí según lo que necesite tu negocio.
-        </SectionHeading>
-        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <h2 id="cats" className="text-xl font-semibold sm:text-2xl">
+          Categorías
+        </h2>
+        <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
           {categories.map((c) => (
             <li key={c.slug}>
-              <Link
-                href={`/categorias/${c.slug}/`}
-                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-shadow hover:shadow-lg"
-              >
-                <ProductVisual
-                  kind={c.visual}
-                  technology="qr"
-                  accent={c.accent}
-                  label=""
-                  showTag={false}
-                  className="aspect-[16/9]"
-                />
-                <span className="flex flex-1 flex-col p-4">
-                  <span className="text-lg font-bold group-hover:underline">{c.name}</span>
-                  <span className="mt-1 text-sm text-ink-soft">{c.benefit}</span>
+              <Link href={`/categorias/${c.slug}/`} className="group block">
+                <span className="block overflow-hidden rounded-lg border border-line transition-colors group-hover:border-ink/40">
+                  <ProductVisual
+                    kind={c.visual}
+                    label=""
+                    showTag={false}
+                    className="aspect-[4/3]"
+                  />
+                </span>
+                <span className="mt-2 block text-sm font-semibold group-hover:underline">
+                  {c.name}
                 </span>
               </Link>
             </li>
           ))}
-          <li>
-            <Link
-              href="/personalizados/"
-              className="flex h-full min-h-48 flex-col justify-between rounded-2xl bg-ink p-6 text-white transition-colors hover:bg-ink-soft"
-            >
-              <span className="text-lg font-bold">Productos personalizados</span>
-              <span className="mt-2 text-sm text-white/80">
-                ¿Tenés una idea que no aparece en el catálogo? Contanos qué necesitás.
-              </span>
-              <span className="mt-4 font-semibold text-brand">Pedir a medida →</span>
-            </Link>
-          </li>
         </ul>
+        <p className="mt-6 text-sm text-ink-soft">
+          ¿Necesitás algo que no aparece?{" "}
+          <Link href="/personalizados/" className="font-semibold text-ink underline">
+            Pedí un producto a medida
+          </Link>
+          .
+        </p>
       </Container>
     </section>
   );
@@ -55,20 +46,20 @@ export function CategoryGrid() {
 
 export function HowItWorks() {
   return (
-    <section aria-labelledby="how" className="bg-paper-2 py-16">
+    <section aria-labelledby="how" className="bg-paper-2 py-12">
       <Container>
         <SectionHeading eyebrow="QR y NFC" title="Así funcionan, sin vueltas">
           Dos formas de abrir un enlace desde un objeto físico.
         </SectionHeading>
         <div className="mt-8 grid gap-4 md:grid-cols-2">
           {[QR_NFC.qr, QR_NFC.nfc].map((t) => (
-            <article key={t.title} className="rounded-2xl border border-line bg-white p-6">
-              <h3 className="text-2xl font-bold">{t.title}</h3>
+            <article key={t.title} className="rounded-lg border border-line bg-white p-6">
+              <h3 className="text-2xl font-semibold">{t.title}</h3>
               <p className="mt-2 text-lg">{t.how}</p>
               <ul className="mt-3 space-y-1.5 text-sm text-ink-soft">
                 {t.notes.map((n) => (
                   <li key={n} className="flex gap-2">
-                    <span aria-hidden className="text-brand-dark">•</span>
+                    <span aria-hidden className="text-ink-soft">•</span>
                     {n}
                   </li>
                 ))}
@@ -84,13 +75,13 @@ export function HowItWorks() {
 
 export function Benefits() {
   return (
-    <section aria-labelledby="benefits" className="py-16">
+    <section aria-labelledby="benefits" className="py-12">
       <Container>
         <SectionHeading eyebrow="Para tu negocio" title="Cosas simples que hacen la diferencia" />
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {BENEFITS.map((b) => (
-            <li key={b.title} className="rounded-2xl border border-line bg-white p-5">
-              <h3 className="text-lg font-bold">{b.title}</h3>
+            <li key={b.title} className="rounded-lg border border-line bg-white p-5">
+              <h3 className="text-lg font-semibold">{b.title}</h3>
               <p className="mt-2 text-sm text-ink-soft">{b.text}</p>
             </li>
           ))}
@@ -105,14 +96,14 @@ export function BuySteps({ compact = false }: { compact?: boolean }) {
   return (
     <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {steps.map((s, i) => (
-        <li key={s.title} className="relative rounded-2xl border border-line bg-white p-5">
+        <li key={s.title} className="relative rounded-lg border border-line bg-white p-5">
           <span
             aria-hidden
-            className="font-display text-4xl font-extrabold text-brand"
+            className="font-display text-2xl font-semibold text-brand"
           >
             {i + 1}
           </span>
-          <h3 className="mt-2 text-lg font-bold leading-snug">{s.title}</h3>
+          <h3 className="mt-2 text-lg font-semibold leading-snug">{s.title}</h3>
           <p className="mt-1 text-sm text-ink-soft">{s.text}</p>
         </li>
       ))}
@@ -122,7 +113,7 @@ export function BuySteps({ compact = false }: { compact?: boolean }) {
 
 export function HowToBuy() {
   return (
-    <section aria-labelledby="buy" className="bg-paper-2 py-16">
+    <section aria-labelledby="buy" className="bg-paper-2 py-12">
       <Container>
         <SectionHeading eyebrow="Cómo comprar" title="Armá tu pedido y lo coordinamos por WhatsApp">
           No hay pagos online en la web: todo se confirma con una persona.
@@ -143,7 +134,7 @@ export function HowToBuy() {
 
 export function FaqList({ faqs = FAQS }: { faqs?: Faq[] }) {
   return (
-    <div className="divide-y divide-line rounded-2xl border border-line bg-white">
+    <div className="divide-y divide-line rounded-lg border border-line bg-white">
       {faqs.map((f) => (
         <details key={f.question} className="group p-5">
           <summary className="flex min-h-8 cursor-pointer list-none items-center justify-between gap-4 font-semibold [&::-webkit-details-marker]:hidden">
@@ -161,7 +152,7 @@ export function FaqList({ faqs = FAQS }: { faqs?: Faq[] }) {
 
 export function FaqPreview() {
   return (
-    <section aria-labelledby="faq" className="py-16">
+    <section aria-labelledby="faq" className="py-12">
       <Container className="grid gap-8 lg:grid-cols-[1fr_1.6fr]">
         <div>
           <SectionHeading eyebrow="Preguntas frecuentes" title="Lo que nos preguntan seguido" />
@@ -179,32 +170,25 @@ export function FaqPreview() {
 
 export function MenuPlatformTeaser() {
   return (
-    <section aria-labelledby="menu-digital" className="py-16">
+    <section aria-labelledby="menu-digital" className="py-12">
       <Container>
-        <div className="grid items-center gap-8 rounded-3xl bg-teal p-8 text-white sm:p-12 lg:grid-cols-[1.4fr_1fr]">
-          <div>
-            <p className="mb-2 inline-flex rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-widest text-teal">
+        <div className="flex flex-col gap-4 rounded-lg border border-line p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-wider text-brand-dark">
               En preparación
             </p>
-            <h2 className="text-3xl font-bold sm:text-4xl">Carta digital editable</h2>
-            <p className="mt-3 max-w-xl text-lg text-white/90">
+            <h2 id="menu-digital" className="mt-1 text-xl font-semibold">
+              Carta digital editable
+            </h2>
+            <p className="mt-2 text-sm text-ink-soft">
               Estamos pensando un servicio para que bares y restaurantes editen su carta desde el
               celular y mantengan el mismo QR cuando cambien los precios. Todavía no está
               disponible.
             </p>
-            <p className="mt-5">
-              <Link href="/menu-digital/" className="font-semibold underline">
-                Conocer la idea
-              </Link>
-            </p>
           </div>
-          <ProductVisual
-            kind="menu"
-            technology="qr-nfc"
-            accent="#ffffff"
-            label="Ilustración conceptual de un soporte de mesa con QR y NFC"
-            className="aspect-[4/3] rounded-2xl"
-          />
+          <Link href="/menu-digital/" className="shrink-0 text-sm font-semibold underline">
+            Conocer la idea
+          </Link>
         </div>
       </Container>
     </section>

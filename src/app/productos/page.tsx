@@ -13,20 +13,20 @@ export const metadata: Metadata = {
 
 export default function ProductosPage() {
   return (
-    <Container className="py-10 sm:py-14">
-      <SectionHeading as="h1" eyebrow="Catálogo" title="Productos QR y NFC personalizados">
+    <Container className="py-8 sm:py-10">
+      <SectionHeading as="h1" title="Productos">
         Elegí un producto, personalizalo y armá tu pedido. Todo se fabrica por encargo y se
-        confirma por WhatsApp.
+        confirma por WhatsApp, con un anticipo del 50% una vez aceptada la cotización.
       </SectionHeading>
       <div className="mt-8">
         <Suspense fallback={<p className="py-10 text-ink-soft">Cargando catálogo…</p>}>
           <CatalogExplorer products={getAllProducts()} categories={getCategories()} />
         </Suspense>
       </div>
-      <div className="mt-14 flex flex-col items-start gap-3 rounded-2xl bg-ink p-8 text-white sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-12 flex flex-col items-start gap-3 rounded-lg bg-paper-2 p-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-bold">¿No encontrás lo que necesitás?</h2>
-          <p className="mt-1 text-white/80">Contanos tu idea y vemos cómo hacerla.</p>
+          <h2 className="text-lg font-semibold">¿No encontrás lo que necesitás?</h2>
+          <p className="mt-1 text-ink-soft">Contanos tu idea y vemos cómo hacerla.</p>
         </div>
         <ButtonLink href="/personalizados/">Pedir algo a medida</ButtonLink>
       </div>

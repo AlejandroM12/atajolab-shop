@@ -64,9 +64,9 @@ export function CatalogExplorer({
           e.preventDefault();
           update({ q: query });
         }}
-        className="grid gap-3 rounded-2xl border border-line bg-white p-4 sm:grid-cols-2 lg:grid-cols-5"
+        className="grid grid-cols-2 gap-3 rounded-lg bg-paper-2 p-3 sm:p-4 lg:grid-cols-5"
       >
-        <div className="sm:col-span-2 lg:col-span-5">
+        <div className="col-span-2 lg:col-span-5">
           <label htmlFor="q" className="mb-1 block text-sm font-semibold">
             Buscar productos
           </label>
@@ -150,7 +150,7 @@ export function CatalogExplorer({
             ))}
           </select>
         </div>
-        <div className="flex items-end">
+        <div className="col-span-2 flex items-end lg:col-span-1">
           <button
             type="button"
             disabled={!hasActiveFilters(filters) && filters.orden === DEFAULT_FILTERS.orden}
@@ -158,7 +158,7 @@ export function CatalogExplorer({
               setQuery("");
               router.replace(pathname, { scroll: false });
             }}
-            className="min-h-11 w-full rounded-xl border-2 border-ink px-3 font-semibold hover:bg-ink hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ink"
+            className="min-h-11 w-full rounded-md border border-ink/80 bg-white px-3 text-sm font-semibold hover:bg-ink hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ink"
           >
             Limpiar filtros
           </button>
@@ -170,7 +170,7 @@ export function CatalogExplorer({
       </p>
 
       {results.length > 0 ? (
-        <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-3">
           {results.map((p) => (
             <li key={p.id}>
               <ProductCard product={p} />
@@ -178,8 +178,8 @@ export function CatalogExplorer({
           ))}
         </ul>
       ) : (
-        <div className="mt-4 rounded-2xl border border-dashed border-line bg-white p-10 text-center">
-          <h2 className="text-xl font-bold">No encontramos productos con esos filtros</h2>
+        <div className="mt-4 rounded-lg border border-dashed border-line bg-white p-10 text-center">
+          <h2 className="text-xl font-semibold">No encontramos productos con esos filtros</h2>
           <p className="mt-2 text-ink-soft">
             Probá con otra búsqueda o limpiá los filtros. Si no ves lo que necesitás, podemos
             hacerlo a medida.

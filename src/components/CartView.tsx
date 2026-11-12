@@ -8,7 +8,9 @@ import { useCart } from "@/lib/useCart";
 import type { CartItem } from "@/lib/cart";
 import type { Product } from "@/lib/types";
 import { ProductVisual } from "./ProductVisual";
+import { buildOrderMessage } from "@/lib/whatsapp";
 import { ButtonLink, buttonClass } from "./ui";
+import { WhatsAppButton } from "./WhatsAppButton";
 
 const inputCls = "min-h-11 w-full rounded-xl border border-line bg-white px-3 py-2 text-base";
 
@@ -29,6 +31,15 @@ export function CartView() {
   const { cart, hydrated, units, setQuantity, remove, clear, patch } = useCart();
   const [confirmClear, setConfirmClear] = useState(false);
   const products = getAllProducts();
+  const orderMessage = buildOrderMessage({
+    items: cart.items.flatMap((item) => {
+      const product = products.find((p) => p.id === item.selection.productId);
+      return product ? [{ product, item }] : [];
+    }),
+    customerName: cart.customerName,
+    customerCity: cart.customerCity,
+    notes: cart.notes,
+  });
 
   if (!hydrated) {
     return <p className="py-10 text-ink-soft">Cargando tu pedido…</p>;
@@ -227,6 +238,19 @@ export function CartView() {
               onChange={(e) => patch({ notes: e.target.value })}
             />
           </div>
+        </div>
+
+        <div className="mt-6">
+          <WhatsAppButton
+            message={orderMessage}
+            label="Enviar pedido por WhatsApp"
+            className="w-full"
+          />
+          <p className="mt-3 text-xs text-ink-soft">
+            Se abre WhatsApp con tu pedido ya escrito; vos lo enviás. Tu pedido se mantiene acá
+            hasta que lo vacíes. Trabajamos por encargo con un anticipo del 50% una vez confirmado
+            el presupuesto.
+          </p>
         </div>
       </aside>
     </div>

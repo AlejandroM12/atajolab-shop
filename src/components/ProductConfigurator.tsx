@@ -7,13 +7,16 @@ import {
   clampQuantity,
   createDefaultSelection,
   FIELD_LIMITS,
+  sanitizeSelection,
   validateSelection,
   type Selection,
   type SelectionFields,
 } from "@/lib/selection";
 import { useCart } from "@/lib/useCart";
 import type { Product } from "@/lib/types";
+import { buildProductInquiryMessage } from "@/lib/whatsapp";
 import { buttonClass } from "./ui";
+import { WhatsAppButton } from "./WhatsAppButton";
 
 const inputCls =
   "min-h-11 w-full rounded-xl border border-line bg-white px-3 py-2 text-base placeholder:text-ink-soft/60 aria-[invalid=true]:border-red-600";
@@ -76,6 +79,12 @@ export function ProductConfigurator({ product }: { product: Product }) {
         <p className="mt-2 text-ink-soft">
           Este producto todavía no se puede pedir. Podés consultarnos para saber más.
         </p>
+        <div className="mt-4">
+          <WhatsAppButton
+            message={buildProductInquiryMessage(product, createDefaultSelection(product))}
+            className="w-full"
+          />
+        </div>
       </section>
     );
   }
@@ -269,6 +278,18 @@ export function ProductConfigurator({ product }: { product: Product }) {
         <button type="submit" className={buttonClass("primary", "w-full")}>
           Agregar al pedido
         </button>
+        <WhatsAppButton
+          variant="secondary"
+          className="w-full"
+          label="Consultar este producto por WhatsApp"
+          message={buildProductInquiryMessage(product, sanitizeSelection(product, selection))}
+          beforeOpen={() => {
+            setShowErrors(true);
+            const result = validateSelection(product, selection);
+            if (!result.valid) document.getElementById(Object.keys(result.errors)[0])?.focus();
+            return result.valid;
+          }}
+        />
 
         <div role="status" aria-live="polite">
           {added && (

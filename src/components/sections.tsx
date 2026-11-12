@@ -125,7 +125,7 @@ export function HowToBuy() {
       title: "Acordamos los detalles",
       text: "Te respondemos con el presupuesto, las condiciones de pago y las opciones de envío.",
     },
-    { title: SHIPPING_BANNER, text: "Fabricamos por encargo y enviamos a donde estés." },
+    { title: SHIPPING_BANNER, text: "Producción por encargo y envío a donde estés." },
   ];
   return (
     <section aria-labelledby="buy" className="bg-paper-2 py-10">

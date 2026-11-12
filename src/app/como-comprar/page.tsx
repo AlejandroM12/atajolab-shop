@@ -6,7 +6,7 @@ import { MADE_TO_ORDER_TEXT, PAYMENT_TEXT, SHIPPING_BANNER, SHIPPING_TEXT } from
 export const metadata: Metadata = {
   title: "Cómo comprar",
   description:
-    "Cómo pedir tus productos QR y NFC personalizados: armás el pedido, lo enviás por WhatsApp, acordamos presupuesto, pago y envío, y fabricamos por encargo. Envíos a todo el país.",
+    "Cómo pedir tus productos QR y NFC personalizados: armás el pedido, lo enviás por WhatsApp, acordamos presupuesto, pago y envío, y producimos por encargo. Envíos a todo el país.",
   alternates: { canonical: "/como-comprar/" },
 };
 

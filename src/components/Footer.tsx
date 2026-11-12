@@ -14,7 +14,7 @@ export function Footer() {
           <Logo />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-soft">
             Productos físicos personalizados con QR y NFC para negocios, profesionales y eventos.
-            Fabricación por encargo en {SITE.startCity}. Envíos a todo el país.
+            Producción por encargo, con base en {SITE.startCity}. Envíos a todo el país.
           </p>
           <p className="mt-3 text-sm text-ink-soft">
             Una unidad de{" "}

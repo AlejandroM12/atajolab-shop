@@ -28,7 +28,7 @@ export const BUY_STEPS = [
   },
   {
     title: "Diseño, fabricación y envío",
-    text: "Definimos textos, enlace de destino y diseño con vos, fabricamos por encargo y enviamos a todo el país.",
+    text: "Definimos textos, enlace de destino y diseño con vos, coordinamos la producción por encargo y enviamos a todo el país.",
   },
 ] as const;
 
@@ -113,7 +113,7 @@ export const FAQS: Faq[] = [
   {
     question: "¿Hacen envíos?",
     answer:
-      "Sí, enviamos a todo el país. El costo y las opciones de envío se informan antes de confirmar el pedido, según destino, cantidad y características del producto. Como fabricamos por encargo, el plazo de entrega se informa al confirmar.",
+      "Sí, enviamos a todo el país. El costo y las opciones de envío se informan antes de confirmar el pedido, según destino, cantidad y características del producto. Como todo se produce por encargo, el plazo de entrega se informa al confirmar.",
   },
   {
     question: "¿Puedo cambiar el enlace del QR?",

@@ -12,6 +12,9 @@ export const SITE = {
   startCity: "Formosa",
 } as const;
 
+/** Herramienta externa del ecosistema AtajoLab para crear QR digitales (proyecto independiente). */
+export const QR_TOOL_URL = "https://qr.atajolab.dev";
+
 export const NAV_LINKS = [
   { href: "/productos/", label: "Productos" },
   { href: "/personalizados/", label: "Personalizados" },

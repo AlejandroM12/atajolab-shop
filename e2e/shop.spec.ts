@@ -140,6 +140,16 @@ test("todos los enlaces de WhatsApp usan el número oficial", async ({ page }) =
   }
 });
 
+test("A medida ofrece AtajoLab QR (enlace externo) y el formulario de producto físico", async ({ page }) => {
+  await page.goto("/personalizados/");
+  const qr = page.getByRole("link", { name: "Crear mi QR" });
+  await expect(qr).toHaveAttribute("href", "https://qr.atajolab.dev");
+  await expect(qr).toHaveAttribute("target", "_blank");
+  await expect(qr).toHaveAttribute("rel", /noopener/);
+  await expect(page.getByRole("heading", { name: "¿Tenés una idea que no aparece en nuestro catálogo?" })).toBeVisible();
+  await expect(page.getByText("anticipo del 50% para comenzar")).toBeVisible();
+});
+
 test("formulario de productos personalizados genera el mensaje", async ({ page }) => {
   await page.goto("/personalizados/");
   await page.getByLabel("¿Qué necesitás?").fill("Llaveros con QR");

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { NAV_LINKS, SITE } from "@/data/site";
+import { NAV_LINKS, QR_TOOL_URL, SITE } from "@/data/site";
 import { Container } from "./ui";
 import { Logo } from "./Logo";
 import { WhatsAppLink } from "./WhatsAppLink";
@@ -47,6 +47,11 @@ export function Footer() {
             <li>
               <span className="text-ink-soft">WhatsApp: </span>
               <WhatsAppLink className="font-medium text-ink underline" />
+            </li>
+            <li>
+              <a href={QR_TOOL_URL} target="_blank" rel="noopener noreferrer" className={linkCls}>
+                Crear mi QR online
+              </a>
             </li>
             <li>
               <Link href="/preguntas-frecuentes/" className={linkCls}>

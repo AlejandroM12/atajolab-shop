@@ -1,40 +1,34 @@
 import type { Faq } from "@/lib/types";
 
-export const ANTICIPO_TEXT =
-  "Trabajamos con productos personalizados por encargo. Una vez confirmado el presupuesto y las condiciones, solicitamos un anticipo del 50% para comenzar la fabricación.";
+export const SHIPPING_BANNER = "Envíos a todo el país";
+
+/** Se muestra junto al aviso de envíos. No define tarifas, transportistas ni plazos. */
+export const SHIPPING_TEXT =
+  "El costo y las opciones de envío se informan antes de confirmar el pedido, según destino, cantidad y características del producto.";
+
+export const MADE_TO_ORDER_TEXT =
+  "Todos los productos se fabrican por encargo: el plazo de entrega se informa al confirmar el pedido.";
+
+/** Las condiciones de pago no son fijas: se acuerdan con cada cliente antes de confirmar. */
+export const PAYMENT_TEXT =
+  "Las condiciones de pago se acuerdan con vos según el pedido, antes de confirmarlo. No se paga desde esta web.";
 
 export const BUY_STEPS = [
   {
-    title: "Elegí tus productos",
-    text: "Explorá el catálogo, personalizá cada producto y agregalo a tu pedido.",
+    title: "Elegí y personalizá",
+    text: "Explorá el catálogo, elegí las opciones de cada producto y agregalo a tu pedido.",
   },
   {
     title: "Enviá tu pedido por WhatsApp",
     text: "Se abre WhatsApp con tu pedido ya escrito. Vos lo revisás y lo enviás.",
   },
   {
-    title: "Confirmamos disponibilidad y presupuesto",
-    text: "Te respondemos con el presupuesto y las condiciones.",
+    title: "Acordamos presupuesto, pago y envío",
+    text: "Te respondemos con el presupuesto, las condiciones de pago y las opciones de envío, antes de confirmar el pedido.",
   },
   {
-    title: "Coordinamos personalización y diseño",
-    text: "Definimos textos, enlace de destino y diseño. Si tenés logo, lo enviás por el chat.",
-  },
-  {
-    title: "Anticipo del 50%",
-    text: "Con el presupuesto confirmado, solicitamos un anticipo del 50% del precio acordado.",
-  },
-  {
-    title: "Aprobás el diseño",
-    text: "Te mostramos el diseño y lo aprobás antes de fabricar.",
-  },
-  {
-    title: "Fabricamos",
-    text: "Producimos tu pedido por encargo.",
-  },
-  {
-    title: "Saldo y entrega",
-    text: "Coordinamos el pago del saldo y la entrega.",
+    title: "Diseño, fabricación y envío",
+    text: "Definimos textos, enlace de destino y diseño con vos, fabricamos por encargo y enviamos a todo el país.",
   },
 ] as const;
 
@@ -105,11 +99,11 @@ export const FAQS: Faq[] = [
   {
     question: "¿Cómo hago un pedido?",
     answer:
-      "Armás tu pedido en la web y lo enviás por WhatsApp. Nosotros confirmamos disponibilidad y presupuesto, coordinamos el diseño y avanzamos con la fabricación. No hay pagos online en la web.",
+      "Armás tu pedido en la web y lo enviás por WhatsApp. Nosotros confirmamos presupuesto, pago y envío, coordinamos el diseño y avanzamos con la fabricación. No hay pagos online en la web.",
   },
   {
-    question: "¿Cómo funciona el anticipo?",
-    answer: `${ANTICIPO_TEXT} El anticipo se coordina por WhatsApp; no se paga desde la web.`,
+    question: "¿Cómo se paga?",
+    answer: PAYMENT_TEXT,
   },
   {
     question: "¿Puedo comprar varias unidades?",
@@ -119,7 +113,7 @@ export const FAQS: Faq[] = [
   {
     question: "¿Hacen envíos?",
     answer:
-      "Estamos comenzando desde Formosa y recibimos consultas de todo el país. Todavía no tenemos definida una cobertura de envíos; consultanos tu localidad y coordinamos la entrega. No asumimos envíos gratuitos.",
+      "Sí, enviamos a todo el país. El costo y las opciones de envío se informan antes de confirmar el pedido, según destino, cantidad y características del producto. Como fabricamos por encargo, el plazo de entrega se informa al confirmar.",
   },
   {
     question: "¿Puedo cambiar el enlace del QR?",

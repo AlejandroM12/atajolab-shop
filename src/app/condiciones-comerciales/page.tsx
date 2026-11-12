@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
 import { Container, SectionHeading } from "@/components/ui";
-import { ANTICIPO_TEXT } from "@/data/content";
+import { MADE_TO_ORDER_TEXT, PAYMENT_TEXT, SHIPPING_BANNER, SHIPPING_TEXT } from "@/data/content";
 
 export const metadata: Metadata = {
   title: "Condiciones comerciales",
   description:
-    "Condiciones comerciales de AtajoLab Shop: fabricación por encargo, anticipo del 50% y puntos a definir.",
+    "Condiciones comerciales de AtajoLab Shop: fabricación por encargo, envíos a todo el país, condiciones de pago acordadas antes de confirmar y puntos a definir.",
   alternates: { canonical: "/condiciones-comerciales/" },
 };
 
 /** Puntos que todavía no están definidos. Completar y mover a "definidas" cuando se confirmen. */
 const PENDIENTES = [
-  "Plazos de fabricación y entrega",
-  "Cobertura, costos y modalidades de envío",
-  "Medios de pago aceptados y datos para abonar",
+  "Plazos estándar de fabricación y entrega",
   "Política de cambios, cancelaciones y devoluciones",
   "Garantía de los productos",
   "Condiciones de uso de logos y materiales enviados por el cliente",
@@ -31,10 +29,13 @@ export default function CondicionesPage() {
           <ul className="mt-3 space-y-3 text-ink-soft">
             <li>
               <strong className="text-ink">Fabricación por encargo.</strong> Todos los productos son
-              personalizados y se fabrican después de confirmar el pedido.
+              personalizados. {MADE_TO_ORDER_TEXT}
             </li>
             <li>
-              <strong className="text-ink">Anticipo del 50%.</strong> {ANTICIPO_TEXT}
+              <strong className="text-ink">{SHIPPING_BANNER}.</strong> {SHIPPING_TEXT}
+            </li>
+            <li>
+              <strong className="text-ink">Condiciones de pago.</strong> {PAYMENT_TEXT}
             </li>
             <li>
               <strong className="text-ink">Presupuesto confirmado por WhatsApp.</strong> Los

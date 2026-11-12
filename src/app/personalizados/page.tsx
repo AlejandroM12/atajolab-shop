@@ -56,8 +56,8 @@ export default function PersonalizadosPage() {
             <li>Te respondemos con la viabilidad, opciones y presupuesto.</li>
           </ol>
           <p className="mt-6 text-sm text-ink-soft">
-            Todo se fabrica por encargo. Una vez confirmado el presupuesto, solicitamos un anticipo
-            del 50% para comenzar.
+            Todo se fabrica por encargo. Antes de confirmar te informamos el presupuesto, las
+            condiciones de pago y las opciones de envío a todo el país.
           </p>
         </div>
         <CustomRequestForm />

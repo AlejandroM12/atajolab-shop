@@ -299,8 +299,7 @@ export function CartView() {
           />
           <p className="mt-3 text-xs text-ink-soft">
             Se abre WhatsApp con tu pedido ya escrito; vos lo enviás. Tu pedido se mantiene acá
-            hasta que lo vacíes. Trabajamos por encargo con un anticipo del 50% una vez confirmado
-            el presupuesto.
+            hasta que lo vacíes. Todo se fabrica por encargo; el pago y el envío (a todo el país) se acuerdan antes de confirmar el pedido.
           </p>
         </div>
       </aside>

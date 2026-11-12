@@ -14,6 +14,7 @@ import {
 import { ButtonLink, Container } from "@/components/ui";
 import { getFeaturedProducts } from "@/lib/catalog";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { SHIPPING_BANNER } from "@/data/content";
 import { buildGeneralInquiryMessage } from "@/lib/whatsapp";
 
 export default function Home() {
@@ -42,8 +43,8 @@ export default function Home() {
               />
             </div>
             <p className="mt-5 text-sm text-ink-soft">
-              Todos los productos se fabrican por encargo y se piden por WhatsApp. El anticipo del
-              50% se paga recién después de confirmar la cotización.{" "}
+              <strong className="font-semibold text-ink">{SHIPPING_BANNER}.</strong> Se fabrican por
+              encargo y se piden por WhatsApp.{" "}
               <Link href="/como-comprar/" className="font-medium text-ink underline">
                 Cómo comprar
               </Link>
@@ -52,16 +53,14 @@ export default function Home() {
           <div className="hidden overflow-hidden rounded-lg border border-line lg:block">
             <Image
               src="/hero.webp"
-              alt="Render ilustrativo de un soporte de acrílico para reseñas, un cartel de mesa, un sticker y una tarjeta NFC con QR"
+              alt="Render ilustrativo de un soporte para reseñas, un cartel de mesa, un sticker y una tarjeta NFC con QR"
               width={1600}
               height={1000}
               priority
               sizes="(min-width: 1024px) 45vw, 100vw"
               className="aspect-[16/10] w-full object-cover"
             />
-            <p className="border-t border-line px-3 py-1.5 text-[11px] text-ink-soft">
-              Imagen ilustrativa. El diseño final puede variar.
-            </p>
+
           </div>
         </Container>
       </section>

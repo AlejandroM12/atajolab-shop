@@ -50,7 +50,7 @@ export default function ContactoPage() {
                 AtajoLab
               </a>
             </li>
-            <li>Base en {SITE.startCity}, Argentina. Recibimos consultas de todo el país.</li>
+            <li>Base en {SITE.startCity}, Argentina. Envíos a todo el país: el costo y las opciones se informan antes de confirmar el pedido.</li>
           </ul>
         </section>
       </div>

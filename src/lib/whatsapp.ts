@@ -69,7 +69,7 @@ function selectionLines(product: ProductLike, selection: Selection): string[] {
   return lines;
 }
 
-const CLOSING = "Quisiera confirmar el precio final, el diseño y las opciones de entrega.";
+const CLOSING = "Quisiera confirmar el precio final, el diseño, las condiciones de pago y el envío.";
 
 export function buildProductInquiryMessage(product: ProductLike, selection: Selection): string {
   return [

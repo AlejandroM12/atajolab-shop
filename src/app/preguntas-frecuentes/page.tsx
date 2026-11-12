@@ -9,7 +9,7 @@ import { FAQS } from "@/data/content";
 export const metadata: Metadata = {
   title: "Preguntas frecuentes sobre QR y NFC",
   description:
-    "Diferencia entre QR y NFC, personalización, pedidos, anticipo del 50%, envíos y cómo cambiar el enlace de un QR.",
+    "Diferencia entre QR y NFC, personalización, pedidos, pago, envíos a todo el país y cómo cambiar el enlace de un QR.",
   alternates: { canonical: "/preguntas-frecuentes/" },
 };
 

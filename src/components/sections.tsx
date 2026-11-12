@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ANTICIPO_TEXT, BENEFITS, BUY_STEPS, FAQS, QR_NFC } from "@/data/content";
+import { BENEFITS, BUY_STEPS, FAQS, QR_NFC, SHIPPING_BANNER } from "@/data/content";
 import { getCategories } from "@/lib/catalog";
 import type { Faq } from "@/lib/types";
 import { ProductVisual } from "./ProductVisual";
@@ -119,21 +119,33 @@ export function BuySteps({ compact = false }: { compact?: boolean }) {
 }
 
 export function HowToBuy() {
+  const points = [
+    { title: "Pedís por WhatsApp", text: "Armás tu pedido en la web y lo enviás. No hay pagos online." },
+    {
+      title: "Acordamos los detalles",
+      text: "Te respondemos con el presupuesto, las condiciones de pago y las opciones de envío.",
+    },
+    { title: SHIPPING_BANNER, text: "Fabricamos por encargo y enviamos a donde estés." },
+  ];
   return (
-    <section aria-labelledby="buy" className="bg-paper-2 py-12">
+    <section aria-labelledby="buy" className="bg-paper-2 py-10">
       <Container>
-        <SectionHeading eyebrow="Cómo comprar" title="Armá tu pedido y lo coordinamos por WhatsApp">
-          No hay pagos online en la web: todo se confirma con una persona.
-        </SectionHeading>
-        <div className="mt-8">
-          <BuySteps compact />
-        </div>
-        <p className="mt-6 max-w-3xl text-ink-soft">{ANTICIPO_TEXT}</p>
-        <p className="mt-4">
-          <Link href="/como-comprar/" className="font-semibold underline">
-            Ver el proceso completo
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 id="buy" className="text-xl font-semibold sm:text-2xl">
+            Comprar es simple
+          </h2>
+          <Link href="/como-comprar/" className="text-sm font-semibold underline">
+            Cómo comprar
           </Link>
-        </p>
+        </div>
+        <ul className="mt-5 grid gap-x-8 gap-y-5 sm:grid-cols-3">
+          {points.map((p) => (
+            <li key={p.title} className="border-t border-ink/20 pt-3">
+              <h3 className="text-base font-semibold">{p.title}</h3>
+              <p className="mt-1 text-sm text-ink-soft">{p.text}</p>
+            </li>
+          ))}
+        </ul>
       </Container>
     </section>
   );

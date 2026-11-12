@@ -2,6 +2,7 @@ import Link from "next/link";
 import { NAV_LINKS, SITE } from "@/data/site";
 import { Container } from "./ui";
 import { Logo } from "./Logo";
+import { WhatsAppLink } from "./WhatsAppLink";
 
 const linkCls = "text-ink-soft hover:text-ink hover:underline";
 
@@ -43,6 +44,10 @@ export function Footer() {
         <nav aria-label="Información">
           <h2 className="text-sm font-semibold">Información</h2>
           <ul className="mt-3 space-y-2 text-sm">
+            <li>
+              <span className="text-ink-soft">WhatsApp: </span>
+              <WhatsAppLink className="font-medium text-ink underline" />
+            </li>
             <li>
               <Link href="/preguntas-frecuentes/" className={linkCls}>
                 Preguntas frecuentes

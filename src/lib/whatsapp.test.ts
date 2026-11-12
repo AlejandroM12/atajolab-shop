@@ -9,6 +9,8 @@ import {
   buildProductInquiryMessage,
   buildWhatsAppUrl,
   isMessageTooLong,
+  formatWhatsAppDisplay,
+  getWhatsAppNumber,
   parseWhatsAppNumber,
 } from "./whatsapp";
 
@@ -24,6 +26,21 @@ describe("número de WhatsApp", () => {
     for (const v of [undefined, null, "", "+5493704000000", "549 370 4000000", "123", "abc", "0123456789"]) {
       expect(parseWhatsAppNumber(v)).toBeNull();
     }
+  });
+});
+
+describe("número oficial", () => {
+  it("el número configurado tiene formato wa.me válido", () => {
+    expect(getWhatsAppNumber()).toBe("5493705204454");
+  });
+  it("se muestra con el formato +54 9 370 5204454", () => {
+    expect(formatWhatsAppDisplay("5493705204454")).toBe("+54 9 370 5204454");
+    expect(formatWhatsAppDisplay("14155550100")).toBe("+14155550100");
+  });
+  it("los enlaces apuntan al número oficial con el mensaje precompletado", () => {
+    const url = buildWhatsAppUrl(getWhatsAppNumber()!, buildProductInquiryMessage(sticker, createDefaultSelection(sticker)));
+    expect(url.startsWith("https://wa.me/5493705204454?text=")).toBe(true);
+    expect(decodeURIComponent(url)).toContain("Hola, quiero consultar por el producto Sticker QR.");
   });
 });
 

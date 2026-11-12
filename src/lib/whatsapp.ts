@@ -13,9 +13,22 @@ export function parseWhatsAppNumber(raw: string | undefined | null): string | nu
   return value;
 }
 
-/** Las variables NEXT_PUBLIC_* se reemplazan en el build, por eso se lee el nombre literal. */
+/**
+ * Número comercial. Única fuente de verdad: todos los enlaces lo obtienen de acá.
+ * Las variables NEXT_PUBLIC_* se reemplazan en el build, por eso se lee el nombre literal.
+ * Si la variable falta o es inválida se usa el número oficial de `SITE`.
+ */
 export function getWhatsAppNumber(): string | null {
-  return parseWhatsAppNumber(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER);
+  return (
+    parseWhatsAppNumber(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER) ??
+    parseWhatsAppNumber(SITE.whatsappNumber)
+  );
+}
+
+/** "5493705204454" -> "+54 9 370 5204454" (celulares de Argentina); otros: "+<dígitos>". */
+export function formatWhatsAppDisplay(number: string): string {
+  const ar = /^549(\d{3})(\d{7})$/.exec(number);
+  return ar ? `+54 9 ${ar[1]} ${ar[2]}` : `+${number}`;
 }
 
 export function buildWhatsAppUrl(number: string, message: string): string {
@@ -52,9 +65,8 @@ const CLOSING = "Quisiera confirmar el precio final, el diseño y las opciones d
 
 export function buildProductInquiryMessage(product: ProductLike, selection: Selection): string {
   return [
-    `Hola, quiero consultar por un producto de ${SITE.name}.`,
+    `Hola, quiero consultar por el producto ${product.name}.`,
     "",
-    product.name,
     ...selectionLines(product, selection),
     "",
     CLOSING,

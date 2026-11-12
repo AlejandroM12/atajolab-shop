@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
-const WA = "https://wa.me/5493704000000?text=";
+const WA = "https://wa.me/5493705204454?text=";
 
 async function waMessage(page: Page, name: string | RegExp): Promise<string> {
   const href = await page.getByRole("link", { name }).first().getAttribute("href");

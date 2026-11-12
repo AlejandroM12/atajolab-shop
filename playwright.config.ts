@@ -16,11 +16,10 @@ export default defineConfig({
     { name: "desktop", use: { viewport: { width: 1280, height: 900 } } },
   ],
   webServer: {
-    // Exportación estática con un número de WhatsApp de prueba (no es real).
+    // Exportación estática con la configuración por defecto (número oficial incluido).
     command: `npm run build && npx serve out -l ${PORT} -n`,
     url: `http://localhost:${PORT}`,
     reuseExistingServer: false,
     timeout: 240_000,
-    env: { NEXT_PUBLIC_WHATSAPP_NUMBER: "5493704000000" },
   },
 });

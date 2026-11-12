@@ -6,6 +6,8 @@ export const SITE = {
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://tienda.atajolab.dev").replace(/\/$/, ""),
   institutionalUrl: "https://atajolab.dev",
   locale: "es_AR",
+  /** Número comercial oficial (formato wa.me). Se puede reemplazar con NEXT_PUBLIC_WHATSAPP_NUMBER. */
+  whatsappNumber: "5493705204454",
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || null,
   startCity: "Formosa",
 } as const;

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { ButtonLink, Container, SectionHeading } from "@/components/ui";
 import { SITE } from "@/data/site";
 import { buildGeneralInquiryMessage } from "@/lib/whatsapp";
@@ -26,6 +27,9 @@ export default function ContactoPage() {
             Se abre el chat con un mensaje inicial; vos decidís si lo enviás.
           </p>
           <WhatsAppButton message={buildGeneralInquiryMessage()} className="w-full" />
+          <p className="mt-3 text-sm text-ink-soft">
+            Número: <WhatsAppLink className="font-semibold text-ink underline" />
+          </p>
         </section>
         <section aria-labelledby="otros" className="rounded-lg border border-line bg-white p-6">
           <h2 id="otros" className="text-xl font-semibold">

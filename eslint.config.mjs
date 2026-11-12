@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Herramienta independiente (scripts de render con globals de navegador).
+    "tools/**",
   ]),
 ]);
 

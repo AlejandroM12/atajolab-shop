@@ -121,6 +121,8 @@ Para reemplazar un render por una fotografía real:
 
 Si un producto no define `src`, se muestra una silueta neutra como último recurso (`ProductVisual`).
 
+Los renders se pueden regenerar con el código de [`tools/renders`](tools/renders/README.md) (three.js; herramienta independiente, no forma parte del build).
+
 Imagen social por defecto: `public/og-default.png` (1200×630).
 
 ## Despliegue en Cloudflare Pages

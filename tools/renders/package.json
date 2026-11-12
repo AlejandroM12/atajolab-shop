@@ -1,0 +1,19 @@
+{
+  "name": "atajolab-shop-renders",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Herramienta para regenerar los renders ilustrativos de AtajoLab Shop (three.js + Chrome).",
+  "scripts": {
+    "render": "node render.cjs",
+    "render:all": "node render.cjs --all",
+    "optimize": "node optimize.cjs"
+  },
+  "dependencies": {
+    "three": "0.170.0",
+    "qrcode-generator": "1.4.4"
+  },
+  "devDependencies": {
+    "playwright": "1.65.0",
+    "sharp": "0.35.5"
+  }
+}

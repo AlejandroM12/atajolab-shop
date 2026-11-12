@@ -131,6 +131,25 @@ test("productos sin precio cerrado: presupuesto y sin total ficticio", async ({ 
   expect(msg).not.toContain("TOTAL");
 });
 
+test("el prefetch estático de Next.js no genera 404", async ({ page }) => {
+  const failed: string[] = [];
+  page.on("response", (r) => {
+    if (r.url().includes("__next") && r.status() >= 400) failed.push(`${r.status()} ${r.url()}`);
+  });
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  await page.evaluate(async () => {
+    for (let y = 0; y < document.body.scrollHeight; y += 500) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 60));
+    }
+  });
+  await page.waitForTimeout(1000);
+  await page.getByRole("link", { name: "Productos", exact: true }).first().click();
+  await expect(page).toHaveURL(/\/productos\/$/);
+  expect(failed).toEqual([]);
+});
+
 test("todos los enlaces de WhatsApp usan el número oficial", async ({ page }) => {
   for (const path of ["/", "/contacto/", "/productos/sticker-qr/", "/personalizados/"]) {
     await page.goto(path);

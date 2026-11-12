@@ -170,3 +170,7 @@ Ver [`docs/PENDIENTES.md`](docs/PENDIENTES.md).
 4. Plataforma de **carta digital editable** (ver [`docs/ARQUITECTURA-MENU-DIGITAL.md`](docs/ARQUITECTURA-MENU-DIGITAL.md)).
 5. Productos para eventos con registro de invitados y check-in por QR.
 6. Inglés y otros idiomas.
+
+## Notas de despliegue estático (Next.js 16)
+
+Con `output: "export"`, Next.js genera los datos de prefetch por segmento en carpetas (`out/productos/__next.productos/__PAGE__.txt`), pero el cliente los pide con puntos (`/productos/__next.productos.__PAGE__.txt`). En cualquier host estático esas URLs daban 404 (la navegación funcionaba, sin prefetch y con errores en consola). `npm run build` ejecuta `scripts/export-prefetch-aliases.mjs` después de `next build` y copia cada archivo al nombre que pide el cliente. No requiere configuración en Cloudflare.

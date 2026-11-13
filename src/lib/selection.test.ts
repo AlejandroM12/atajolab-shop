@@ -79,18 +79,29 @@ describe("personalización", () => {
 });
 
 describe("variantes", () => {
+  // El catálogo actual no tiene variantes: se prueba la lógica con un producto de ejemplo.
+  const conVariantes = {
+    ...sticker,
+    variantGroups: [
+      {
+        id: "tamano",
+        label: "Tamaño",
+        options: [
+          { id: "chico", label: "Chico" },
+          { id: "grande", label: "Grande" },
+        ],
+      },
+    ],
+  };
   it("describe solo variantes válidas", () => {
-    const group = sticker.variantGroups![0];
-    const out = describeVariants(sticker, { variants: { [group.id]: group.options[0].id } });
-    expect(out).toEqual([{ label: group.label, value: group.options[0].label }]);
-    expect(describeVariants(sticker, { variants: { [group.id]: "nope" } })).toEqual([]);
+    expect(describeVariants(conVariantes, { variants: { tamano: "chico" } })).toEqual([{ label: "Tamaño", value: "Chico" }]);
+    expect(describeVariants(conVariantes, { variants: { tamano: "nope" } })).toEqual([]);
   });
   it("sanitiza variantes inválidas", () => {
-    const s = createDefaultSelection(sticker);
-    const group = sticker.variantGroups![0];
-    s.variants = { [group.id]: "nope" };
-    expect(sanitizeSelection(sticker, s).variants).toEqual({});
-    s.variants = { [group.id]: group.options[1].id };
-    expect(sanitizeSelection(sticker, s).variants).toEqual({ [group.id]: group.options[1].id });
+    const s = createDefaultSelection(conVariantes);
+    s.variants = { tamano: "nope" };
+    expect(sanitizeSelection(conVariantes, s).variants).toEqual({});
+    s.variants = { tamano: "grande" };
+    expect(sanitizeSelection(conVariantes, s).variants).toEqual({ tamano: "grande" });
   });
 });

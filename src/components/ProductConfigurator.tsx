@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { isOrderable } from "@/lib/catalog";
-import { formatARS, lineTotal, priceLabel, priceSummary, QUOTE_LABEL, referencePrice, unitPrice } from "@/lib/pricing";
+import { formatARS, lineTotal, priceLabel, priceSummary, referencePrice, unitPrice } from "@/lib/pricing";
 import {
   clampQuantity,
   createDefaultSelection,
@@ -71,21 +71,11 @@ function PriceBlock({ product, selection }: { product: Product; selection: Selec
           {selection.quantity} unidades: <strong className="text-ink">{formatARS(total)}</strong>
         </p>
       )}
-      {unit !== null && (
-        <p className="mt-0.5 text-sm text-ink-soft">
-          Precio de referencia. El importe final, la personalización y el envío se confirman antes de cerrar el pedido.
-        </p>
-      )}
       {unit === null && from !== null && (
-        <p className="mt-0.5 text-sm text-ink-soft">
-          Precio base de referencia: el importe final se presupuesta según tamaño, cantidad y diseño.
-        </p>
+        <p className="mt-0.5 text-sm text-ink-soft">El importe final se confirma según tu pedido.</p>
       )}
       {unit === null && from === null && summary.kind !== "quote" && (
-        <p className="mt-0.5 text-sm text-ink-soft">Elegí una opción para ver el precio, o {QUOTE_LABEL.toLowerCase()}.</p>
-      )}
-      {unit === null && from === null && summary.kind === "quote" && (
-        <p className="mt-0.5 text-sm text-ink-soft">Te enviamos el presupuesto por WhatsApp antes de confirmar el pedido.</p>
+        <p className="mt-0.5 text-sm text-ink-soft">Elegí una opción para ver el precio.</p>
       )}
       {product.priceNote && <p className="mt-0.5 text-sm text-ink-soft">{product.priceNote}</p>}
     </div>
@@ -101,6 +91,10 @@ export function ProductConfigurator({ product }: { product: Product }) {
   const visibleErrors = showErrors ? errors : {};
   const has = (f: (typeof product.customizations)[number]) => product.customizations.includes(f);
   const orderable = isOrderable(product);
+  // Campo principal de texto: el nombre propio del producto (p. ej. "Nombre y cargo") o el del negocio.
+  const primaryField: "customText" | "businessName" | null =
+    product.customTextLabel && has("customText") ? "customText" : has("businessName") ? "businessName" : null;
+  const primaryLabel = primaryField === "customText" ? product.customTextLabel : "Nombre del negocio";
 
   const setField = <K extends keyof SelectionFields>(key: K, value: SelectionFields[K]) =>
     setSelection((s) => ({ ...s, fields: { ...s.fields, [key]: value } }));
@@ -138,9 +132,6 @@ export function ProductConfigurator({ product }: { product: Product }) {
       <h2 id="config-title" className="text-xl font-semibold">
         Personalizá tu producto
       </h2>
-      <p className="mt-1 text-sm text-ink-soft">
-        Completá lo que sepas ahora; el resto lo coordinamos por WhatsApp.
-      </p>
 
       <form
         className="mt-5 grid gap-4"
@@ -183,33 +174,20 @@ export function ProductConfigurator({ product }: { product: Product }) {
           </Field>
         ))}
 
-        {has("businessName") && (
-          <Field id="businessName" label="Nombre del negocio" error={visibleErrors.businessName}>
-            <input
-              id="businessName"
-              className={inputCls}
-              maxLength={FIELD_LIMITS.businessName + 20}
-              value={selection.fields.businessName}
-              onChange={(e) => setField("businessName", e.target.value)}
-              aria-invalid={Boolean(visibleErrors.businessName)}
-              autoComplete="organization"
-            />
-          </Field>
-        )}
-
-        {has("customText") && (
+        {primaryField && (
           <Field
-            id="customText"
-            label={product.customTextLabel ?? "Texto personalizado"}
-            hint="Por ejemplo, una frase o un llamado a la acción."
-            error={visibleErrors.customText}
+            id={primaryField}
+            label={`${primaryLabel} (opcional)`}
+            error={visibleErrors[primaryField]}
           >
             <input
-              id="customText"
+              id={primaryField}
               className={inputCls}
-              value={selection.fields.customText}
-              onChange={(e) => setField("customText", e.target.value)}
-              aria-invalid={Boolean(visibleErrors.customText)}
+              maxLength={FIELD_LIMITS[primaryField] + 20}
+              value={selection.fields[primaryField]}
+              onChange={(e) => setField(primaryField, e.target.value)}
+              aria-invalid={Boolean(visibleErrors[primaryField])}
+              autoComplete={primaryField === "businessName" ? "organization" : "off"}
             />
           </Field>
         )}
@@ -218,7 +196,6 @@ export function ProductConfigurator({ product }: { product: Product }) {
           <Field
             id="destinationUrl"
             label="Enlace de destino (opcional)"
-            hint="A dónde querés que lleve. Si todavía no lo tenés, lo vemos después."
             error={visibleErrors.destinationUrl}
           >
             <input
@@ -231,56 +208,6 @@ export function ProductConfigurator({ product }: { product: Product }) {
               onChange={(e) => setField("destinationUrl", e.target.value)}
               onBlur={() => setShowErrors(true)}
               aria-invalid={Boolean(visibleErrors.destinationUrl)}
-              aria-describedby={
-                visibleErrors.destinationUrl ? "destinationUrl-error" : "destinationUrl-hint"
-              }
-            />
-          </Field>
-        )}
-
-        {has("color") && (
-          <Field
-            id="color"
-            label="Color preferido"
-            hint="Es una preferencia: confirmamos qué opciones hay disponibles."
-            error={visibleErrors.color}
-          >
-            <input
-              id="color"
-              className={inputCls}
-              value={selection.fields.color}
-              onChange={(e) => setField("color", e.target.value)}
-              aria-invalid={Boolean(visibleErrors.color)}
-            />
-          </Field>
-        )}
-
-        {has("hasLogo") && (
-          <label className="flex min-h-11 items-start gap-3 rounded-xl border border-line p-3">
-            <input
-              type="checkbox"
-              className="mt-0.5 h-5 w-5 accent-[#a33d00]"
-              checked={selection.fields.hasLogo}
-              onChange={(e) => setField("hasLogo", e.target.checked)}
-            />
-            <span>
-              <span className="block text-sm font-semibold">Tengo un logo para incluir</span>
-              <span className="block text-xs text-ink-soft">
-                Lo enviás por WhatsApp cuando coordinemos el diseño. No se sube archivos en la web.
-              </span>
-            </span>
-          </label>
-        )}
-
-        {has("notes") && (
-          <Field id="notes" label="Observaciones (opcional)" error={visibleErrors.notes}>
-            <textarea
-              id="notes"
-              rows={3}
-              className={inputCls}
-              value={selection.fields.notes}
-              onChange={(e) => setField("notes", e.target.value)}
-              aria-invalid={Boolean(visibleErrors.notes)}
             />
           </Field>
         )}
@@ -319,6 +246,20 @@ export function ProductConfigurator({ product }: { product: Product }) {
             </button>
           </div>
         </Field>
+
+        {has("notes") && (
+          <Field id="notes" label="Indicaciones adicionales (opcional)" error={visibleErrors.notes}>
+            <textarea
+              id="notes"
+              rows={2}
+              className={inputCls}
+              placeholder="Colores, textos, logo u otros detalles"
+              value={selection.fields.notes}
+              onChange={(e) => setField("notes", e.target.value)}
+              aria-invalid={Boolean(visibleErrors.notes)}
+            />
+          </Field>
+        )}
 
         <button type="submit" className={buttonClass("primary", "w-full")}>
           Agregar al pedido

@@ -235,7 +235,7 @@ export function CartView() {
         <dl className="mt-4 space-y-1.5 text-sm" data-testid="order-totals">
           {totals.pricedCount > 0 && (
             <div className="flex justify-between gap-3">
-              <dt>{totals.total !== null ? "Total de referencia" : "Subtotal de referencia (productos con precio)"}</dt>
+              <dt>{totals.total !== null ? "Total" : "Subtotal"}</dt>
               <dd className="font-semibold" data-testid="order-subtotal">
                 {formatARS(totals.pricedSubtotal)}
               </dd>
@@ -252,8 +252,8 @@ export function CartView() {
         </dl>
         <p className="mt-2 text-sm text-ink-soft">
           {totals.total !== null
-            ? "Importes de referencia: el precio final, la personalización, el pago y el envío se confirman por WhatsApp antes de cerrar el pedido."
-            : "Hay productos sin precio cerrado, por eso no mostramos un total. Te pasamos el presupuesto por WhatsApp."}
+            ? "Importes sujetos a confirmación."
+            : "Los productos a presupuestar no suman al total: te pasamos el importe por WhatsApp."}
         </p>
 
         <div className="mt-5 grid gap-4">
@@ -304,10 +304,6 @@ export function CartView() {
             label="Enviar pedido por WhatsApp"
             className="w-full"
           />
-          <p className="mt-3 text-xs text-ink-soft">
-            Se abre WhatsApp con tu pedido ya escrito; vos lo enviás. Tu pedido se mantiene acá
-            hasta que lo vacíes. Todo se fabrica por encargo; el pago y el envío (a todo el país) se acuerdan antes de confirmar el pedido.
-          </p>
         </div>
       </aside>
     </div>

@@ -68,16 +68,20 @@ describe("mensaje de pedido", () => {
   s1.fields.businessName = "Café Sol";
   s1.fields.hasLogo = true;
   s1.fields.destinationUrl = "https://cafesol.com/carta";
-  const s2 = createDefaultSelection(sticker);
+  const stickerConDestino = {
+    ...sticker,
+    variantGroups: [{ id: "destino", label: "¿A dónde va a llevar?", options: [{ id: "resenas", label: "Reseñas de Google" }] }],
+  };
+  const s2 = createDefaultSelection(stickerConDestino);
   s2.quantity = 5;
   s2.variants = { destino: "resenas" };
 
   let cart = addItem(EMPTY_CART, soporte, s1);
-  cart = addItem(cart, sticker, s2);
+  cart = addItem(cart, stickerConDestino, s2);
   const message = buildOrderMessage({
     items: cart.items.map((item) => ({
       item,
-      product: item.selection.productId === soporte.id ? soporte : sticker,
+      product: item.selection.productId === soporte.id ? soporte : stickerConDestino,
     })),
     customerName: "Juan",
     customerCity: "Formosa",

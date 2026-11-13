@@ -1,9 +1,7 @@
 import type {
   CustomizationField,
-  Faq,
   Product,
   ProductImage,
-  VariantGroup,
 } from "@/lib/types";
 
 /*
@@ -20,31 +18,6 @@ const img = (slug: string, alt: string): ProductImage[] => [
   { src: `/productos/${slug}.webp`, alt, illustrative: true },
 ];
 
-const DEST_GROUP: VariantGroup = {
-  id: "destino",
-  label: "¿A dónde va a llevar?",
-  options: [
-    { id: "resenas", label: "Reseñas de Google" },
-    { id: "menu", label: "Carta o menú digital" },
-    { id: "redes", label: "Redes sociales" },
-    { id: "whatsapp", label: "WhatsApp" },
-    { id: "web", label: "Sitio web" },
-    { id: "otro", label: "Otro (lo coordinamos)" },
-  ],
-};
-
-const REVIEW_FAQ: Faq = {
-  question: "¿Cómo obtengo el enlace de reseñas de mi negocio?",
-  answer:
-    "Si tu negocio tiene ficha en Google, podés copiar el enlace para pedir reseñas desde Google Business Profile. Si no lo encontrás, te ayudamos a coordinarlo por WhatsApp.",
-};
-
-const QR_URL_FAQ: Faq = {
-  question: "¿Puedo cambiar el destino del QR más adelante?",
-  answer:
-    "Depende de cómo se configure. Un QR con la URL directa no se puede modificar una vez impreso; uno con enlace administrado permite cambiar el destino. Lo definimos con vos al confirmar el pedido.",
-};
-
 const STD: CustomizationField[] = ["businessName", "customText", "destinationUrl", "color", "hasLogo", "notes"];
 
 export const PRODUCTS: Product[] = [
@@ -59,11 +32,6 @@ export const PRODUCTS: Product[] = [
       "Soporte para apoyar en el mostrador, la caja o la recepción con un código QR que lleva directo a la página de reseñas de tu negocio en Google. El cliente apunta la cámara del celular, llega al formulario y deja su opinión sin instalar nada.",
       "Lo personalizamos con el nombre de tu negocio, tu logo y el enlace de reseñas que nos indiques.",
     ],
-    benefits: [
-      "Comercios, consultorios y servicios con atención presencial.",
-      "Pedir la reseña en el momento de la compra o al terminar el servicio.",
-      "Cajas y recepciones, donde el cliente espera de cara al soporte.",
-    ],
     images: img("soporte-qr-resenas", "Render ilustrativo de un soporte de mostrador con código QR para reseñas"),
     technology: "qr",
     visual: "stand",
@@ -73,7 +41,6 @@ export const PRODUCTS: Product[] = [
     status: "por-encargo",
     featured: true,
     order: 1,
-    faqs: [REVIEW_FAQ, QR_URL_FAQ],
     keywords: ["reseñas google", "qr reseñas", "soporte qr"],
   },
   {
@@ -86,10 +53,6 @@ export const PRODUCTS: Product[] = [
       "El mismo soporte de mostrador con QR, más un chip NFC: quien tenga un celular compatible lo acerca al soporte y se abre tu página de reseñas; el resto escanea el QR con la cámara.",
       "El NFC depende de que el celular lo tenga y lo tenga activado, por eso el QR queda siempre como alternativa.",
     ],
-    benefits: [
-      "Locales con atención en mostrador o caja.",
-      "Negocios que quieren ofrecer dos formas de llegar a la reseña.",
-    ],
     images: img("soporte-qr-nfc-resenas", "Render ilustrativo de un soporte con QR y símbolo NFC para reseñas"),
     technology: "qr-nfc",
     visual: "stand",
@@ -99,7 +62,6 @@ export const PRODUCTS: Product[] = [
     status: "por-encargo",
     featured: true,
     order: 2,
-    faqs: [REVIEW_FAQ],
     keywords: ["nfc reseñas", "soporte nfc"],
   },
   {
@@ -111,22 +73,16 @@ export const PRODUCTS: Product[] = [
     description: [
       "Sticker para pegar en la puerta, la vidriera, la caja o el mostrador, con un QR (y NFC, si lo elegís) hacia tu página de reseñas de Google. No necesita soporte: se pega en la superficie que elijas.",
     ],
-    benefits: [
-      "Superficies lisas donde el cliente lo vea de frente: vidrio, mostrador, caja.",
-      "Sumar otro punto de reseñas además del soporte de mostrador.",
-      "Locales con poco espacio.",
-    ],
     images: img("sticker-qr-nfc-resenas", "Render ilustrativo de un sticker con QR para reseñas"),
     technology: "qr-nfc",
     visual: "sticker",
     customizations: STD,
     quantity: { min: 1, max: 100000 },
     price: { amount: 9900, currency: "ARS" },
-    priceNote: "Precio unitario de referencia. Para cantidades grandes consultanos: ajustamos el importe en el presupuesto.",
+    priceNote: "Para cantidades grandes, consultá por precio.",
     status: "por-encargo",
     featured: false,
     order: 3,
-    faqs: [REVIEW_FAQ],
   },
   {
     id: "p-004",
@@ -137,10 +93,6 @@ export const PRODUCTS: Product[] = [
     description: [
       "Cartel de mostrador diseñado con la identidad de tu negocio: un mensaje propio para invitar a dejar una reseña y un QR que lleva a tu perfil de Google. Texto, colores y formato los definimos con vos.",
     ],
-    benefits: [
-      "Mostradores y recepciones donde hace falta un mensaje más visible que un sticker.",
-      "Negocios que quieren un llamado propio y no un diseño genérico.",
-    ],
     images: img("cartel-mostrador-personalizado", "Render ilustrativo de un cartel de mostrador con código QR"),
     technology: "qr",
     visual: "sign",
@@ -150,7 +102,6 @@ export const PRODUCTS: Product[] = [
     status: "por-encargo",
     featured: false,
     order: 4,
-    faqs: [REVIEW_FAQ],
   },
 
   // ───────────── Menús
@@ -163,11 +114,6 @@ export const PRODUCTS: Product[] = [
     description: [
       "Soporte para apoyar en cada mesa con un QR que abre tu carta en el celular del cliente. El QR puede llevar a tu carta digital, a un PDF o a la página que ya tengas.",
     ],
-    benefits: [
-      "Bares, restaurantes y cafeterías.",
-      "Cartas que cambian seguido: si el QR apunta a un enlace que administrás vos, podés actualizar la carta sin reimprimir el soporte.",
-      "Reducir la cantidad de menús impresos.",
-    ],
     images: img("soporte-qr-mesa", "Render ilustrativo de un soporte de mesa con código QR para menú"),
     technology: "qr",
     visual: "menu",
@@ -177,7 +123,6 @@ export const PRODUCTS: Product[] = [
     status: "por-encargo",
     featured: true,
     order: 5,
-    faqs: [QR_URL_FAQ],
     keywords: ["menu qr", "qr restaurantes", "carta qr bares"],
   },
   {
@@ -189,10 +134,6 @@ export const PRODUCTS: Product[] = [
     description: [
       "Soporte de mesa con QR y chip NFC hacia tu carta: quien tenga un celular compatible lo acerca al soporte; el resto escanea el QR. Los dos abren el mismo enlace.",
     ],
-    benefits: [
-      "Bares y restaurantes que quieren ofrecer dos formas de abrir la carta.",
-      "Mesas donde el cliente no quiere buscar un menú impreso.",
-    ],
     images: img("soporte-qr-nfc-mesa", "Render ilustrativo de un soporte de mesa con QR y NFC"),
     technology: "qr-nfc",
     visual: "menu",
@@ -202,7 +143,6 @@ export const PRODUCTS: Product[] = [
     status: "por-encargo",
     featured: true,
     order: 6,
-    faqs: [QR_URL_FAQ],
   },
   {
     id: "p-007",
@@ -213,21 +153,16 @@ export const PRODUCTS: Product[] = [
     description: [
       "Sticker con QR para pegar en la mesa o en otra superficie lisa y abrir tu carta en el celular, sin soporte.",
     ],
-    benefits: [
-      "Mesas, barras y mostradores.",
-      "Locales que quieren un QR en cada mesa y prefieren reponerlo fácilmente.",
-    ],
     images: img("sticker-qr-mesas", "Render ilustrativo de un sticker QR para mesas"),
     technology: "qr",
     visual: "sticker",
     customizations: STD,
     quantity: { min: 1, max: 100000 },
     price: { amount: 2500, currency: "ARS" },
-    priceNote: "Precio unitario de referencia. Para cantidades grandes consultanos: ajustamos el importe en el presupuesto.",
+    priceNote: "Para cantidades grandes, consultá por precio.",
     status: "por-encargo",
     featured: false,
     order: 7,
-    faqs: [QR_URL_FAQ],
   },
   {
     id: "p-008",
@@ -237,10 +172,6 @@ export const PRODUCTS: Product[] = [
     shortDescription: "Cartel con tu marca y un QR para consultar la carta.",
     description: [
       "Cartel con el diseño de tu local y un QR a tu carta, pensado para la entrada, la barra o el mostrador. El mensaje y el formato se definen con vos.",
-    ],
-    benefits: [
-      "Entradas y vidrieras de bares y restaurantes.",
-      "Barras y puntos de pedido donde se arma la fila.",
     ],
     images: img("cartel-menu-personalizado", "Render ilustrativo de un cartel de menú con código QR"),
     technology: "qr",
@@ -262,7 +193,6 @@ export const PRODUCTS: Product[] = [
       "Servicio en preparación: todavía no está disponible. La idea es que puedas editar tu carta desde el celular y que los soportes QR/NFC sigan funcionando cuando cambien los platos o los precios.",
       "Si te interesa, consultanos y te avisamos cuando esté listo.",
     ],
-    benefits: [],
     images: img("carta-digital-editable", "Render ilustrativo conceptual de una carta digital en un celular"),
     technology: "qr",
     visual: "menu",
@@ -283,10 +213,6 @@ export const PRODUCTS: Product[] = [
     description: [
       "Colgante con QR para llevar al cuello, pensado para identificar asistentes, personal o expositores de un evento. Lleva el nombre del evento y el diseño que definamos con vos.",
       "Es un producto físico: no incluye registro de asistentes ni validación de accesos.",
-    ],
-    benefits: [
-      "Ferias, congresos, capacitaciones y eventos corporativos.",
-      "Equipos de trabajo y personal de un evento.",
     ],
     images: img("colgantes-qr", "Render ilustrativo de un colgante de evento con código QR"),
     technology: "qr",
@@ -310,10 +236,6 @@ export const PRODUCTS: Product[] = [
       "Credencial con el diseño de tu evento y un QR, para identificar a cada persona. Se define con vos el formato y los datos que lleva.",
       "Es un producto físico: no incluye lista de asistentes ni validación de accesos.",
     ],
-    benefits: [
-      "Eventos, ferias y encuentros con acreditación.",
-      "Organizaciones que necesitan identificar a su equipo.",
-    ],
     images: img("credenciales-qr", "Render ilustrativo de una credencial de evento con código QR"),
     technology: "qr",
     visual: "badge",
@@ -334,10 +256,6 @@ export const PRODUCTS: Product[] = [
     description: [
       "Identificador a medida para personas, equipos o elementos de un evento, con un QR. Nos contás qué querés identificar y con qué formato, y lo definimos con vos por WhatsApp.",
     ],
-    benefits: [
-      "Eventos que necesitan un formato distinto al de una credencial.",
-      "Identificar equipos, mesas o áreas.",
-    ],
     images: img("identificadores-personalizados", "Render ilustrativo de un identificador personalizado con código QR"),
     technology: "qr",
     visual: "badge",
@@ -357,10 +275,6 @@ export const PRODUCTS: Product[] = [
     description: [
       "Tarjeta de invitación con un QR que lleva a la información de tu evento: ubicación, programa o el enlace que elijas. Si el QR apunta a un enlace que administrás vos, podés actualizar la información después de imprimir.",
     ],
-    benefits: [
-      "Casamientos, cumpleaños y eventos con invitación impresa.",
-      "Eventos con información que puede cambiar, como horarios o ubicación.",
-    ],
     images: img("tarjetas-qr-invitados", "Render ilustrativo de una tarjeta de invitación con código QR"),
     technology: "qr",
     visual: "card",
@@ -370,7 +284,6 @@ export const PRODUCTS: Product[] = [
     status: "por-encargo",
     featured: false,
     order: 13,
-    faqs: [QR_URL_FAQ],
   },
 
   // ───────────── Tarjetas digitales
@@ -383,10 +296,6 @@ export const PRODUCTS: Product[] = [
     description: [
       "Tarjeta con un QR que lleva a tus datos de contacto, a tu WhatsApp o a tus redes. Quien la recibe escanea con la cámara y llega al enlace que elegiste, sin tipear.",
     ],
-    benefits: [
-      "Profesionales y comercios que reparten tarjetas en persona.",
-      "Ferias y reuniones, donde se intercambian muchos contactos.",
-    ],
     images: img("tarjeta-qr-contacto", "Render ilustrativo de una tarjeta de contacto con código QR"),
     technology: "qr",
     visual: "card",
@@ -397,7 +306,6 @@ export const PRODUCTS: Product[] = [
     status: "por-encargo",
     featured: true,
     order: 14,
-    faqs: [QR_URL_FAQ],
     keywords: ["tarjeta qr"],
   },
   {
@@ -409,10 +317,6 @@ export const PRODUCTS: Product[] = [
     description: [
       "Tarjeta con chip NFC: al acercar un celular compatible se abre el enlace que elijas, como tu WhatsApp, tu perfil o tu sitio. No lleva QR y funciona solo con celulares que tengan NFC activado.",
       "El chip abre un enlace; no es un perfil digital editable.",
-    ],
-    benefits: [
-      "Profesionales que se presentan en persona.",
-      "Quienes quieren compartir un enlace con un solo toque.",
     ],
     images: img("tarjeta-nfc", "Render ilustrativo de una tarjeta con chip NFC"),
     technology: "nfc",
@@ -434,10 +338,6 @@ export const PRODUCTS: Product[] = [
     shortDescription: "Tarjeta con QR y NFC: escanean o acercan el celular, como prefieran.",
     description: [
       "Tarjeta con QR impreso y chip NFC hacia el mismo enlace: quien tenga un celular compatible la acerca y el resto escanea el QR. Ambos abren un enlace; no incluye un perfil digital editable.",
-    ],
-    benefits: [
-      "Quienes reparten tarjetas a personas con celulares muy distintos.",
-      "Profesionales y comercios que quieren dos formas de compartir su contacto.",
     ],
     images: img("tarjeta-qr-nfc", "Render ilustrativo de una tarjeta con QR y NFC"),
     technology: "qr-nfc",
@@ -461,22 +361,16 @@ export const PRODUCTS: Product[] = [
     description: [
       "Sticker con un código QR hacia el enlace que elijas: tu carta, tus reseñas, tu WhatsApp, tus redes o tu sitio. El destino lo indicás al armar el pedido.",
     ],
-    benefits: [
-      "Mesas, vidrieras, cajas y mostradores.",
-      "Envíos y packaging, para llevar al cliente a tu web o a tus redes.",
-    ],
     images: img("sticker-qr", "Render ilustrativo de un sticker con código QR"),
     technology: "qr",
     visual: "sticker",
-    variantGroups: [DEST_GROUP],
     customizations: ["businessName", "customText", "destinationUrl", "hasLogo", "notes"],
     quantity: { min: 1, max: 100000 },
     price: { amount: 2500, currency: "ARS" },
-    priceNote: "Precio unitario de referencia. Para cantidades grandes consultanos: ajustamos el importe en el presupuesto.",
+    priceNote: "Para cantidades grandes, consultá por precio.",
     status: "por-encargo",
     featured: false,
     order: 17,
-    faqs: [QR_URL_FAQ],
     keywords: ["stickers qr"],
   },
   {
@@ -488,18 +382,13 @@ export const PRODUCTS: Product[] = [
     description: [
       "Sticker con chip NFC: al acercar un celular compatible se abre el enlace que definas. No lleva QR a la vista y requiere un celular con NFC activado.",
     ],
-    benefits: [
-      "Mostradores y objetos donde el cliente puede acercar el celular.",
-      "Quienes prefieren un acabado sin código impreso.",
-    ],
     images: img("sticker-nfc", "Render ilustrativo de un sticker con símbolo NFC"),
     technology: "nfc",
     visual: "sticker",
-    variantGroups: [DEST_GROUP],
     customizations: ["businessName", "customText", "destinationUrl", "hasLogo", "notes"],
     quantity: { min: 1, max: 100000 },
     price: { amount: 4500, currency: "ARS" },
-    priceNote: "Precio unitario de referencia. Para cantidades grandes consultanos: ajustamos el importe en el presupuesto.",
+    priceNote: "Para cantidades grandes, consultá por precio.",
     status: "por-encargo",
     featured: false,
     order: 18,
@@ -514,18 +403,13 @@ export const PRODUCTS: Product[] = [
     description: [
       "Etiqueta con tu diseño y un QR para productos, envíos o packaging. Sirve para llevar a quien la recibe a las instrucciones, tu catálogo, tus redes o tu sitio.",
     ],
-    benefits: [
-      "Emprendimientos que envían productos.",
-      "Packaging que necesita un enlace a instrucciones o a tu tienda.",
-    ],
     images: img("etiqueta-qr-personalizada", "Render ilustrativo de una etiqueta con código QR"),
     technology: "qr",
     visual: "label",
-    variantGroups: [DEST_GROUP],
     customizations: STD,
     quantity: { min: 1, max: 100000 },
     price: { amount: 1200, currency: "ARS", from: true },
-    priceNote: "Precio unitario de referencia. Para cantidades grandes consultanos: ajustamos el importe en el presupuesto.",
+    priceNote: "Para cantidades grandes, consultá por precio.",
     status: "por-encargo",
     featured: false,
     order: 19,
@@ -540,18 +424,13 @@ export const PRODUCTS: Product[] = [
       "Adhesivo para vidrieras y puertas con QR y/o NFC hacia el enlace que elijas. Quien pasa por la calle puede escanear el QR incluso con el local cerrado.",
       "Se define con vos si lleva QR, NFC o ambos.",
     ],
-    benefits: [
-      "Locales a la calle con vidriera o puerta de vidrio.",
-      "Mostrar tu carta, tus redes o tu WhatsApp fuera del horario de atención.",
-    ],
     images: img("adhesivo-qr-nfc-vidrieras", "Render ilustrativo de un adhesivo para vidriera con QR"),
     technology: "qr-nfc",
     visual: "sticker",
-    variantGroups: [DEST_GROUP],
     customizations: STD,
     quantity: { min: 1, max: 100000 },
     price: { amount: 12900, currency: "ARS" },
-    priceNote: "Precio unitario de referencia. Para cantidades grandes consultanos: ajustamos el importe en el presupuesto.",
+    priceNote: "Para cantidades grandes, consultá por precio.",
     status: "por-encargo",
     featured: false,
     order: 20,

@@ -25,11 +25,6 @@ export function ProductGallery({
         {current?.src ? (
           <div className="relative aspect-[4/3]">
             <Image src={current.src} alt={current.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" priority />
-            {current.illustrative && (
-              <span className="absolute bottom-2 right-2 rounded bg-white/90 px-1.5 py-0.5 text-[11px] text-ink-soft">
-                Imagen ilustrativa. El diseño final puede variar.
-              </span>
-            )}
           </div>
         ) : (
           <ProductVisual

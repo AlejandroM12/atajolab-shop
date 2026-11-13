@@ -79,7 +79,6 @@ test.describe("pedido", () => {
 
     await page.getByLabel("Enlace de destino (opcional)").fill("https://cafesol.com/carta");
     await page.getByLabel("Nombre del negocio").fill("Café Sol");
-    await page.getByLabel("¿A dónde va a llevar?").selectOption({ label: "Carta o menú digital" });
     await page.getByLabel("Cantidad", { exact: true }).fill("5");
     await page.getByRole("button", { name: "Agregar al pedido" }).click();
     await expect(page.getByText("Agregamos este producto a tu pedido")).toBeVisible();
@@ -161,7 +160,7 @@ test("productos sin precio: presupuesto, sin $0 y sin total ficticio", async ({ 
   await page.goto("/pedido/");
   await expect(page.getByTestId("line-price")).toContainText("A presupuestar");
   await expect(page.getByTestId("order-totals")).not.toContainText(/total/i);
-  await expect(page.getByText("no mostramos un total")).toBeVisible();
+  await expect(page.getByText("no suman al total")).toBeVisible();
   const msg = await waMessage(page, /Enviar pedido por WhatsApp/);
   expect(msg).toContain("Precio: a presupuestar");
   expect(msg).not.toContain("TOTAL");
@@ -183,7 +182,7 @@ test("precio fijo: catálogo, ficha, carrito y mensaje de WhatsApp coinciden", a
   await page.goto("/pedido/");
   await expect(page.getByTestId("line-price")).toContainText(money(89700));
   await expect(page.getByTestId("order-subtotal")).toContainText(money(89700));
-  await expect(page.getByTestId("order-totals")).toContainText("Total de referencia");
+  await expect(page.getByTestId("order-totals")).toContainText("Total");
   const msg = norm(await waMessage(page, /Enviar pedido por WhatsApp/));
   expect(msg).toContain("1. Soporte QR + NFC para reseñas");
   expect(msg).toContain("Cantidad: 3");
@@ -206,7 +205,7 @@ test("precio 'desde': se muestra como referencia y se presupuesta, sin sumar al 
   await page.goto("/pedido/");
   await expect(page.getByTestId("order-subtotal")).toHaveText(money(17900));
   await expect(page.getByTestId("order-totals")).toContainText("1 producto");
-  await expect(page.getByTestId("order-totals")).not.toContainText("Total de referencia");
+  await expect(page.getByTestId("order-totals")).not.toContainText("Total");
   const msg = norm(await waMessage(page, /Enviar pedido por WhatsApp/));
   expect(msg).toContain(`a presupuestar (desde ${money(22900)}, importe de referencia)`);
   expect(msg).toContain(`Subtotal de referencia de los productos con precio: ${money(17900)}`);
@@ -247,12 +246,12 @@ test("todos los enlaces de WhatsApp usan el número oficial", async ({ page }) =
 
 test("A medida ofrece AtajoLab QR (enlace externo) y el formulario de producto físico", async ({ page }) => {
   await page.goto("/personalizados/");
-  const qr = page.getByRole("link", { name: "Crear mi QR", exact: true });
+  const qr = page.getByRole("main").getByRole("link", { name: "Crear mi QR", exact: true });
   await expect(qr).toHaveAttribute("href", "https://qr.atajolab.dev");
   await expect(qr).toHaveAttribute("target", "_blank");
   await expect(qr).toHaveAttribute("rel", /noopener/);
   await expect(page.getByRole("heading", { name: "¿Tenés una idea que no aparece en nuestro catálogo?" })).toBeVisible();
-  await expect(page.getByText("condiciones de pago y las opciones de envío")).toBeVisible();
+  await expect(page.getByLabel("¿Qué necesitás?")).toBeVisible();
 });
 
 test("contenido comercial: envíos a todo el país y sin anticipo fijo", async ({ page }) => {
@@ -265,37 +264,66 @@ test("contenido comercial: envíos a todo el país y sin anticipo fijo", async (
     const body = await page.locator("body").innerText();
     expect(body, `${path} no debe mencionar anticipo ni porcentajes de pago`).not.toMatch(/anticipo|50 ?%|saldo/i);
   }
-  for (const path of ["/", "/productos/sticker-qr/", "/como-comprar/", "/contacto/"]) {
+  for (const path of ["/", "/productos/sticker-qr/", "/como-comprar/"]) {
     await page.goto(path);
     await expect(page.getByText("Envíos a todo el país").first(), path).toBeVisible();
   }
 });
 
-test("la portada no lleva la leyenda de imagen ilustrativa; las fichas sí", async ({ page }) => {
-  await page.goto("/");
-  await expect(page.getByText("Imagen ilustrativa. El diseño final puede variar.")).toHaveCount(0);
-  await page.goto("/productos/sticker-qr/");
-  await expect(page.getByText("Imagen ilustrativa. El diseño final puede variar.").first()).toBeVisible();
+test("el sitio comercial no repite avisos operativos; el detalle vive en Condiciones", async ({ page }) => {
+  const avisos = /imagen ilustrativa|el diseño final puede variar|sin stock|precios son de referencia|no guardamos|se abre whatsapp con|no hay pagos online|producción por encargo, con base/i;
+  for (const path of ["/", "/productos/", "/productos/soporte-qr-nfc-resenas/", "/como-comprar/", "/preguntas-frecuentes/", "/contacto/", "/personalizados/", "/pedido/"]) {
+    await page.goto(path);
+    expect(await page.locator("body").innerText(), path).not.toMatch(avisos);
+  }
+  await page.goto("/condiciones-comerciales/");
+  const legal = await page.locator("body").innerText();
+  expect(legal).toMatch(/por encargo/i);
+  expect(legal).toMatch(/ilustrativas/i);
+  expect(legal).toMatch(/Envíos a todo el país/);
 });
 
 test("las fichas no muestran secciones vacías ni textos genéricos", async ({ page }) => {
   await page.goto("/productos/tarjeta-nfc/");
-  const body = await page.locator("body").innerText();
+  const body = await page.getByRole("main").innerText();
   expect(body).not.toContain("A confirmar al presupuestar");
   expect(body).not.toContain("Beneficios");
+  expect(body).not.toContain("Ideal para");
+  expect(body).not.toContain("Preguntas frecuentes");
   await expect(page.getByRole("heading", { name: "Descripción" })).toBeVisible();
   await expect(page.getByText("no es un perfil digital editable")).toBeVisible();
+});
+
+test("la personalización es mínima: nombre, enlace, cantidad e indicaciones, sin avisos por campo", async ({ page }) => {
+  await page.goto("/productos/sticker-qr/");
+  for (const l of ["Nombre del negocio (opcional)", "Enlace de destino (opcional)", "Indicaciones adicionales (opcional)"]) {
+    await expect(page.getByLabel(l)).toBeVisible();
+  }
+  await expect(page.getByLabel("Cantidad", { exact: true })).toBeVisible();
+  for (const l of ["Color preferido", "Texto personalizado", "Tengo un logo para incluir", "¿A dónde va a llevar?"]) {
+    await expect(page.getByLabel(l)).toHaveCount(0);
+  }
+  const body = await page.locator("body").innerText();
+  expect(body).not.toMatch(/No se sube archivos|A dónde querés que lleve|Es una preferencia|Completá lo que sepas/);
+  await page.goto("/productos/tarjeta-nfc/");
+  await expect(page.getByLabel("Nombre y cargo (opcional)")).toBeVisible();
+  await expect(page.getByLabel("Nombre del negocio")).toHaveCount(0);
+  await page.getByLabel("Indicaciones adicionales (opcional)").fill("Fondo negro, logo por chat");
+  await page.getByRole("button", { name: "Agregar al pedido" }).click();
+  await page.goto("/pedido/");
+  await expect(page.getByText("Observaciones: Fondo negro, logo por chat")).toBeVisible();
+  const msg = await waMessage(page, /Enviar pedido por WhatsApp/);
+  expect(msg).toContain("Observaciones: Fondo negro, logo por chat");
 });
 
 test("formulario de productos personalizados genera el mensaje", async ({ page }) => {
   await page.goto("/personalizados/");
   await page.getByLabel("¿Qué necesitás?").fill("Llaveros con QR");
-  await page.getByLabel("Cantidad aproximada").fill("30");
-  await page.getByLabel("Localidad").fill("Clorinda");
+  await page.getByLabel("Cantidad (opcional)").fill("30");
+  await expect(page.getByLabel("Localidad")).toHaveCount(0);
   const msg = await waMessage(page, /Enviar consulta por WhatsApp/);
   expect(msg).toContain("Necesito: Llaveros con QR");
   expect(msg).toContain("Cantidad aproximada: 30");
-  expect(msg).toContain("Localidad: Clorinda");
 });
 
 test.describe("accesibilidad y responsive", () => {

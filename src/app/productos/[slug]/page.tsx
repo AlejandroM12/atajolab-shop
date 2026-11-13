@@ -7,7 +7,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProductConfigurator } from "@/components/ProductConfigurator";
 import { ProductGallery } from "@/components/ProductGallery";
 import { Container } from "@/components/ui";
-import { MADE_TO_ORDER_TEXT, SHIPPING_BANNER, SHIPPING_TEXT } from "@/data/content";
+import { SHIPPING_BANNER } from "@/data/content";
 import {
   getAllProducts,
   getCategory,
@@ -46,10 +46,9 @@ export async function generateMetadata({
 }
 
 const TECH_EXPLAIN = {
-  qr: "Escaneá el código con la cámara del celular para abrir el enlace.",
-  nfc: "Acercá un celular compatible al producto para abrir el enlace. No todos los celulares tienen NFC.",
-  "qr-nfc":
-    "Se puede escanear el QR con cualquier celular con cámara, o acercar un celular compatible con NFC.",
+  qr: "Se escanea con la cámara del celular.",
+  nfc: "Se acerca un celular con NFC; no todos los celulares lo tienen.",
+  "qr-nfc": "QR para cualquier celular con cámara y NFC para celulares compatibles.",
 } as const;
 
 export default async function ProductoPage({ params }: PageProps<"/productos/[slug]">) {
@@ -58,13 +57,6 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
   if (!product) notFound();
   const category = getCategory(product.categorySlug);
   const related = getRelatedProducts(product);
-  const personalization = [
-    product.customizations.includes("businessName") && "nombre del negocio",
-    product.customizations.includes("customText") && (product.customTextLabel ?? "texto personalizado").toLowerCase(),
-    product.customizations.includes("destinationUrl") && "enlace de destino",
-    product.customizations.includes("color") && "color preferido",
-    product.customizations.includes("hasLogo") && "logo",
-  ].filter((x): x is string => typeof x === "string");
 
   return (
     <Container className="py-8 sm:py-12">
@@ -118,85 +110,41 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
         </div>
       </div>
 
-      <div className="mt-12 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
-        <div>
-          <h2 className="text-xl font-semibold">Descripción</h2>
+      <div className="mt-12 grid max-w-5xl gap-10 lg:grid-cols-[1.4fr_1fr]">
+        <section aria-labelledby="desc">
+          <h2 id="desc" className="text-xl font-semibold">
+            Descripción
+          </h2>
           <div className="mt-3 space-y-3 text-ink-soft">
             {product.description.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
           </div>
+        </section>
 
-          {product.benefits.length > 0 && (
-            <>
-              <h2 className="mt-10 text-xl font-semibold">Ideal para</h2>
-              <ul className="mt-3 space-y-2 text-ink-soft">
-                {product.benefits.map((b) => (
-                  <li key={b} className="flex gap-2">
-                    <span aria-hidden className="text-ink">•</span>
-                    <span>{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-
-          {product.faqs && product.faqs.length > 0 && (
-            <>
-              <h2 className="mt-10 text-xl font-semibold">Preguntas frecuentes</h2>
-              <div className="mt-3 divide-y divide-line rounded-lg border border-line bg-white">
-                {product.faqs.map((f) => (
-                  <details key={f.question} className="group p-4">
-                    <summary className="cursor-pointer font-semibold">{f.question}</summary>
-                    <p className="mt-2 text-ink-soft">{f.answer}</p>
-                  </details>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-
-        <aside className="space-y-4">
-          <section className="rounded-lg border border-line bg-white p-5">
-            <h2 className="text-lg font-semibold">Características</h2>
-            <dl className="mt-2 space-y-3 text-sm">
+        <section aria-labelledby="carac">
+          <h2 id="carac" className="text-xl font-semibold">
+            Características
+          </h2>
+          <dl className="mt-3 space-y-3 text-sm">
+            <div>
+              <dt className="font-semibold">Tecnología</dt>
+              <dd className="text-ink-soft">{TECH_EXPLAIN[product.technology]}</dd>
+            </div>
+            {product.materials?.length ? (
               <div>
-                <dt className="font-semibold">Tecnología</dt>
-                <dd className="text-ink-soft">{TECH_EXPLAIN[product.technology]}</dd>
+                <dt className="font-semibold">Materiales</dt>
+                <dd className="text-ink-soft">{product.materials.join(", ")}</dd>
               </div>
-              {personalization.length > 0 && (
-                <div>
-                  <dt className="font-semibold">Personalizable</dt>
-                  <dd className="text-ink-soft">
-                    {personalization.join(", ").replace(/^./, (c) => c.toUpperCase())}.
-                  </dd>
-                </div>
-              )}
-              {product.materials?.length ? (
-                <div>
-                  <dt className="font-semibold">Materiales</dt>
-                  <dd className="text-ink-soft">{product.materials.join(", ")}</dd>
-                </div>
-              ) : null}
-              {product.dimensions ? (
-                <div>
-                  <dt className="font-semibold">Medidas</dt>
-                  <dd className="text-ink-soft">{product.dimensions}</dd>
-                </div>
-              ) : null}
-            </dl>
-          </section>
-          <section className="rounded-lg border border-line bg-white p-5">
-            <h2 className="text-lg font-semibold">{SHIPPING_BANNER}</h2>
-            <p className="mt-2 text-sm text-ink-soft">{SHIPPING_TEXT}</p>
-            <p className="mt-2 text-sm text-ink-soft">{MADE_TO_ORDER_TEXT}</p>
-            <p className="mt-2 text-sm">
-              <Link href="/como-comprar/" className="font-semibold underline">
-                Ver cómo comprar
-              </Link>
-            </p>
-          </section>
-        </aside>
+            ) : null}
+            {product.dimensions ? (
+              <div>
+                <dt className="font-semibold">Medidas</dt>
+                <dd className="text-ink-soft">{product.dimensions}</dd>
+              </div>
+            ) : null}
+          </dl>
+        </section>
       </div>
 
       {related.length > 0 && (

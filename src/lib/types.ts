@@ -72,7 +72,6 @@ export interface Product {
   shortDescription: string;
   /** Párrafos de la descripción completa. */
   description: string[];
-  benefits: string[];
   images: ProductImage[];
   technology: Technology;
   visual: VisualKind;
@@ -95,7 +94,6 @@ export interface Product {
   status: CommercialStatus;
   featured: boolean;
   order: number;
-  faqs?: Faq[];
   keywords?: string[];
 }
 

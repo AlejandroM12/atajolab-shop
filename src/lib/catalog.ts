@@ -1,6 +1,6 @@
 import { CATEGORIES } from "@/data/categories";
 import { PRODUCTS } from "@/data/products";
-import type { Category, CommercialStatus, Product, SortKey, Technology } from "./types";
+import type { Category, CommercialStatus, Product, Technology } from "./types";
 
 export const STATUS_LABELS: Record<CommercialStatus, string> = {
   "por-encargo": "Por encargo",
@@ -13,26 +13,15 @@ export const TECH_LABELS: Record<Technology, string> = {
   "qr-nfc": "QR + NFC",
 };
 
-export const SORT_LABELS: Record<SortKey, string> = {
-  destacados: "Destacados",
-  nombre: "Nombre (A-Z)",
-};
-
-export type TechFilter = "qr" | "nfc";
-
+/** El catálogo solo se filtra por texto y por categoría. */
 export interface CatalogFilters {
   q: string;
   categoria: string | null;
-  /** "qr" = productos que incluyen QR; "nfc" = productos que incluyen NFC. */
-  tecnologia: TechFilter | null;
-  orden: SortKey;
 }
 
 export const DEFAULT_FILTERS: CatalogFilters = {
   q: "",
   categoria: null,
-  tecnologia: null,
-  orden: "destacados",
 };
 
 /** Todo se hace por encargo: no hay stock. Solo lo "próximamente" queda fuera del pedido. */
@@ -47,10 +36,6 @@ export function normalizeText(value: string): string {
     .toLowerCase()
     .replace(/\s+/g, " ")
     .trim();
-}
-
-export function techIncludes(product: Pick<Product, "technology">, tech: TechFilter): boolean {
-  return product.technology === tech || product.technology === "qr-nfc";
 }
 
 const byOrder = (a: Product, b: Product) => a.order - b.order;
@@ -107,7 +92,6 @@ export function filterProducts(
 
   const result = products.filter((p) => {
     if (filters.categoria && p.categorySlug !== filters.categoria) return false;
-    if (filters.tecnologia && !techIncludes(p, filters.tecnologia)) return false;
     if (terms.length) {
       const haystack = searchText(p, categories);
       if (!terms.every((t) => haystack.includes(t))) return false;
@@ -115,12 +99,12 @@ export function filterProducts(
     return true;
   });
 
-  return sortProducts(result, filters.orden);
+  return sortProducts(result);
 }
 
-export function sortProducts(products: Product[], sort: SortKey): Product[] {
+/** Orden fijo: destacados primero y después el orden del catálogo. */
+export function sortProducts(products: Product[]): Product[] {
   const list = [...products];
-  if (sort === "nombre") return list.sort((a, b) => a.name.localeCompare(b.name, "es"));
   return list.sort((a, b) => Number(b.featured) - Number(a.featured) || byOrder(a, b));
 }
 
@@ -130,13 +114,9 @@ export function parseFilters(
   categories: Category[] = CATEGORIES,
 ): CatalogFilters {
   const categoria = params.get("categoria");
-  const tecnologia = params.get("tecnologia");
-  const orden = params.get("orden");
   return {
     q: (params.get("q") ?? "").slice(0, 80),
     categoria: categories.some((c) => c.slug === categoria) ? categoria : null,
-    tecnologia: tecnologia === "qr" || tecnologia === "nfc" ? tecnologia : null,
-    orden: orden === "nombre" ? "nombre" : "destacados",
   };
 }
 
@@ -145,11 +125,9 @@ export function filtersToSearchParams(filters: CatalogFilters): URLSearchParams 
   const params = new URLSearchParams();
   if (filters.q.trim()) params.set("q", filters.q.trim());
   if (filters.categoria) params.set("categoria", filters.categoria);
-  if (filters.tecnologia) params.set("tecnologia", filters.tecnologia);
-  if (filters.orden !== DEFAULT_FILTERS.orden) params.set("orden", filters.orden);
   return params;
 }
 
 export function hasActiveFilters(filters: CatalogFilters): boolean {
-  return filters.q.trim() !== "" || filters.categoria !== null || filters.tecnologia !== null;
+  return filters.q.trim() !== "" || filters.categoria !== null;
 }

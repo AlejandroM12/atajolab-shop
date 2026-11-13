@@ -22,17 +22,49 @@ test.describe("catálogo", () => {
     await expect(page.getByRole("heading", { level: 3, name: "Tarjeta NFC" })).toBeVisible();
   });
 
-  test("filtra por categoría, tecnología y muestra estado vacío", async ({ page }) => {
-    await page.goto("/productos/?categoria=eventos&tecnologia=nfc");
-    await expect(page.getByText("No encontramos productos con esos filtros")).toBeVisible();
+  test("solo hay buscador y categorías; se combinan; estado vacío con salida", async ({ page }) => {
+    await page.goto("/productos/");
+    for (const label of ["Tecnología", "Disponibilidad", "Ordenar por", "Categoría"]) {
+      await expect(page.getByLabel(label, { exact: true })).toHaveCount(0);
+    }
+    await expect(page.getByRole("button", { name: "Limpiar filtros" })).toHaveCount(0);
+    // el contador ya no es visible: solo queda un aviso para lectores de pantalla
+    await expect(page.locator('p.sr-only[role="status"]')).toHaveText("20 productos");
 
-    await page.getByRole("button", { name: "Limpiar filtros" }).click();
+    const chips = page.getByRole("group", { name: "Categorías" });
+    await expect(chips.getByRole("button")).toHaveCount(6); // Todos + 5 categorías
+    await expect(chips.getByRole("button", { name: "Todos" })).toHaveAttribute("aria-pressed", "true");
+
+    await chips.getByRole("button", { name: "Eventos" }).click();
+    await expect(page).toHaveURL(/categoria=eventos/);
+    await expect(chips.getByRole("button", { name: "Eventos" })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("heading", { level: 3, name: "Colgantes QR" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 3, name: "Tarjeta NFC" })).toHaveCount(0);
+
+    // búsqueda + categoría
+    await page.getByLabel("Buscar productos").fill("credenciales");
+    await expect(page.getByRole("heading", { level: 3, name: "Credenciales QR" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 3, name: "Tarjetas QR para invitados" })).toHaveCount(0);
+
+    // estado vacío y salida
+    await page.getByLabel("Buscar productos").fill("zzzz");
+    await expect(page.getByRole("heading", { name: "No encontramos productos" })).toBeVisible();
+    await page.getByRole("button", { name: "Ver todos los productos" }).click();
     await expect(page).toHaveURL(/\/productos\/$/);
+    await expect(page.getByLabel("Buscar productos")).toHaveValue("");
+    await expect(page.getByRole("heading", { level: 3 })).toHaveCount(20);
+  });
 
-    await page.getByLabel("Categoría").selectOption("menus-restaurantes");
-    await page.getByLabel("Tecnología").selectOption("nfc");
-    await expect(page.getByRole("heading", { level: 3, name: "Soporte QR + NFC de mesa" })).toBeVisible();
-    await expect(page.getByRole("heading", { level: 3, name: "Sticker QR para mesas" })).toHaveCount(0);
+  test("las categorías se desplazan horizontalmente en celular sin romper el layout", async ({ page }, info) => {
+    test.skip(info.project.name !== "mobile", "solo celular");
+    await page.goto("/productos/");
+    const m = await page.getByRole("group", { name: "Categorías" }).evaluate((el) => ({
+      scrolls: el.scrollWidth > el.clientWidth,
+      overflowX: getComputedStyle(el).overflowX,
+    }));
+    expect(m.overflowX).toBe("auto");
+    expect(m.scrolls).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
   });
 });
 

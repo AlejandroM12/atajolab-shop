@@ -97,18 +97,18 @@ describe("búsqueda y filtros", () => {
     expect(r.every((p) => p.categorySlug === "eventos")).toBe(true);
   });
 
-  it("filtra por tecnología incluyendo los productos QR + NFC", () => {
-    const nfc = filterProducts(all, { ...DEFAULT_FILTERS, tecnologia: "nfc" });
-    expect(nfc.every((p) => p.technology === "nfc" || p.technology === "qr-nfc")).toBe(true);
-    expect(nfc.some((p) => p.technology === "qr-nfc")).toBe(true);
-    const qr = filterProducts(all, { ...DEFAULT_FILTERS, tecnologia: "qr" });
-    expect(qr.some((p) => p.technology === "nfc")).toBe(false);
+  it("combina texto y categoría", () => {
+    const r = filterProducts(all, { q: "sticker", categoria: "stickers-etiquetas" });
+    expect(r.length).toBeGreaterThan(0);
+    expect(r.every((p) => p.categorySlug === "stickers-etiquetas")).toBe(true);
+    expect(r.length).toBeLessThan(filterProducts(all, { q: "", categoria: "stickers-etiquetas" }).length + 1);
+    expect(filterProducts(all, { q: "sticker", categoria: "eventos" })).toEqual([]);
   });
 
-  it("ordena por nombre", () => {
-    const r = filterProducts(all, { ...DEFAULT_FILTERS, orden: "nombre" });
-    const names = r.map((p) => p.name);
-    expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b, "es")));
+  it("ignora los filtros eliminados (tecnología, orden, estado) en la URL", () => {
+    const f = parseFilters(new URLSearchParams("tecnologia=nfc&orden=nombre&estado=agotado"));
+    expect(f).toEqual(DEFAULT_FILTERS);
+    expect(Object.keys(DEFAULT_FILTERS).sort()).toEqual(["categoria", "q"]);
   });
 
   it("ordena destacados primero", () => {
@@ -123,8 +123,6 @@ describe("filtros en la URL", () => {
     const filters = {
       q: "soporte",
       categoria: "eventos",
-      tecnologia: "qr" as const,
-      orden: "nombre" as const,
     };
     const params = filtersToSearchParams(filters);
     expect(parseFilters(new URLSearchParams(params.toString()))).toEqual(filters);
@@ -136,7 +134,7 @@ describe("filtros en la URL", () => {
 
   it("ignora valores inválidos", () => {
     const f = parseFilters(
-      new URLSearchParams("categoria=xx&tecnologia=zz&estado=agotado&orden=raro"),
+      new URLSearchParams("categoria=xx&tecnologia=zz"),
     );
     expect(f).toEqual(DEFAULT_FILTERS);
   });

@@ -99,4 +99,3 @@ export interface Product {
   keywords?: string[];
 }
 
-export type SortKey = "destacados" | "nombre";

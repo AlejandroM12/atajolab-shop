@@ -3,19 +3,19 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import {
-  DEFAULT_FILTERS,
   filterProducts,
   filtersToSearchParams,
-  hasActiveFilters,
   parseFilters,
-  SORT_LABELS,
   type CatalogFilters,
 } from "@/lib/catalog";
 import type { Category, Product } from "@/lib/types";
 import { ProductCard } from "./ProductCard";
+import { buttonClass } from "./ui";
 
-const selectCls =
-  "min-h-11 w-full rounded-xl border border-line bg-white px-3 text-base focus-visible:outline-offset-0";
+const chipBase =
+  "inline-flex min-h-10 shrink-0 items-center whitespace-nowrap rounded-md border px-3.5 text-sm font-medium transition-colors";
+const chipOff = "border-line bg-white text-ink-soft hover:border-ink/40 hover:text-ink";
+const chipOn = "border-ink bg-ink text-white";
 
 export function CatalogExplorer({
   products,
@@ -55,6 +55,11 @@ export function CatalogExplorer({
     [products, filters, categories],
   );
 
+  const showAll = () => {
+    setQuery("");
+    router.replace(pathname, { scroll: false });
+  };
+
   return (
     <div>
       <form
@@ -63,95 +68,53 @@ export function CatalogExplorer({
           e.preventDefault();
           update({ q: query });
         }}
-        className="grid grid-cols-2 gap-3 rounded-lg bg-paper-2 p-3 sm:p-4 lg:grid-cols-4"
       >
-        <div className="col-span-2 lg:col-span-4">
-          <label htmlFor="q" className="mb-1 block text-sm font-semibold">
-            Buscar productos
-          </label>
-          <input
-            id="q"
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ej: soporte para reseñas, sticker NFC, menú…"
-            className={selectCls}
-            autoComplete="off"
-          />
-        </div>
-        <div>
-          <label htmlFor="categoria" className="mb-1 block text-sm font-semibold">
-            Categoría
-          </label>
-          <select
-            id="categoria"
-            className={selectCls}
-            value={filters.categoria ?? ""}
-            onChange={(e) => update({ categoria: e.target.value || null })}
-          >
-            <option value="">Todas</option>
-            {categories.map((c) => (
-              <option key={c.slug} value={c.slug}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="tecnologia" className="mb-1 block text-sm font-semibold">
-            Tecnología
-          </label>
-          <select
-            id="tecnologia"
-            className={selectCls}
-            value={filters.tecnologia ?? ""}
-            onChange={(e) =>
-              update({ tecnologia: (e.target.value || null) as CatalogFilters["tecnologia"] })
-            }
-          >
-            <option value="">QR y NFC</option>
-            <option value="qr">Incluye QR</option>
-            <option value="nfc">Incluye NFC</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="orden" className="mb-1 block text-sm font-semibold">
-            Ordenar por
-          </label>
-          <select
-            id="orden"
-            className={selectCls}
-            value={filters.orden}
-            onChange={(e) => update({ orden: e.target.value as CatalogFilters["orden"] })}
-          >
-            {(Object.keys(SORT_LABELS) as Array<keyof typeof SORT_LABELS>).map((s) => (
-              <option key={s} value={s}>
-                {SORT_LABELS[s]}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="col-span-2 flex items-end lg:col-span-1">
-          <button
-            type="button"
-            disabled={!hasActiveFilters(filters) && filters.orden === DEFAULT_FILTERS.orden}
-            onClick={() => {
-              setQuery("");
-              router.replace(pathname, { scroll: false });
-            }}
-            className="min-h-11 w-full rounded-md border border-ink/80 bg-white px-3 text-sm font-semibold hover:bg-ink hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ink"
-          >
-            Limpiar filtros
-          </button>
-        </div>
+        <label htmlFor="q" className="sr-only">
+          Buscar productos
+        </label>
+        <input
+          id="q"
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Buscar productos…"
+          className="min-h-11 w-full rounded-md border border-line bg-white px-3.5 text-base focus-visible:outline-offset-0"
+          autoComplete="off"
+        />
       </form>
 
-      <p className="mt-6 text-sm text-ink-soft" role="status" aria-live="polite">
+      <div
+        role="group"
+        aria-label="Categorías"
+        className="-mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden"
+      >
+        <button
+          type="button"
+          aria-pressed={filters.categoria === null}
+          onClick={() => update({ categoria: null })}
+          className={`${chipBase} ${filters.categoria === null ? chipOn : chipOff}`}
+        >
+          Todos
+        </button>
+        {categories.map((c) => (
+          <button
+            key={c.slug}
+            type="button"
+            aria-pressed={filters.categoria === c.slug}
+            onClick={() => update({ categoria: c.slug })}
+            className={`${chipBase} ${filters.categoria === c.slug ? chipOn : chipOff}`}
+          >
+            {c.name}
+          </button>
+        ))}
+      </div>
+
+      <p className="sr-only" role="status" aria-live="polite">
         {results.length === 1 ? "1 producto" : `${results.length} productos`}
       </p>
 
       {results.length > 0 ? (
-        <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-3">
+        <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-3">
           {results.map((p) => (
             <li key={p.id}>
               <ProductCard product={p} />
@@ -159,12 +122,15 @@ export function CatalogExplorer({
           ))}
         </ul>
       ) : (
-        <div className="mt-4 rounded-lg border border-dashed border-line bg-white p-10 text-center">
-          <h2 className="text-xl font-semibold">No encontramos productos con esos filtros</h2>
-          <p className="mt-2 text-ink-soft">
-            Probá con otra búsqueda o limpiá los filtros. Si no ves lo que necesitás, podemos
+        <div className="mt-8 rounded-lg border border-line bg-paper-2 p-8 text-center">
+          <h2 className="text-lg font-semibold">No encontramos productos</h2>
+          <p className="mx-auto mt-1.5 max-w-md text-sm text-ink-soft">
+            Probá con otra palabra o mirá todos los productos. Si no ves lo que necesitás, podemos
             hacerlo a medida.
           </p>
+          <button type="button" onClick={showAll} className={buttonClass("secondary", "mt-4")}>
+            Ver todos los productos
+          </button>
         </div>
       )}
     </div>

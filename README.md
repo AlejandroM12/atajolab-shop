@@ -43,27 +43,24 @@ El mensaje nunca se envía solo: se abre WhatsApp con el texto escrito y el clie
 
 ## Precios
 
-No hay precios cargados: ningún importe fue aprobado, por eso toda la tienda muestra **"Solicitar presupuesto"**. La propuesta de precios (pendiente de aprobación) está en [`docs/ESTUDIO_PRECIOS_ARGENTINA.md`](docs/ESTUDIO_PRECIOS_ARGENTINA.md). La estructura ya está lista (ver `src/lib/pricing.ts`):
+Los precios cargados son **precios comerciales de lanzamiento, sujetos a revisión** (propuesta en [`docs/ESTUDIO_PRECIOS_ARGENTINA.md`](docs/ESTUDIO_PRECIOS_ARGENTINA.md), columna "1 u."). No son costos confirmados y **no hay escalas ni descuentos por cantidad publicados**. En el sitio se presentan como "de referencia": el importe final se confirma por WhatsApp antes de cerrar el pedido.
 
 ```ts
 // src/data/products.ts
-price: { amount: 12500, currency: "ARS" },       // precio unitario base
-priceNote: "El diseño final se cotiza aparte.",  // opcional
-
-variantGroups: [{
-  id: "tamano", label: "Tamaño",
-  options: [
-    { id: "chico",  label: "Chico",  price: 8000 },   // precio por variante
-    { id: "grande", label: "Grande", price: 15000 },
-  ],
-}],
+price: { amount: 29900, currency: "ARS" },                 // precio fijo de referencia
+price: { amount: 22900, currency: "ARS", from: true },     // "Desde $ X": se presupuesta
+// sin price                                                  // "Solicitar presupuesto"
+variantGroups: [{ id: "t", label: "Tamaño", options: [{ id: "g", label: "Grande", price: 15000 }] }], // precio por variante
 ```
 
-- Con precio base: tarjeta, ficha y pedido muestran el importe; la ficha calcula el subtotal según la cantidad.
-- Con variantes con precios distintos: el listado muestra "Desde $ X" y la ficha actualiza el precio al elegir la variante. Si hay varias opciones con precio, se usa la mayor.
-- Sin precio (ni variantes con precio): "Solicitar presupuesto".
-- El pedido suma subtotales. **El total solo se muestra si todos los productos tienen precio**; si alguno requiere presupuesto se informa el subtotal de los productos con precio y cuántos quedan a presupuestar, sin total.
-- Los importes viajan en el mensaje de WhatsApp (precio unitario, subtotal y total estimado). No hay pagos online; las condiciones de pago se acuerdan con cada cliente por WhatsApp antes de confirmar el pedido.
+- **Fijo:** tarjeta, ficha y pedido muestran el importe; el subtotal es unitario × cantidad.
+- **"Desde" / sin precio:** se presupuestan. **Nunca suman $0 ni entran en el total.** Con "Desde" se muestra el precio base como referencia.
+- **Total:** solo se muestra ("Total de referencia") si **todos** los productos del pedido tienen precio fijo; si no, se informa el subtotal de los que tienen precio y cuántos quedan a presupuestar.
+- Los importes viajan en el mensaje de WhatsApp como **importes de referencia**. No hay pagos online ni anticipo fijo.
+
+## Modelo de venta: por encargo, sin stock
+
+Todo producto físico se hace por encargo: no hay inventario, existencias ni disponibilidad inmediata, y la falta de stock nunca impide enviar una solicitud. Se puede pedir cualquier cantidad. El único estado que bloquea el pedido es `proximamente` (servicio no implementado, como la carta digital editable).
 
 ## Scripts
 
@@ -112,15 +109,15 @@ Editá `src/data/products.ts` y agregá un objeto `Product` (tipo en `src/lib/ty
   visual: "sticker",           // silueta de respaldo si no hay imagen
   customizations: ["businessName", "destinationUrl", "notes"],  // solo los campos que apliquen
   quantity: { min: 1, max: 500 },
-  status: "por-encargo",       // "consultar" | "por-encargo" | "proximamente" | "no-disponible"
+  status: "por-encargo",       // "por-encargo" | "proximamente" (sin stock)
   featured: false,
   order: 21,
 }
 ```
 
-- `materials`, `dimensions` y `price` son **opcionales** y hoy no están definidos: agregalos solo cuando estén confirmados. Si faltan, la ficha dice "A confirmar al presupuestar" y "Precio a cotizar".
+- `materials` y `dimensions` son **opcionales** y hoy no están definidos: agregalos solo cuando estén confirmados (si faltan, la ficha no muestra esas filas). `price` es opcional (ver "Precios").
 - `variantGroups` solo debe contener opciones confirmadas como disponibles.
-- Los estados `proximamente` y `no-disponible` no se pueden agregar al pedido (solo consultar).
+- El estado `proximamente` no se puede agregar al pedido (solo avisar interés).
 - Nuevas categorías: `src/data/categories.ts`.
 
 ## Imágenes

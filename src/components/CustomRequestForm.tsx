@@ -5,7 +5,7 @@ import { buildCustomRequestMessage } from "@/lib/whatsapp";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 const inputCls =
-  "min-h-11 w-full rounded-md border border-line bg-white px-3 py-2 text-base aria-[invalid=true]:border-red-600";
+  "min-h-11 w-full rounded-md border border-line bg-surface px-3 py-2 text-base aria-[invalid=true]:border-danger";
 
 export function CustomRequestForm() {
   const [need, setNeed] = useState("");
@@ -18,7 +18,7 @@ export function CustomRequestForm() {
     <form
       noValidate
       onSubmit={(e) => e.preventDefault()}
-      className="grid gap-4 rounded-lg border border-line bg-white p-5 sm:p-6"
+      className="grid gap-4 rounded-lg border border-line bg-surface p-5 sm:p-6"
     >
       <div>
         <label htmlFor="need" className="mb-1 block text-sm font-semibold">
@@ -36,7 +36,7 @@ export function CustomRequestForm() {
           placeholder="Ej: llaveros con QR para mi local"
         />
         {showError && invalid && (
-          <p id="need-error" role="alert" className="mt-1 text-sm font-medium text-red-700">
+          <p id="need-error" role="alert" className="mt-1 text-sm font-medium text-danger">
             Contanos brevemente qué necesitás.
           </p>
         )}

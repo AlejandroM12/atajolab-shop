@@ -11,8 +11,8 @@ export function Container({
 export type ButtonVariant = "primary" | "secondary" | "whatsapp" | "ghost";
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: "bg-brand text-ink hover:bg-ink hover:text-white",
-  secondary: "border border-ink/80 bg-white text-ink hover:bg-ink hover:text-white",
+  primary: "bg-brand text-on-brand hover:bg-ink hover:text-on-ink",
+  secondary: "border border-ink/80 bg-surface text-ink hover:bg-ink hover:text-on-ink",
   whatsapp: "bg-[#0f7a40] text-white hover:bg-[#0b5f31]",
   ghost: "text-ink hover:bg-paper-2",
 };

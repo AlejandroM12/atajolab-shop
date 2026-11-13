@@ -46,7 +46,7 @@ export default function MenuDigitalPage() {
             ))}
           </ul>
         </section>
-        <section aria-labelledby="hoy" className="rounded-lg border border-line bg-white p-6">
+        <section aria-labelledby="hoy" className="rounded-lg border border-line bg-surface p-6">
           <h2 id="hoy" className="text-2xl font-semibold">
             Qué podés hacer hoy
           </h2>

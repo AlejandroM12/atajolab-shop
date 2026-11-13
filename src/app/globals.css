@@ -3,22 +3,60 @@
 :root {
   --paper: #ffffff;
   --paper-2: #f5f5f4;
+  --surface: #ffffff;
   --ink: #1a1a1a;
   --ink-soft: #525252;
   --line: #e5e5e3;
   --brand: #ff6a13;
   --brand-dark: #b34700;
+  --on-ink: #ffffff;
+  --on-brand: #1a1a1a;
+  --danger: #b91c1c;
   --teal: #404040;
+  color-scheme: light;
+}
+
+/* Tema oscuro: elegido a mano (data-theme) o, sin elección, según el sistema. */
+:root[data-theme="dark"] {
+  --paper: #111113;
+  --paper-2: #1c1c20;
+  --surface: #18181b;
+  --ink: #f3f3f1;
+  --ink-soft: #a9a9b0;
+  --line: #323238;
+  --brand-dark: #ff8f52;
+  --on-ink: #111113;
+  --danger: #f87171;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --paper: #111113;
+    --paper-2: #1c1c20;
+    --surface: #18181b;
+    --ink: #f3f3f1;
+    --ink-soft: #a9a9b0;
+    --line: #323238;
+    --brand-dark: #ff8f52;
+    --on-ink: #111113;
+    --danger: #f87171;
+    color-scheme: dark;
+  }
 }
 
 @theme inline {
   --color-paper: var(--paper);
   --color-paper-2: var(--paper-2);
+  --color-surface: var(--surface);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-line: var(--line);
   --color-brand: var(--brand);
   --color-brand-dark: var(--brand-dark);
+  --color-on-ink: var(--on-ink);
+  --color-on-brand: var(--on-brand);
+  --color-danger: var(--danger);
   --color-teal: var(--teal);
   --font-sans: var(--font-body);
   --font-display: var(--font-body);
@@ -26,6 +64,12 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+input,
+textarea,
+select {
+  color: inherit;
 }
 
 body {

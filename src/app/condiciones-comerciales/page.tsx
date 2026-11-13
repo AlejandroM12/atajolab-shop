@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/condiciones-comerciales/" },
 };
 
-const card = "rounded-lg border border-line bg-white p-6";
+const card = "rounded-lg border border-line bg-surface p-6";
 
 export default function CondicionesPage() {
   return (

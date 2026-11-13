@@ -14,8 +14,8 @@ import { buttonClass } from "./ui";
 
 const chipBase =
   "inline-flex min-h-10 shrink-0 items-center whitespace-nowrap rounded-md border px-3.5 text-sm font-medium transition-colors";
-const chipOff = "border-line bg-white text-ink-soft hover:border-ink/40 hover:text-ink";
-const chipOn = "border-ink bg-ink text-white";
+const chipOff = "border-line bg-surface text-ink-soft hover:border-ink/40 hover:text-ink";
+const chipOn = "border-ink bg-ink text-on-ink";
 
 export function CatalogExplorer({
   products,
@@ -78,7 +78,7 @@ export function CatalogExplorer({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar productos…"
-          className="min-h-11 w-full rounded-md border border-line bg-white px-3.5 text-base focus-visible:outline-offset-0"
+          className="min-h-11 w-full rounded-md border border-line bg-surface px-3.5 text-base focus-visible:outline-offset-0"
           autoComplete="off"
         />
       </form>

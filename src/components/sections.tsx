@@ -60,7 +60,7 @@ export function HowItWorks() {
         </h2>
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {[QR_NFC.qr, QR_NFC.nfc].map((t) => (
-            <article key={t.title} className="rounded-lg border border-line bg-white p-5">
+            <article key={t.title} className="rounded-lg border border-line bg-surface p-5">
               <h3 className="text-lg font-semibold">{t.title}</h3>
               <p className="mt-1.5 text-ink-soft">{t.how}</p>
               <ul className="mt-3 space-y-1 text-sm text-ink-soft">
@@ -84,7 +84,7 @@ export function BuySteps() {
   return (
     <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {steps.map((s, i) => (
-        <li key={s.title} className="relative rounded-lg border border-line bg-white p-5">
+        <li key={s.title} className="relative rounded-lg border border-line bg-surface p-5">
           <span
             aria-hidden
             className="font-display text-2xl font-semibold text-brand"
@@ -126,7 +126,7 @@ export function HowToBuy() {
 
 export function FaqList({ faqs = FAQS }: { faqs?: Faq[] }) {
   return (
-    <div className="divide-y divide-line rounded-lg border border-line bg-white">
+    <div className="divide-y divide-line rounded-lg border border-line bg-surface">
       {faqs.map((f) => (
         <details key={f.question} className="group p-5">
           <summary className="flex min-h-8 cursor-pointer list-none items-center justify-between gap-4 font-semibold [&::-webkit-details-marker]:hidden">

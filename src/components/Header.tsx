@@ -4,10 +4,11 @@ import { CartLink } from "./CartLink";
 import { Container } from "./ui";
 import { Logo } from "./Logo";
 import { MobileNav } from "./MobileNav";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-white ">
+    <header className="sticky top-0 z-40 border-b border-line bg-surface ">
       <Container className="flex h-14 items-center justify-between gap-4">
         <Logo />
         <nav aria-label="Principal" className="hidden items-center gap-1 lg:flex">
@@ -21,7 +22,8 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
+          <ThemeToggle />
           <CartLink />
           <MobileNav />
         </div>

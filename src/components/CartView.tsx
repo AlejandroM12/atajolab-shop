@@ -14,7 +14,7 @@ import { buildOrderMessage } from "@/lib/whatsapp";
 import { ButtonLink, buttonClass } from "./ui";
 import { WhatsAppButton } from "./WhatsAppButton";
 
-const inputCls = "min-h-11 w-full rounded-md border border-line bg-white px-3 py-2 text-base";
+const inputCls = "min-h-11 w-full rounded-md border border-line bg-surface px-3 py-2 text-base";
 
 function itemDetails(product: Product, item: CartItem): string[] {
   const f = item.selection.fields;
@@ -56,7 +56,7 @@ export function CartView() {
 
   if (cart.items.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-line bg-white p-10 text-center">
+      <div className="rounded-lg border border-dashed border-line bg-surface p-10 text-center">
         <h2 className="text-xl font-semibold">Todavía no agregaste productos</h2>
         <p className="mx-auto mt-2 max-w-md text-ink-soft">
           Explorá el catálogo, personalizá lo que te interese y armá tu pedido.
@@ -82,7 +82,7 @@ export function CartView() {
             const details = itemDetails(product, item);
             const qtyId = `qty-${item.id}`;
             return (
-              <li key={item.id} className="flex gap-4 rounded-lg border border-line bg-white p-4">
+              <li key={item.id} className="flex gap-4 rounded-lg border border-line bg-surface p-4">
                 {product.images[0]?.src ? (
                   <Image
                     src={product.images[0].src}
@@ -144,7 +144,7 @@ export function CartView() {
                           if (Number.isFinite(e.target.valueAsNumber))
                             setQuantity(item.id, e.target.valueAsNumber);
                         }}
-                        className="min-h-11 w-20 rounded-md border border-line bg-white px-2 text-center text-base"
+                        className="min-h-11 w-20 rounded-md border border-line bg-surface px-2 text-center text-base"
                       />
                       <button
                         type="button"
@@ -178,7 +178,7 @@ export function CartView() {
                     <button
                       type="button"
                       onClick={() => remove(item.id)}
-                      className="min-h-11 rounded-md px-3 text-sm font-semibold text-red-700 underline hover:bg-red-50"
+                      className="min-h-11 rounded-md px-3 text-sm font-semibold text-danger underline hover:bg-danger/10"
                     >
                       Eliminar<span className="sr-only"> {product.name}</span>
                     </button>
@@ -198,7 +198,7 @@ export function CartView() {
               <span className="text-sm font-semibold">¿Vaciar todo el pedido?</span>
               <button
                 type="button"
-                className={buttonClass("ghost", "!min-h-11 !px-4 text-red-700")}
+                className={buttonClass("ghost", "!min-h-11 !px-4 text-danger")}
                 onClick={() => {
                   clear();
                   setConfirmClear(false);
@@ -217,7 +217,7 @@ export function CartView() {
           ) : (
             <button
               type="button"
-              className={buttonClass("ghost", "!min-h-11 !px-4 text-red-700")}
+              className={buttonClass("ghost", "!min-h-11 !px-4 text-danger")}
               onClick={() => setConfirmClear(true)}
             >
               Vaciar pedido
@@ -226,7 +226,7 @@ export function CartView() {
         </div>
       </section>
 
-      <aside className="h-fit rounded-lg border border-line bg-white p-5 lg:sticky lg:top-24">
+      <aside className="h-fit rounded-lg border border-line bg-surface p-5 lg:sticky lg:top-24">
         <h2 className="text-xl font-semibold">Resumen</h2>
         <p className="mt-2 text-sm text-ink-soft" role="status">
           {cart.items.length} {cart.items.length === 1 ? "producto" : "productos"} · {units}{" "}

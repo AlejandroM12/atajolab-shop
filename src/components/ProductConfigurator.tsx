@@ -20,7 +20,7 @@ import { buttonClass } from "./ui";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 const inputCls =
-  "min-h-11 w-full rounded-xl border border-line bg-white px-3 py-2 text-base placeholder:text-ink-soft/60 aria-[invalid=true]:border-red-600";
+  "min-h-11 w-full rounded-xl border border-line bg-surface px-3 py-2 text-base placeholder:text-ink-soft/60 aria-[invalid=true]:border-danger";
 
 function Field({
   id,
@@ -47,7 +47,7 @@ function Field({
         </p>
       )}
       {error && (
-        <p id={`${id}-error`} role="alert" className="mt-1 text-sm font-medium text-red-700">
+        <p id={`${id}-error`} role="alert" className="mt-1 text-sm font-medium text-danger">
           {error}
         </p>
       )}
@@ -105,7 +105,7 @@ export function ProductConfigurator({ product }: { product: Product }) {
   if (!orderable) {
     return (
       <>
-      <section aria-labelledby="config-title" className="rounded-lg border border-line bg-white p-5">
+      <section aria-labelledby="config-title" className="rounded-lg border border-line bg-surface p-5">
         <h2 id="config-title" className="text-xl font-semibold">
           Próximamente
         </h2>
@@ -128,7 +128,7 @@ export function ProductConfigurator({ product }: { product: Product }) {
   return (
     <>
     <PriceBlock product={product} selection={selection} />
-    <section aria-labelledby="config-title" className="rounded-lg border border-line bg-white p-5 sm:p-6">
+    <section aria-labelledby="config-title" className="rounded-lg border border-line bg-surface p-5 sm:p-6">
       <h2 id="config-title" className="text-xl font-semibold">
         Personalizá tu producto
       </h2>

@@ -41,7 +41,7 @@ export function MobileNav() {
         <nav
           id="mobile-menu"
           aria-label="Principal móvil"
-          className="absolute inset-x-0 top-14 border-b border-line bg-white px-4 pb-4"
+          className="absolute inset-x-0 top-14 border-b border-line bg-surface px-4 pb-4"
         >
           <ul className="flex flex-col">
             {NAV_LINKS.map((l) => (

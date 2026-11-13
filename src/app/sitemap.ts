@@ -12,6 +12,7 @@ const STATIC_PATHS = [
   "/preguntas-frecuentes/",
   "/contacto/",
   "/condiciones-comerciales/",
+  "/privacidad/",
   "/menu-digital/",
 ];
 

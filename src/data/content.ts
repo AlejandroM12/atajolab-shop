@@ -7,7 +7,7 @@ export const SHIPPING_TEXT =
   "El costo y las opciones de envío se informan antes de confirmar el pedido, según destino, cantidad y características del producto.";
 
 export const MADE_TO_ORDER_TEXT =
-  "Todos los productos se fabrican por encargo: el plazo de entrega se informa al confirmar el pedido.";
+  "Todo se hace por encargo, sin stock: podés pedir cualquier cantidad y el plazo de entrega se informa al confirmar el pedido.";
 
 /** Las condiciones de pago no son fijas: se acuerdan con cada cliente antes de confirmar. */
 export const PAYMENT_TEXT =
@@ -15,20 +15,20 @@ export const PAYMENT_TEXT =
 
 export const BUY_STEPS = [
   {
-    title: "Elegí y personalizá",
-    text: "Explorá el catálogo, elegí las opciones de cada producto y agregalo a tu pedido.",
+    title: "Elegí tus productos y cantidades",
+    text: "Explorá el catálogo, elegí las opciones y la cantidad que necesites y agregalo a tu pedido. Todo se hace por encargo, sin stock.",
   },
   {
     title: "Enviá tu pedido por WhatsApp",
     text: "Se abre WhatsApp con tu pedido ya escrito. Vos lo revisás y lo enviás.",
   },
   {
-    title: "Acordamos presupuesto, pago y envío",
-    text: "Te respondemos con el presupuesto, las condiciones de pago y las opciones de envío, antes de confirmar el pedido.",
+    title: "Coordinamos personalización, pago y envío",
+    text: "Definimos textos, enlace de destino y diseño con vos, y te pasamos el presupuesto, las condiciones de pago y las opciones de envío antes de confirmar.",
   },
   {
-    title: "Diseño, fabricación y envío",
-    text: "Definimos textos, enlace de destino y diseño con vos, coordinamos la producción por encargo y enviamos a todo el país.",
+    title: "Producción y envío",
+    text: "Una vez confirmado el pedido, coordinamos la producción por encargo y enviamos a todo el país.",
   },
 ] as const;
 
@@ -108,7 +108,7 @@ export const FAQS: Faq[] = [
   {
     question: "¿Puedo comprar varias unidades?",
     answer:
-      "Sí, en cada producto podés indicar la cantidad que necesitás. El precio final se confirma en el presupuesto.",
+      "Sí, cualquier cantidad: todo se hace por encargo y no manejamos stock. Los precios publicados son de referencia y el importe final se confirma antes de cerrar el pedido.",
   },
   {
     question: "¿Hacen envíos?",

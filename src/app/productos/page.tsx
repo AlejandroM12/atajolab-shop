@@ -15,9 +15,9 @@ export default function ProductosPage() {
   return (
     <Container className="py-8 sm:py-10">
       <SectionHeading as="h1" title="Productos">
-        Elegí un producto, personalizalo y armá tu pedido. Todo se fabrica por encargo y se
-        confirma por WhatsApp. Envíos a todo el país. Las imágenes son ilustrativas: el diseño
-        final puede variar.
+        Elegí un producto, personalizalo y armá tu pedido. Todo se hace por encargo (sin stock), en la
+        cantidad que necesites, y se confirma por WhatsApp. Envíos a todo el país. Los precios son de
+        referencia y las imágenes son ilustrativas: el diseño final puede variar.
       </SectionHeading>
       <div className="mt-8">
         <Suspense fallback={<p className="py-10 text-ink-soft">Cargando catálogo…</p>}>

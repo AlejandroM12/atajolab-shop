@@ -64,6 +64,11 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link href="/privacidad/" className={linkCls}>
+                Privacidad
+              </Link>
+            </li>
+            <li>
               <Link href="/menu-digital/" className={linkCls}>
                 Carta digital (próximamente)
               </Link>

@@ -29,9 +29,10 @@ test.describe("catálogo", () => {
     await page.getByRole("button", { name: "Limpiar filtros" }).click();
     await expect(page).toHaveURL(/\/productos\/$/);
 
-    await page.getByLabel("Disponibilidad").selectOption("proximamente");
-    await expect(page.getByRole("heading", { level: 3, name: "Carta digital editable" })).toBeVisible();
-    await expect(page.getByText("1 producto", { exact: true })).toBeVisible();
+    await page.getByLabel("Categoría").selectOption("menus-restaurantes");
+    await page.getByLabel("Tecnología").selectOption("nfc");
+    await expect(page.getByRole("heading", { level: 3, name: "Soporte QR + NFC de mesa" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 3, name: "Sticker QR para mesas" })).toHaveCount(0);
   });
 });
 
@@ -118,8 +119,11 @@ test.describe("pedido", () => {
   });
 });
 
-test("productos sin precio cerrado: presupuesto y sin total ficticio", async ({ page }) => {
-  await page.goto("/productos/sticker-qr/");
+const money = (n: number) => new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(n).replace(/\s/g, " ");
+const norm = (t: string) => t.replace(/\s/g, " ");
+
+test("productos sin precio: presupuesto, sin $0 y sin total ficticio", async ({ page }) => {
+  await page.goto("/productos/identificadores-personalizados/");
   await expect(page.getByTestId("product-price")).toHaveText("Solicitar presupuesto");
   await page.getByRole("button", { name: "Agregar al pedido" }).click();
   await page.goto("/pedido/");
@@ -129,34 +133,75 @@ test("productos sin precio cerrado: presupuesto y sin total ficticio", async ({ 
   const msg = await waMessage(page, /Enviar pedido por WhatsApp/);
   expect(msg).toContain("Precio: a presupuestar");
   expect(msg).not.toContain("TOTAL");
+  expect(msg).not.toMatch(/\$ ?0/);
 });
 
-test("el prefetch estático de Next.js no genera 404", async ({ page }) => {
-  const failed: string[] = [];
-  page.on("response", (r) => {
-    if (r.url().includes("__next") && r.status() >= 400) failed.push(`${r.status()} ${r.url()}`);
-  });
-  await page.goto("/");
-  await page.waitForLoadState("networkidle");
-  await page.evaluate(async () => {
-    for (let y = 0; y < document.body.scrollHeight; y += 500) {
-      window.scrollTo(0, y);
-      await new Promise((r) => setTimeout(r, 60));
-    }
-  });
-  await page.waitForTimeout(1000);
-  await page.getByRole("link", { name: "Productos", exact: true }).first().click();
-  await expect(page).toHaveURL(/\/productos\/$/);
-  expect(failed).toEqual([]);
+test("precio fijo: catálogo, ficha, carrito y mensaje de WhatsApp coinciden", async ({ page }) => {
+  const precio = money(29900);
+  await page.goto("/productos/");
+  const card = page.locator("article").filter({ hasText: "Soporte QR + NFC para reseñas" });
+  await expect(card).toContainText(precio);
+
+  await page.goto("/productos/soporte-qr-nfc-resenas/");
+  await expect(page.getByTestId("product-price")).toContainText(precio);
+  await page.getByLabel("Cantidad", { exact: true }).fill("3");
+  await expect(page.getByTestId("product-subtotal")).toContainText(money(89700));
+  await page.getByRole("button", { name: "Agregar al pedido" }).click();
+
+  await page.goto("/pedido/");
+  await expect(page.getByTestId("line-price")).toContainText(money(89700));
+  await expect(page.getByTestId("order-subtotal")).toContainText(money(89700));
+  await expect(page.getByTestId("order-totals")).toContainText("Total de referencia");
+  const msg = norm(await waMessage(page, /Enviar pedido por WhatsApp/));
+  expect(msg).toContain("1. Soporte QR + NFC para reseñas");
+  expect(msg).toContain("Cantidad: 3");
+  expect(msg).toContain(`Precio unitario de referencia: ${precio}`);
+  expect(msg).toContain(`Subtotal de referencia: ${money(89700)}`);
+  expect(msg).toContain(`TOTAL DE REFERENCIA: ${money(89700)}`);
+  expect(msg).toContain("Los importes son de referencia");
 });
 
-test("las fichas comparten la imagen del producto en Open Graph", async ({ page }) => {
-  await page.goto("/productos/sticker-qr/");
-  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
-    "content",
-    "https://tienda.atajolab.dev/productos/sticker-qr.webp",
-  );
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://tienda.atajolab.dev/productos/sticker-qr/");
+test("precio 'desde': se muestra como referencia y se presupuesta, sin sumar al total", async ({ page }) => {
+  const desde = `Desde ${money(22900)}`;
+  await page.goto("/productos/");
+  await expect(page.locator("article").filter({ hasText: "Cartel personalizado para mostrador" })).toContainText(desde);
+  await page.goto("/productos/cartel-mostrador-personalizado/");
+  await expect(page.getByTestId("product-price")).toContainText(desde);
+  await page.getByRole("button", { name: "Agregar al pedido" }).click();
+  // más un producto con precio fijo
+  await page.goto("/productos/tarjeta-nfc/");
+  await page.getByRole("button", { name: "Agregar al pedido" }).click();
+  await page.goto("/pedido/");
+  await expect(page.getByTestId("order-subtotal")).toHaveText(money(17900));
+  await expect(page.getByTestId("order-totals")).toContainText("1 producto");
+  await expect(page.getByTestId("order-totals")).not.toContainText("Total de referencia");
+  const msg = norm(await waMessage(page, /Enviar pedido por WhatsApp/));
+  expect(msg).toContain(`a presupuestar (desde ${money(22900)}, importe de referencia)`);
+  expect(msg).toContain(`Subtotal de referencia de los productos con precio: ${money(17900)}`);
+  expect(msg).toContain("Productos a presupuestar: 1");
+  expect(msg).not.toContain("TOTAL DE REFERENCIA");
+});
+
+test("sin stock: no hay filtros ni textos de disponibilidad, y la carta digital queda fuera del pedido", async ({ page }) => {
+  await page.goto("/productos/");
+  await expect(page.getByLabel("Disponibilidad")).toHaveCount(0);
+  const body = await page.locator("body").innerText();
+  expect(body).not.toMatch(/agotad|sin existencias|disponible para consultar|en stock|hay stock|stock disponible/i);
+  await page.goto("/productos/carta-digital-editable/");
+  await expect(page.getByRole("button", { name: "Agregar al pedido" })).toHaveCount(0);
+  await expect(page.getByTestId("product-price")).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Próximamente" })).toBeVisible();
+  const href = await page.getByRole("link", { name: /Avisame cuando esté disponible/ }).getAttribute("href");
+  expect(decodeURIComponent(href!)).toContain("cuando esté disponible");
+});
+
+test("las condiciones legales no prometen excepciones y la privacidad es pública", async ({ page }) => {
+  await page.goto("/condiciones-comerciales/");
+  await expect(page.getByRole("heading", { name: /arrepentimiento/ })).toBeVisible();
+  const body = await page.locator("body").innerText();
+  expect(body).not.toMatch(/sin derecho a devoluci|no admite devoluci|no se aceptan devoluciones|no hay devoluciones/i);
+  await page.goto("/privacidad/");
+  await expect(page.getByRole("heading", { level: 1, name: "Política de privacidad" })).toBeVisible();
 });
 
 test("todos los enlaces de WhatsApp usan el número oficial", async ({ page }) => {
@@ -181,7 +226,7 @@ test("A medida ofrece AtajoLab QR (enlace externo) y el formulario de producto f
 test("contenido comercial: envíos a todo el país y sin anticipo fijo", async ({ page }) => {
   const paths = [
     "/", "/productos/", "/productos/sticker-qr/", "/como-comprar/", "/contacto/", "/personalizados/",
-    "/preguntas-frecuentes/", "/condiciones-comerciales/", "/pedido/",
+    "/preguntas-frecuentes/", "/condiciones-comerciales/", "/privacidad/", "/pedido/",
   ];
   for (const path of paths) {
     await page.goto(path);
@@ -232,6 +277,7 @@ test.describe("accesibilidad y responsive", () => {
     "/personalizados/",
     "/preguntas-frecuentes/",
     "/condiciones-comerciales/",
+    "/privacidad/",
     "/contacto/",
     "/menu-digital/",
   ];

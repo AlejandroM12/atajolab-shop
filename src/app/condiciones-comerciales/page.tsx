@@ -39,6 +39,10 @@ export default function CondicionesPage() {
               &quot;Solicitar presupuesto&quot; se presupuestan en cada caso.
             </li>
             <li>
+              <strong className="text-ink">Imágenes.</strong> Las imágenes del catálogo son
+              ilustrativas: el diseño final se acuerda con vos antes de producir.
+            </li>
+            <li>
               <strong className="text-ink">{SHIPPING_BANNER}.</strong> {SHIPPING_TEXT}
             </li>
             <li>

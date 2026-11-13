@@ -7,7 +7,7 @@ import { getAllProducts, getCategories } from "@/lib/catalog";
 export const metadata: Metadata = {
   title: "Productos QR y NFC personalizados",
   description:
-    "Catálogo de soportes QR para reseñas, menús para restaurantes, tarjetas NFC, stickers y credenciales para eventos. Fabricación por encargo.",
+    "Catálogo de soportes QR para reseñas, menús para restaurantes, tarjetas NFC, stickers y credenciales para eventos. Envíos a todo el país.",
   alternates: { canonical: "/productos/" },
 };
 
@@ -15,9 +15,7 @@ export default function ProductosPage() {
   return (
     <Container className="py-8 sm:py-10">
       <SectionHeading as="h1" title="Productos">
-        Elegí un producto, personalizalo y armá tu pedido. Todo se hace por encargo (sin stock), en la
-        cantidad que necesites, y se confirma por WhatsApp. Envíos a todo el país. Los precios son de
-        referencia y las imágenes son ilustrativas: el diseño final puede variar.
+        Elegí, personalizá y pedí por WhatsApp. Envíos a todo el país.
       </SectionHeading>
       <div className="mt-8">
         <Suspense fallback={<p className="py-10 text-ink-soft">Cargando catálogo…</p>}>

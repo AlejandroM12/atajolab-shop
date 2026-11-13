@@ -9,7 +9,7 @@ import { FAQS } from "@/data/content";
 export const metadata: Metadata = {
   title: "Preguntas frecuentes sobre QR y NFC",
   description:
-    "Diferencia entre QR y NFC, personalización, pedidos, pago, envíos a todo el país y cómo cambiar el enlace de un QR.",
+    "Cómo pedir, qué diferencia hay entre QR y NFC, qué información necesitás para el diseño, cómo recibir tu producto y cómo se coordina el pago.",
   alternates: { canonical: "/preguntas-frecuentes/" },
 };
 
@@ -17,9 +17,7 @@ export default function FaqPage() {
   return (
     <Container className="py-8 sm:py-12">
       <JsonLd data={faqJsonLd(FAQS)} />
-      <SectionHeading as="h1" eyebrow="Ayuda" title="Preguntas frecuentes">
-        Respondemos lo que ya sabemos. Lo que todavía no está definido, lo decimos.
-      </SectionHeading>
+      <SectionHeading as="h1" title="Preguntas frecuentes" />
       <div className="mt-8 max-w-3xl">
         <FaqList faqs={FAQS} />
       </div>

@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BENEFITS, BUY_STEPS, FAQS, QR_NFC, SHIPPING_BANNER } from "@/data/content";
+import { BUY_STEPS, FAQS, QR_NFC } from "@/data/content";
 import { getCategories } from "@/lib/catalog";
 import type { Faq } from "@/lib/types";
 import { ProductVisual } from "./ProductVisual";
-import { Container, SectionHeading } from "./ui";
+import { Container } from "./ui";
 
 export function CategoryGrid() {
   const categories = getCategories();
@@ -53,20 +53,20 @@ export function CategoryGrid() {
 
 export function HowItWorks() {
   return (
-    <section aria-labelledby="how" className="bg-paper-2 py-12">
+    <section aria-labelledby="how" className="bg-paper-2 py-10">
       <Container>
-        <SectionHeading eyebrow="QR y NFC" title="Así funcionan, sin vueltas">
-          Dos formas de abrir un enlace desde un objeto físico.
-        </SectionHeading>
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <h2 id="how" className="text-xl font-semibold sm:text-2xl">
+          QR y NFC
+        </h2>
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
           {[QR_NFC.qr, QR_NFC.nfc].map((t) => (
-            <article key={t.title} className="rounded-lg border border-line bg-white p-6">
-              <h3 className="text-2xl font-semibold">{t.title}</h3>
-              <p className="mt-2 text-lg">{t.how}</p>
-              <ul className="mt-3 space-y-1.5 text-sm text-ink-soft">
+            <article key={t.title} className="rounded-lg border border-line bg-white p-5">
+              <h3 className="text-lg font-semibold">{t.title}</h3>
+              <p className="mt-1.5 text-ink-soft">{t.how}</p>
+              <ul className="mt-3 space-y-1 text-sm text-ink-soft">
                 {t.notes.map((n) => (
                   <li key={n} className="flex gap-2">
-                    <span aria-hidden className="text-ink-soft">•</span>
+                    <span aria-hidden>•</span>
                     {n}
                   </li>
                 ))}
@@ -74,32 +74,13 @@ export function HowItWorks() {
             </article>
           ))}
         </div>
-        <p className="mt-5 max-w-3xl text-ink-soft">{QR_NFC.footer}</p>
       </Container>
     </section>
   );
 }
 
-export function Benefits() {
-  return (
-    <section aria-labelledby="benefits" className="py-12">
-      <Container>
-        <SectionHeading eyebrow="Para tu negocio" title="Cosas simples que hacen la diferencia" />
-        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {BENEFITS.map((b) => (
-            <li key={b.title} className="rounded-lg border border-line bg-white p-5">
-              <h3 className="text-lg font-semibold">{b.title}</h3>
-              <p className="mt-2 text-sm text-ink-soft">{b.text}</p>
-            </li>
-          ))}
-        </ul>
-      </Container>
-    </section>
-  );
-}
-
-export function BuySteps({ compact = false }: { compact?: boolean }) {
-  const steps = compact ? BUY_STEPS.slice(0, 4) : BUY_STEPS;
+export function BuySteps() {
+  const steps = BUY_STEPS;
   return (
     <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {steps.map((s, i) => (
@@ -119,33 +100,25 @@ export function BuySteps({ compact = false }: { compact?: boolean }) {
 }
 
 export function HowToBuy() {
-  const points = [
-    { title: "Pedís por WhatsApp", text: "Armás tu pedido en la web y lo enviás. No hay pagos online." },
-    {
-      title: "Acordamos los detalles",
-      text: "Te respondemos con el presupuesto, las condiciones de pago y las opciones de envío.",
-    },
-    { title: SHIPPING_BANNER, text: "Producción por encargo y envío a donde estés." },
-  ];
   return (
-    <section aria-labelledby="buy" className="bg-paper-2 py-10">
+    <section aria-labelledby="buy" className="py-10">
       <Container>
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 id="buy" className="text-xl font-semibold sm:text-2xl">
-            Comprar es simple
+            Cómo comprar
           </h2>
           <Link href="/como-comprar/" className="text-sm font-semibold underline">
-            Cómo comprar
+            Ver más
           </Link>
         </div>
-        <ul className="mt-5 grid gap-x-8 gap-y-5 sm:grid-cols-3">
-          {points.map((p) => (
-            <li key={p.title} className="border-t border-ink/20 pt-3">
-              <h3 className="text-base font-semibold">{p.title}</h3>
-              <p className="mt-1 text-sm text-ink-soft">{p.text}</p>
+        <ol className="mt-5 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
+          {BUY_STEPS.map((s) => (
+            <li key={s.title} className="border-t border-ink/20 pt-3">
+              <h3 className="text-base font-semibold">{s.title}</h3>
+              <p className="mt-1 text-sm text-ink-soft">{s.text}</p>
             </li>
           ))}
-        </ul>
+        </ol>
       </Container>
     </section>
   );
@@ -174,41 +147,16 @@ export function FaqPreview() {
     <section aria-labelledby="faq" className="py-12">
       <Container className="grid gap-8 lg:grid-cols-[1fr_1.6fr]">
         <div>
-          <SectionHeading eyebrow="Preguntas frecuentes" title="Lo que nos preguntan seguido" />
+          <h2 id="faq" className="text-xl font-semibold sm:text-2xl">
+            Preguntas frecuentes
+          </h2>
           <p className="mt-4">
             <Link href="/preguntas-frecuentes/" className="font-semibold underline">
               Ver todas las preguntas
             </Link>
           </p>
         </div>
-        <FaqList faqs={FAQS.slice(0, 5)} />
-      </Container>
-    </section>
-  );
-}
-
-export function MenuPlatformTeaser() {
-  return (
-    <section aria-labelledby="menu-digital" className="py-12">
-      <Container>
-        <div className="flex flex-col gap-4 rounded-lg border border-line p-6 sm:flex-row sm:items-center sm:justify-between">
-          <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-wider text-brand-dark">
-              En preparación
-            </p>
-            <h2 id="menu-digital" className="mt-1 text-xl font-semibold">
-              Carta digital editable
-            </h2>
-            <p className="mt-2 text-sm text-ink-soft">
-              Estamos pensando un servicio para que bares y restaurantes editen su carta desde el
-              celular y mantengan el mismo QR cuando cambien los precios. Todavía no está
-              disponible.
-            </p>
-          </div>
-          <Link href="/menu-digital/" className="shrink-0 text-sm font-semibold underline">
-            Conocer la idea
-          </Link>
-        </div>
+        <FaqList faqs={FAQS.slice(0, 4)} />
       </Container>
     </section>
   );

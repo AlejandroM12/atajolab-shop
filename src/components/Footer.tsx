@@ -13,8 +13,7 @@ export function Footer() {
         <div>
           <Logo />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-soft">
-            Productos físicos personalizados con QR y NFC para negocios, profesionales y eventos.
-            Producción por encargo, con base en {SITE.startCity}. Envíos a todo el país.
+            Productos QR y NFC personalizados para negocios, profesionales y eventos.
           </p>
           <p className="mt-3 text-sm text-ink-soft">
             Una unidad de{" "}
@@ -45,12 +44,11 @@ export function Footer() {
           <h2 className="text-sm font-semibold">Información</h2>
           <ul className="mt-3 space-y-2 text-sm">
             <li>
-              <span className="text-ink-soft">WhatsApp: </span>
-              <WhatsAppLink className="font-medium text-ink underline" />
+              <WhatsAppLink label="Contactar por WhatsApp" className={linkCls} />
             </li>
             <li>
               <a href={QR_TOOL_URL} target="_blank" rel="noopener noreferrer" className={linkCls}>
-                Crear mi QR online
+                Crear mi QR
               </a>
             </li>
             <li>
@@ -68,16 +66,11 @@ export function Footer() {
                 Privacidad
               </Link>
             </li>
-            <li>
-              <Link href="/menu-digital/" className={linkCls}>
-                Carta digital (próximamente)
-              </Link>
-            </li>
           </ul>
         </nav>
       </Container>
       <div className="border-t border-line py-4 text-center text-xs text-ink-soft">
-        © {new Date().getFullYear()} AtajoLab. Imágenes ilustrativas: el diseño final puede variar.
+        © {new Date().getFullYear()} AtajoLab.
       </div>
     </footer>
   );

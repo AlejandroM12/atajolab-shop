@@ -9,7 +9,6 @@ import {
   FaqPreview,
   HowItWorks,
   HowToBuy,
-  MenuPlatformTeaser,
 } from "@/components/sections";
 import { ButtonLink, Container } from "@/components/ui";
 import { getFeaturedProducts } from "@/lib/catalog";
@@ -42,18 +41,12 @@ export default function Home() {
                 compact
               />
             </div>
-            <p className="mt-5 text-sm text-ink-soft">
-              <strong className="font-semibold text-ink">{SHIPPING_BANNER}.</strong> Se fabrican por
-              encargo y se piden por WhatsApp.{" "}
-              <Link href="/como-comprar/" className="font-medium text-ink underline">
-                Cómo comprar
-              </Link>
-            </p>
+            <p className="mt-5 text-sm font-medium text-ink">{SHIPPING_BANNER}</p>
           </div>
           <div className="hidden overflow-hidden rounded-lg border border-line lg:block">
             <Image
               src="/hero.webp"
-              alt="Render ilustrativo de un soporte para reseñas, un cartel de mesa, un sticker y una tarjeta NFC con QR"
+              alt="Soporte para reseñas, cartel de mesa, sticker y tarjeta NFC con QR"
               width={1600}
               height={1000}
               priority
@@ -89,7 +82,6 @@ export default function Home() {
 
       <HowItWorks />
       <HowToBuy />
-      <MenuPlatformTeaser />
       <FaqPreview />
       <ContactCta />
     </>

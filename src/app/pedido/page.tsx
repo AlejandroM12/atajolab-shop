@@ -12,9 +12,7 @@ export const metadata: Metadata = {
 export default function PedidoPage() {
   return (
     <Container className="py-8 sm:py-12">
-      <SectionHeading as="h1" eyebrow="Armá tu pedido" title="Mi pedido">
-        Revisá lo que elegiste. Tu pedido se guarda en este dispositivo.
-      </SectionHeading>
+      <SectionHeading as="h1" title="Mi pedido" />
       <div className="mt-8">
         <CartView />
       </div>

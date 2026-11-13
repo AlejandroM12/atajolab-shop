@@ -2,127 +2,70 @@ import type { Faq } from "@/lib/types";
 
 export const SHIPPING_BANNER = "Envíos a todo el país";
 
-/** Se muestra junto al aviso de envíos. No define tarifas, transportistas ni plazos. */
+/** Texto de envíos: solo para Condiciones y Cómo comprar. */
 export const SHIPPING_TEXT =
   "El costo y las opciones de envío se informan antes de confirmar el pedido, según destino, cantidad y características del producto.";
 
+/** Solo para Condiciones comerciales. */
 export const MADE_TO_ORDER_TEXT =
-  "Todo se hace por encargo, sin stock: podés pedir cualquier cantidad y el plazo de entrega se informa al confirmar el pedido.";
+  "Todo se hace por encargo y no trabajamos con stock: podés pedir cualquier cantidad y el plazo de entrega se informa al confirmar el pedido.";
 
-/** Las condiciones de pago no son fijas: se acuerdan con cada cliente antes de confirmar. */
+/** Las condiciones de pago se acuerdan con cada cliente antes de confirmar. */
 export const PAYMENT_TEXT =
-  "Las condiciones de pago se acuerdan con vos según el pedido, antes de confirmarlo. No se paga desde esta web.";
+  "Las condiciones de pago se acuerdan con vos según el pedido, antes de confirmarlo. Esta web no procesa pagos.";
 
 export const BUY_STEPS = [
-  {
-    title: "Elegí tus productos y cantidades",
-    text: "Explorá el catálogo, elegí las opciones y la cantidad que necesites y agregalo a tu pedido. Todo se hace por encargo, sin stock.",
-  },
-  {
-    title: "Enviá tu pedido por WhatsApp",
-    text: "Se abre WhatsApp con tu pedido ya escrito. Vos lo revisás y lo enviás.",
-  },
-  {
-    title: "Coordinamos personalización, pago y envío",
-    text: "Definimos textos, enlace de destino y diseño con vos, y te pasamos el presupuesto, las condiciones de pago y las opciones de envío antes de confirmar.",
-  },
-  {
-    title: "Producción y envío",
-    text: "Una vez confirmado el pedido, coordinamos la producción por encargo y enviamos a todo el país.",
-  },
-] as const;
-
-export const BENEFITS = [
-  {
-    title: "Más reseñas, sin pedirlas una por una",
-    text: "Un QR a la vista en tu mostrador facilita que tus clientes dejen su opinión en Google.",
-  },
-  {
-    title: "Tu menú, en el celular de tus clientes",
-    text: "Soportes y stickers que abren tu carta con un escaneo o un toque.",
-  },
-  {
-    title: "Tu marca, en un objeto real",
-    text: "Cada producto se personaliza con el nombre, los colores y el enlace de tu negocio.",
-  },
-  {
-    title: "Simple para quien lo usa",
-    text: "El QR se escanea con la cámara. El NFC funciona acercando un celular compatible.",
-  },
-  {
-    title: "Atención directa",
-    text: "Coordinás todo por WhatsApp, de persona a persona, desde la consulta hasta la entrega.",
-  },
-  {
-    title: "Pensado para crecer con vos",
-    text: "AtajoLab desarrolla herramientas digitales: la tienda está preparada para sumar nuevos servicios.",
-  },
+  { title: "Elegís tus productos", text: "Mirá el catálogo y sumá lo que te interese." },
+  { title: "Personalizás tu pedido", text: "Indicá nombre, enlace y cantidad. El resto lo definimos juntos." },
+  { title: "Lo enviás por WhatsApp", text: "Con un toque te llega todo preparado." },
+  { title: "Coordinamos los detalles", text: "Diseño, pago y entrega a todo el país." },
 ] as const;
 
 export const QR_NFC = {
   qr: {
     title: "QR",
-    how: "Escaneá el código con la cámara del celular para abrir el enlace.",
-    notes: [
-      "Funciona en casi cualquier celular con cámara.",
-      "No necesita chip: un QR impreso no incluye necesariamente un chip NFC.",
-    ],
+    how: "Se escanea con la cámara del celular y abre el enlace que elijas.",
+    notes: ["Funciona en casi cualquier celular.", "No necesita instalar nada."],
   },
   nfc: {
     title: "NFC",
-    how: "Acercá un celular compatible al producto para abrir el enlace.",
-    notes: [
-      "Requiere un celular compatible: no todos tienen NFC.",
-      "Es un chip dentro del producto, no se ve a simple vista.",
-    ],
+    how: "Se acerca un celular compatible al producto y abre el enlace.",
+    notes: ["Requiere un celular con NFC: no todos lo tienen.", "El chip va dentro del producto."],
   },
-  footer:
-    "Según el producto que elijas, lleva QR, NFC o ambos. En los productos con QR + NFC, el QR sirve como alternativa para quienes no tienen NFC.",
 } as const;
 
 export const FAQS: Faq[] = [
   {
-    question: "¿Qué diferencia hay entre QR y NFC?",
-    answer:
-      "El QR se escanea con la cámara del celular para abrir un enlace. El NFC funciona acercando un celular compatible al producto. El QR funciona en casi cualquier celular; el NFC requiere compatibilidad y no todos los teléfonos la tienen. Un QR impreso no incluye necesariamente un chip: depende del producto que elijas.",
-  },
-  {
-    question: "¿Necesito una aplicación para usarlo?",
-    answer:
-      "Para escanear un QR alcanza con la cámara de la mayoría de los celulares actuales. Para el NFC, el celular debe ser compatible y tener la función activada; según el modelo puede variar cómo se abre el enlace.",
-  },
-  {
-    question: "¿Puedo personalizar el producto?",
-    answer:
-      "Sí. Según el producto podés indicar el nombre de tu negocio, un texto, el enlace de destino, un color preferido y si tenés un logo. Los colores y detalles disponibles se confirman al presupuestar.",
-  },
-  {
     question: "¿Cómo hago un pedido?",
     answer:
-      "Armás tu pedido en la web y lo enviás por WhatsApp. Nosotros confirmamos presupuesto, pago y envío, coordinamos el diseño y avanzamos con la fabricación. No hay pagos online en la web.",
+      "Elegí tus productos, personalizalos y enviá el pedido por WhatsApp. Te respondemos para coordinar los detalles.",
   },
   {
-    question: "¿Cómo se paga?",
-    answer: PAYMENT_TEXT,
-  },
-  {
-    question: "¿Puedo comprar varias unidades?",
+    question: "¿Qué diferencia hay entre QR y NFC?",
     answer:
-      "Sí, cualquier cantidad: todo se hace por encargo y no manejamos stock. Los precios publicados son de referencia y el importe final se confirma antes de cerrar el pedido.",
+      "El QR se escanea con la cámara del celular y funciona en casi cualquier teléfono. El NFC se activa acercando un celular compatible; no todos lo tienen. Ninguno requiere instalar una aplicación.",
   },
   {
-    question: "¿Hacen envíos?",
+    question: "¿Qué información necesito para el diseño?",
     answer:
-      "Sí, enviamos a todo el país. El costo y las opciones de envío se informan antes de confirmar el pedido, según destino, cantidad y características del producto. Como todo se produce por encargo, el plazo de entrega se informa al confirmar.",
+      "Con el nombre de tu negocio y el enlace al que querés llevar (reseñas, carta, redes, WhatsApp…) alcanza. Si tenés logo y colores, mejor. Si algo todavía no lo tenés, lo definimos juntos.",
   },
   {
-    question: "¿Puedo cambiar el enlace del QR?",
+    question: "¿Puedo cambiar el enlace del QR después?",
     answer:
-      "Depende de cómo se configure. Un QR con la URL directa guarda esa dirección y no se puede modificar una vez impreso. Un QR con enlace administrado apunta a una dirección intermedia que permite cambiar el destino sin reimprimir. Antes de fabricar definimos con vos cuál necesitás; no todos los QR son editables.",
+      "Depende de cómo se configure. Si el QR apunta a un enlace o archivo que administrás vos, podés actualizar el contenido sin cambiar el QR. Lo definimos al coordinar tu pedido.",
   },
   {
-    question: "¿Qué pasa si quiero modificar mi menú?",
+    question: "¿Cómo recibo el producto?",
     answer:
-      "Si tu QR apunta a un enlace o archivo que vos administrás, podés actualizar el contenido sin cambiar el QR. Si el menú está impreso en el propio producto, habría que fabricarlo de nuevo. Además, estamos preparando un servicio de carta digital editable, que todavía no está disponible.",
+      "Enviamos a todo el país. Acordamos el medio y el costo del envío antes de confirmar el pedido.",
+  },
+  {
+    question: "¿Cómo se coordina el pago?",
+    answer: "Te pasamos el presupuesto por WhatsApp y acordamos la forma de pago antes de confirmar.",
+  },
+  {
+    question: "¿Puedo pedir cualquier cantidad?",
+    answer: "Sí, desde una unidad.",
   },
 ];

@@ -34,7 +34,7 @@
 | [Argentina NFC](https://argentinanfc.com) | Acrílico Premium con pie, 15×10 cm, blanco/negro (diseños Google/Instagram/WhatsApp) | $11.500 (10–24 u.) · $10.000 (25–99) · $8.500 (100–999) · 1.000+ a cotizar | **Mayorista** (mín. 10 u.) | "Venta sugerida" por ellos: **$30.000**. |
 | Argentina NFC | Acrílico Premium pegable, 10×10 cm, 2 mm | $9.000 · $8.000 · $7.000 (mismos tramos) | Mayorista (mín. 10) | Venta sugerida: $25.000. |
 | Argentina NFC | Sticker NFC + QR, 10×10 cm, adhesivo | $5.000 · $4.000 · $3.000 (mismos tramos) | Mayorista (mín. 10) | Venta sugerida: $10.000. |
-| Argentina NFC | Chips NFC NTAG213 (solo chip) | desde $390 c/u | Mayorista (mín. 100) | |
+| Argentina NFC | Chips NFC NTAG213 (solo chip) | $800 (100–299 u.) · $600 (300–999) · $390 (1.000+) + envío $15.000 (gratis desde 300 chips) | Mayorista (mín. 100) | Corregido el 12/11/2026: antes figuraba "desde $390". |
 | Argentina NFC | Personalizados con logo: acrílico / sticker | $30.000 / $10.000 | Minorista | Desde 1 unidad. |
 | [Coloz NFC](https://coloznfc.com/) | Placa adhesiva NFC y QR | $29.000 (lanzamiento; luego $40.000) | Minorista | Envío gratis a todo el país (Correo Argentino). AMBA 3–5 días hábiles. |
 | Coloz NFC | Exhibidor en L | $39.000 | Minorista | |
@@ -66,11 +66,11 @@
 ## 4. Costos: comprobados, estimados y pendientes
 
 **Comprobado (precios de compra de terceros, no costo propio):**
-- Equivalentes mayoristas de Argentina NFC (mín. 10 u.): soporte de acrílico con NFC $8.500–11.500; acrílico pegable $7.000–9.000; sticker NFC + QR $3.000–5.000; chip NTAG213 desde $390 (mín. 100).
+- Equivalentes mayoristas de Argentina NFC (mín. 10 u.): soporte de acrílico con NFC $8.500–11.500; acrílico pegable $7.000–9.000; sticker NFC + QR $3.000–5.000; chip NTAG213 $800 en lotes de 100–299 u. (corregido 12/11/2026).
 - Stickers de vinilo troquelados 5×5 cm: $162/u (Sofite, ×100) a ≈ $467/u (Blear UV).
 
 **Estimado (hipótesis, confianza baja — validar con cotizaciones):**
-- Chip NFC importado: $350–$900 por unidad. Chip local (Argentina NFC): $390 desde 100 u.
+- Chip NFC importado: $350–$900 por unidad. Chip local (Argentina NFC): **$800 en lotes de 100–299** ($390 solo desde 1.000).
 - Acrílico cortado y armado para un soporte de mesa/mostrador sin personalizar: del orden de **$3.000–$9.000** según tamaño (referencias de porta menús sin impresión).
 - Embalaje y diseño/armado: no hay datos. Se trata como **costo a relevar**.
 
@@ -112,7 +112,7 @@ Tamaños de referencia asumidos (a confirmar): soporte/cartel con pie 15×10 cm;
 | 15 | Tarjeta NFC | — | Fijo | $17.900 | $15.900 | $14.500 | Tapp PVC con perfil $30.000; reseñas NFC $41.850–63.228 (no verificado). Nuestra tarjeta **no** incluye perfil editable. | Pendiente | Media-baja |
 | 16 | Tarjeta QR + NFC personalizada | — | Fijo | $19.900 | $17.500 | $15.900 | Idem #15; con QR impreso suma costo de impresión. | Pendiente | Media-baja |
 | 17 | Sticker QR | Destino del QR | Fijo | $2.500 | $1.800 | $1.300 (100+: $1.000) | Idem #7. | Idem #7 | Media |
-| 18 | Sticker NFC | Destino del QR | Fijo | $4.500 | $3.900 | $3.400 (100+: $3.000) | Sticker NFC + QR mayorista $3.000–5.000; chip desde $390. | Pendiente (el sticker NFC solo es más barato que el NFC + QR de referencia) | Media-baja |
+| 18 | Sticker NFC | Destino del QR | Fijo | $4.500 | $3.900 | $3.400 (100+: $3.000) | Sticker NFC + QR mayorista $3.000–5.000; chip $800 (100–299 u.). | Pendiente (el sticker NFC solo es más barato que el NFC + QR de referencia) | Media-baja |
 | 19 | Etiqueta QR personalizada | Destino del QR | Desde | desde $1.200 c/u (mín. 100) | — | — | Sofite $162/u; Blear $446–468/u (troquelado desde 100 u.). | Alto sobre insumo; sin costos de diseño/envío | Media-baja |
 | 20 | Adhesivo QR/NFC para vidrieras | Destino del QR | Fijo | $12.900 | $11.500 | $10.500 | Argentina NFC sticker 10×10 sugerido $10.000; Coloz placa adhesiva $29.000–40.000. | Pendiente | Media-baja |
 
@@ -195,12 +195,12 @@ AtajoLab adopta un **modelo de producción híbrido** (control propio de diseño
 | [Todomicro](https://www.todomicro.com.ar/999-tarjeta-1356-mhz-nfc-ntag215.html) | Tarjeta NFC NTAG215 PVC blanco: $4.185 (1 u.), **$2.790 (10+)**, $2.565 (50+), $2.385 (100+). Sin stock. |
 | [IDSHOP](https://www.idshop.com.ar/productos/etiquetas-circulares-nfc-ntag213-pack-100-un/) | Etiquetas NFC NTAG213 30 mm ×100: $321.176 (≈ $3.212/u). Sin stock. |
 | [Sofite](https://sofite.com.ar/) | Stickers 5 × 5 cm ×100: $16.200; 7 × 7 cm ×100: $30.500. Envío gratis desde $300.000. |
-| Argentina NFC | Chips NTAG213 desde **$390 c/u, mín. 100** (ya relevado). |
+| Argentina NFC | Chips NTAG213: **$800 (100–299 u.), $600 (300–999), $390 (1.000+)**; envío $15.000 (corrige el "$390 desde 100 u." de versiones anteriores). |
 
 ### Qué cambia en el análisis
 
 - **Costos de material:** el costo de acrílico de un soporte de 10 × 15 cm + base se calcula en **≈ $1.612** a partir del precio verificado de la placa (con 70 % de rendimiento supuesto). Reemplaza el rango genérico de la sección 4.
-- **Chips NFC:** el chip a $390 (mín. 100) es **mucho más barato** que las etiquetas y tarjetas NFC en blanco que venden las casas locales ($2.385–4.185 por tarjeta; $3.212 por etiqueta). Por eso conviene separar **chip** (insumo barato) de **tarjeta PVC terminada**.
+- **Chips NFC:** el chip de Argentina NFC cuesta **$800 en lotes de 100** (baja a $390 solo desde 1.000 u.), todavía **menos** que las etiquetas y tarjetas en blanco de casas locales ($2.385–4.185 por tarjeta; $2.804 la etiqueta NTAG215 de Todomicro, $3.212 la de IDSHOP). Para muestras (pocas unidades) conviene la etiqueta de Todomicro; para series, el lote.
 - **Márgenes indicativos** (detalle en el plan; con mano de obra, embalaje y cantidades como **estimaciones**, sin envío ni impuestos): soportes de reseñas, **≈ 61 % (QR) y ≈ 72 % (QR + NFC)** en producción interna de 10 u.; tarjetas **≈ 67–70 %**.
 
 ### Alertas sobre los precios propuestos (no aplicadas)

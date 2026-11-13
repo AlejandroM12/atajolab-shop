@@ -1,6 +1,7 @@
 # Plan de producción — AtajoLab Shop (modelo híbrido)
 
 > **Estado: propuesta de trabajo. No modifica precios ni contenido público.**
+> **Corrección (12/11/2026):** una versión anterior de este documento tomó el chip NFC de Argentina NFC a **$390** con mínimo de 100. La página indica **$800 (100–299 u.), $600 (300–999 u.) y $390 solo desde 1.000 u.**, más $15.000 de envío (gratis desde 300 chips). Los costos y márgenes que usaban el chip se recalcularon abajo.
 > Relevamiento y cálculos del **12/11/2026**. Complementa [`ESTUDIO_PRECIOS_ARGENTINA.md`](ESTUDIO_PRECIOS_ARGENTINA.md).
 
 ## 1. Decisión y alcance
@@ -99,7 +100,7 @@ Igual que **E**, con QR impreso en una de las caras (el QR no se ve afectado por
 | --- | --- | --- | --- |
 | [Mebac — sucursal Jujuy](https://mebac.com.ar/jujuy/producto/acrilico-cristal-3-mm-122x244cm/) (también Salta) | Acrílico cristal 3 mm, placa 122 × 244 cm | **$167.989** por placa entera (no indica IVA). Cristal 2 mm: $107.767. Hay existencias. Vende "por placa entera"; corte a medida no mencionado. | **V** |
 | [Laser House (Rosario)](https://www.laserhouseshop.com.ar/MLA-899848697-acrilico-plancha-transparente-placa-cristal-3mm-122x244-cm-_JM) | Placa acrílico 122 × 244 × 3 mm; porta menús | $199.610,49 por placa (retiro en fábrica de Rosario, según la búsqueda). Porta menú 13 × 18 cm: $7.086,57. | Fragmento de búsqueda, **no verificado en la ficha** |
-| [Argentina NFC](https://argentinanfc.com) | Chips NFC NTAG213 sueltos | **desde $390 c/u, mín. 100** | **V** |
+| [Argentina NFC](https://argentinanfc.com) | Chips NFC NTAG213 sueltos (sticker redondo transparente, 144 bytes) | **$800 (100–299 u.) · $600 (300–999) · $390 (1.000+)**; mín. 100; envío **$15.000** (gratis desde 300 chips) | **V** |
 | [Todomicro](https://www.todomicro.com.ar/999-tarjeta-1356-mhz-nfc-ntag215.html) | Tarjeta NFC NTAG215 de PVC blanco, 85,5 × 54 × 0,8 mm, 504 bytes útiles (marca Duaitek) | $4.185 (1 u.) · **$2.790 (10+)** · **$2.565 (50+)** · **$2.385 (100+)**. **Sin stock** al consultar. Fecha del precio no indicada. | **V** (stock **P**) |
 | [IDSHOP](https://www.idshop.com.ar/productos/etiquetas-circulares-nfc-ntag213-pack-100-un/) | Etiquetas circulares NFC NTAG213, 30 mm, 128 bytes | Pack 100: $321.176 ($265.434,71 sin impuestos) ≈ $3.212/u. Pack 10: $46.055. **Sin stock.** | **V** (no competitivo; sin stock) |
 | GoToTags, ShopNFC / NFCStock, ABC RFID (exterior) | Stickers y tarjetas NFC al por mayor | Stickers NTAG213 25 mm: US$ 0,42–0,48 (GoToTags), € 0,22 a 1.000 u. (ShopNFC), US$ 0,30 (ABC RFID). Tarjeta PVC NTAG213 impresa (NFCStock): € 0,86 a 1.000 u.; **mínimo 500**. | Importación: **costos de courier e impuestos P** |
@@ -141,7 +142,7 @@ Solo se muestran precios **V** de insumos o producto terminado de terceros. Un g
 | Ítem (fuente) | 1 | 10 | 25 | 50 | 100 |
 | --- | --- | --- | --- | --- | --- |
 | Acrílico cristal 3 mm 122 × 244 (Mebac) — por **placa**, no por pieza | $167.989 | — | — | — | — |
-| Chip NFC suelto (Argentina NFC) | — | — | — | — | **$390** (mín. 100) |
+| Chip NFC suelto (Argentina NFC) | — | — | — | — | **$800** (mín. 100; $600 desde 300; $390 desde 1.000) |
 | Tarjeta NFC NTAG215 PVC en blanco (Todomicro) | $4.185 | $2.790 | $2.790 | $2.565 | $2.385 |
 | Stickers 5 × 5 cm vinilo (Sofite) — lote de 100 | — | — | — | — | $162/u ($16.200) |
 | Stickers UV (Blear) — troquelado | — | — | — | — | $457,38 |
@@ -161,15 +162,15 @@ Fórmulas: costo unitario = materiales + personalización + embalaje + mano de o
 | Acrílico: 200 cm² × $5,64/cm² ÷ 70 % | $1.612 | $1.612 | Precio de placa **V**; rendimiento **E** |
 | Adhesivo para acrílico | $100 | $100 | **E** |
 | Inserto de vinilo impreso (imprenta, 10 u.) | $1.250 | $1.250 | **E** (escalado de Sofite; sin cotización) |
-| Chip NFC | — | $390 | **V** (Argentina NFC, mín. 100) |
+| Chip NFC | — | $800 | **V** (Argentina NFC, 100–299 u.) |
 | Embalaje | $1.200 | $1.200 | **E** |
 | Mano de obra: 30 min (+ 5 min de prueba NFC) | $2.500 | $2.917 | **E** |
-| **Costo unitario** | **$6.662** | **$7.469** | |
+| **Costo unitario** | **$6.662** | **$7.879** | |
 | Precio propuesto 1 u. / 10–24 u. (reseñas) | $18.900 / $16.900 | $29.900 / $26.900 | Estudio |
-| **Margen (10–24 u.)** | **60,6 %** | **72,2 %** | **Estimado** |
+| **Margen (10–24 u.)** | **60,6 %** | **70,7 %** | **Estimado** |
 | Precio propuesto 1 u. / 10–24 u. (mesa) | $12.900 / $10.900 | $19.900 / $17.500 | Estudio |
-| **Margen mesa (10–24 u.)** | **38,9 %** | **57,3 %** | **Estimado** |
-| Margen mesa en 25+ u. ($9.500 / $15.900) | 29,9 % | 53,0 % | **Estimado** |
+| **Margen mesa (10–24 u.)** | **38,9 %** | **55,0 %** | **Estimado** |
+| Margen mesa en 25+ u. ($9.500 / $15.900) | 29,9 % | 50,4 % | **Estimado** |
 
 > El soporte de mesa QR **solo** deja ~30–39 % con producción interna valorizando la mano de obra: conviene **revisar su precio** o producirlo en serie con terceros.
 
@@ -234,7 +235,7 @@ Costo = precio mayorista + embalaje $300 + manipulación $417 (**E**) + flete de
 
 **NFC**
 
-- Chips NFC NTAG213 (**V**: $390, mín. 100) y, para tarjetas, tarjetas NTAG215 PVC (**V**: Todomicro).
+- Chips NFC NTAG213 (**V**: $800 c/u en 100–299 u., mín. 100, + $15.000 de envío) o, para muestras, etiquetas NTAG215 de Todomicro (**V**: $2.803,95 c/u, en stock) y, para tarjetas, tarjetas NTAG215 PVC (**V**: Todomicro).
 - 1 celular **Android con NFC** y 1 **iPhone** para grabar y probar; app gratuita de lectura/escritura NFC; función de **bloqueo** (solo lectura) del tag.
 
 **Stickers y tarjetas**
@@ -308,21 +309,21 @@ Criterios **propuestos** (a ajustar con la experiencia de las primeras unidades)
 | Concepto | Cantidad | Importe | Tipo |
 | --- | --- | --- | --- |
 | Placa de acrílico cristal 3 mm 122 × 244 cm (Mebac) — rinde para > 40 soportes | 1 | **$167.989** | V |
-| Chips NFC (Argentina NFC), mínimo 100 u. (se usan 20; stock de reserva) | 100 | **$39.000** | V (disponibilidad P) |
+| Chips NFC (Argentina NFC), mínimo 100 u. a $800 (se usan 20; stock de reserva) + envío $15.000 | 100 | **$95.000** | V (disponibilidad P) |
 | Tarjetas NFC en blanco NTAG215 (Todomicro, 10+) — para E y F | 20 | **$55.800** | V (sin stock al consultar) |
 | Stickers QR 5 × 5 (Sofite), lote de 100 | 1 lote | **$16.200** | V |
 | Stickers QR + NFC (Argentina NFC), 10 u. | 10 | **$50.000** | V |
-| **Subtotal verificado** | | **$328.989** | |
+| **Subtotal verificado** | | **$384.989** | |
 | Insertos de vinilo para soportes (4 productos × 10) | 40 | $50.000 | E |
 | Vinilo laminado para tarjetas | 20 | $8.000 | E |
 | Embalaje (soportes $1.200; stickers $300; tarjetas $800) | 40 / 20 / 20 | $70.000 | E |
 | **Subtotal estimado** | | **$128.000** | |
-| **Desembolso inicial (V + E)** | | **$456.989** | |
+| **Desembolso inicial (V + E)** | | **$512.989** | |
 | Herramientas y consumibles (sección 8) | — | **P** | P |
 | Mano de obra (≈ 30 horas × $5.000, **no es desembolso**) | — | $150.000 | E |
 | Fletes de los proveedores a Formosa | — | **P** | P |
 
-Notas: la placa de acrílico y los chips dejan **stock** para más pedidos (la inversión no se consume por completo en estas 80 unidades). El costo económico de producir las 80 unidades, **incluyendo mano de obra valorizada**, es ≈ **$462.000** (estimado).
+Notas: la placa de acrílico y los chips dejan **stock** para más pedidos (la inversión no se consume por completo en estas 80 unidades). El costo económico de producir las 80 unidades, **incluyendo mano de obra valorizada**, es ≈ **$480.000** (estimado; con chips a $800).
 
 ### 12.2 Propuesta B — **tercerizar 50 unidades** de cada producto prioritario
 

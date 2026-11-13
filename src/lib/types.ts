@@ -1,9 +1,10 @@
 export type Technology = "qr" | "nfc" | "qr-nfc";
 
 /**
- * Estado comercial. "consultar" NO implica stock: todo se confirma por WhatsApp.
+ * Estado comercial. No se maneja stock: todo producto físico se hace por encargo.
+ * "proximamente" = servicio todavía no disponible (queda fuera del pedido).
  */
-export type CommercialStatus = "consultar" | "por-encargo" | "proximamente" | "no-disponible";
+export type CommercialStatus = "por-encargo" | "proximamente";
 
 /** Ilustración usada mientras no existan fotografías propias. */
 export type VisualKind =
@@ -88,7 +89,7 @@ export interface Product {
    * Precio unitario base en ARS. Opcional: no se inventan precios. Sin precio (ni opciones con
    * precio) el producto se vende "a presupuesto".
    */
-  price?: { amount: number; currency: "ARS" };
+  price?: { amount: number; currency: "ARS"; from?: boolean };
   /** Aclaración comercial junto al precio (p. ej. qué incluye o qué se cotiza aparte). */
   priceNote?: string;
   status: CommercialStatus;

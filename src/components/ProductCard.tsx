@@ -8,7 +8,7 @@ import { ProductVisual } from "./ProductVisual";
 export function ProductCard({ product }: { product: Product }) {
   const category = getCategory(product.categorySlug);
   const image = product.images[0];
-  const unavailable = product.status === "proximamente" || product.status === "no-disponible";
+  const unavailable = product.status === "proximamente";
   return (
     <article className="group relative flex h-full flex-col">
       <div className="overflow-hidden rounded-lg border border-line transition-colors group-hover:border-ink/40 group-focus-within:border-ink/40">

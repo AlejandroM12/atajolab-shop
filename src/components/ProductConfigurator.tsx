@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { isOrderable } from "@/lib/catalog";
-import { formatARS, lineTotal, priceLabel, priceSummary, QUOTE_LABEL, unitPrice } from "@/lib/pricing";
+import { formatARS, lineTotal, priceLabel, priceSummary, QUOTE_LABEL, referencePrice, unitPrice } from "@/lib/pricing";
 import {
   clampQuantity,
   createDefaultSelection,
@@ -15,7 +15,7 @@ import {
 } from "@/lib/selection";
 import { useCart } from "@/lib/useCart";
 import type { Product } from "@/lib/types";
-import { buildProductInquiryMessage } from "@/lib/whatsapp";
+import { buildComingSoonMessage, buildProductInquiryMessage } from "@/lib/whatsapp";
 import { buttonClass } from "./ui";
 import { WhatsAppButton } from "./WhatsAppButton";
 
@@ -58,10 +58,12 @@ function Field({
 function PriceBlock({ product, selection }: { product: Product; selection: Selection }) {
   const unit = unitPrice(product, selection.variants);
   const total = lineTotal(product, selection);
+  const from = referencePrice(product, selection.variants);
+  const summary = priceSummary(product);
   return (
     <div className="mb-5" aria-live="polite">
       <p className="text-2xl font-semibold" data-testid="product-price">
-        {unit !== null ? formatARS(unit) : priceLabel(priceSummary(product))}
+        {unit !== null ? formatARS(unit) : priceLabel(summary)}
         {unit !== null && <span className="ml-1.5 text-sm font-normal text-ink-soft">por unidad</span>}
       </p>
       {unit !== null && total !== null && selection.quantity > 1 && (
@@ -69,8 +71,21 @@ function PriceBlock({ product, selection }: { product: Product; selection: Selec
           {selection.quantity} unidades: <strong className="text-ink">{formatARS(total)}</strong>
         </p>
       )}
-      {unit === null && priceSummary(product).kind !== "quote" && (
+      {unit !== null && (
+        <p className="mt-0.5 text-sm text-ink-soft">
+          Precio de referencia. El importe final, la personalización y el envío se confirman antes de cerrar el pedido.
+        </p>
+      )}
+      {unit === null && from !== null && (
+        <p className="mt-0.5 text-sm text-ink-soft">
+          Precio base de referencia: el importe final se presupuesta según tamaño, cantidad y diseño.
+        </p>
+      )}
+      {unit === null && from === null && summary.kind !== "quote" && (
         <p className="mt-0.5 text-sm text-ink-soft">Elegí una opción para ver el precio, o {QUOTE_LABEL.toLowerCase()}.</p>
+      )}
+      {unit === null && from === null && summary.kind === "quote" && (
+        <p className="mt-0.5 text-sm text-ink-soft">Te enviamos el presupuesto por WhatsApp antes de confirmar el pedido.</p>
       )}
       {product.priceNote && <p className="mt-0.5 text-sm text-ink-soft">{product.priceNote}</p>}
     </div>
@@ -96,17 +111,18 @@ export function ProductConfigurator({ product }: { product: Product }) {
   if (!orderable) {
     return (
       <>
-      <PriceBlock product={product} selection={selection} />
       <section aria-labelledby="config-title" className="rounded-lg border border-line bg-white p-5">
         <h2 id="config-title" className="text-xl font-semibold">
-          {product.status === "proximamente" ? "Próximamente" : "No disponible por ahora"}
+          Próximamente
         </h2>
         <p className="mt-2 text-ink-soft">
-          Este producto todavía no se puede pedir. Podés consultarnos para saber más.
+          Este servicio todavía no está disponible y no se puede pedir. Si te interesa, escribinos y
+          te avisamos cuando esté listo.
         </p>
         <div className="mt-4">
           <WhatsAppButton
-            message={buildProductInquiryMessage(product, createDefaultSelection(product))}
+            message={buildComingSoonMessage(product)}
+            label="Avisame cuando esté disponible"
             className="w-full"
           />
         </div>

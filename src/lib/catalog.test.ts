@@ -24,12 +24,35 @@ describe("catálogo", () => {
     for (const p of all) expect(slugs).toContain(p.categorySlug);
   });
 
-  it("no inventa precios, materiales ni medidas", () => {
+  it("no declara materiales ni medidas sin confirmar", () => {
     for (const p of all) {
-      expect(p.price).toBeUndefined();
       expect(p.materials).toBeUndefined();
       expect(p.dimensions).toBeUndefined();
     }
+  });
+
+  it("los precios publicados son enteros positivos en ARS; sin precio = presupuesto", () => {
+    const sinPrecio = all.filter((p) => !p.price).map((p) => p.slug).sort();
+    expect(sinPrecio).toEqual(["carta-digital-editable", "identificadores-personalizados", "tarjetas-qr-invitados"]);
+    for (const p of all.filter((x) => x.price)) {
+      expect(p.price!.currency).toBe("ARS");
+      expect(Number.isInteger(p.price!.amount) && p.price!.amount > 0).toBe(true);
+    }
+  });
+
+  it("los productos con precio 'desde' son solo los que se presupuestan", () => {
+    const desde = all.filter((p) => p.price?.from).map((p) => p.slug).sort();
+    expect(desde).toEqual([
+      "cartel-menu-personalizado",
+      "cartel-mostrador-personalizado",
+      "colgantes-qr",
+      "credenciales-qr",
+      "etiqueta-qr-personalizada",
+    ]);
+  });
+
+  it("no hay lógica de stock: ningún producto lo declara", () => {
+    for (const p of all) expect(["por-encargo", "proximamente"]).toContain(p.status);
   });
 
   it("encuentra productos por slug", () => {
@@ -37,11 +60,11 @@ describe("catálogo", () => {
     expect(getProduct("no-existe")).toBeUndefined();
   });
 
-  it("solo permite pedir productos consultables o por encargo", () => {
-    expect(isOrderable({ status: "consultar" })).toBe(true);
+  it("todo se pide por encargo (sin stock); solo lo próximamente queda fuera", () => {
     expect(isOrderable({ status: "por-encargo" })).toBe(true);
     expect(isOrderable({ status: "proximamente" })).toBe(false);
-    expect(isOrderable({ status: "no-disponible" })).toBe(false);
+    const fuera = getAllProducts().filter((p) => !isOrderable(p)).map((p) => p.slug);
+    expect(fuera).toEqual(["carta-digital-editable"]);
   });
 });
 
@@ -82,12 +105,6 @@ describe("búsqueda y filtros", () => {
     expect(qr.some((p) => p.technology === "nfc")).toBe(false);
   });
 
-  it("filtra por disponibilidad comercial", () => {
-    const r = filterProducts(all, { ...DEFAULT_FILTERS, estado: "proximamente" });
-    expect(r.length).toBeGreaterThan(0);
-    expect(r.every((p) => p.status === "proximamente")).toBe(true);
-  });
-
   it("ordena por nombre", () => {
     const r = filterProducts(all, { ...DEFAULT_FILTERS, orden: "nombre" });
     const names = r.map((p) => p.name);
@@ -107,7 +124,6 @@ describe("filtros en la URL", () => {
       q: "soporte",
       categoria: "eventos",
       tecnologia: "qr" as const,
-      estado: "por-encargo" as const,
       orden: "nombre" as const,
     };
     const params = filtersToSearchParams(filters);
@@ -120,7 +136,7 @@ describe("filtros en la URL", () => {
 
   it("ignora valores inválidos", () => {
     const f = parseFilters(
-      new URLSearchParams("categoria=xx&tecnologia=zz&estado=nada&orden=raro"),
+      new URLSearchParams("categoria=xx&tecnologia=zz&estado=agotado&orden=raro"),
     );
     expect(f).toEqual(DEFAULT_FILTERS);
   });

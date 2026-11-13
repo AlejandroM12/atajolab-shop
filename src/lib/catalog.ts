@@ -3,10 +3,8 @@ import { PRODUCTS } from "@/data/products";
 import type { Category, CommercialStatus, Product, SortKey, Technology } from "./types";
 
 export const STATUS_LABELS: Record<CommercialStatus, string> = {
-  consultar: "Disponible para consultar",
-  "por-encargo": "Fabricación por encargo",
+  "por-encargo": "Por encargo",
   proximamente: "Próximamente",
-  "no-disponible": "No disponible",
 };
 
 export const TECH_LABELS: Record<Technology, string> = {
@@ -27,7 +25,6 @@ export interface CatalogFilters {
   categoria: string | null;
   /** "qr" = productos que incluyen QR; "nfc" = productos que incluyen NFC. */
   tecnologia: TechFilter | null;
-  estado: CommercialStatus | null;
   orden: SortKey;
 }
 
@@ -35,13 +32,12 @@ export const DEFAULT_FILTERS: CatalogFilters = {
   q: "",
   categoria: null,
   tecnologia: null,
-  estado: null,
   orden: "destacados",
 };
 
-/** Un producto se puede agregar al pedido solo si no es "próximamente" ni "no disponible". */
+/** Todo se hace por encargo: no hay stock. Solo lo "próximamente" queda fuera del pedido. */
 export function isOrderable(product: Pick<Product, "status">): boolean {
-  return product.status === "consultar" || product.status === "por-encargo";
+  return product.status === "por-encargo";
 }
 
 export function normalizeText(value: string): string {
@@ -112,7 +108,6 @@ export function filterProducts(
   const result = products.filter((p) => {
     if (filters.categoria && p.categorySlug !== filters.categoria) return false;
     if (filters.tecnologia && !techIncludes(p, filters.tecnologia)) return false;
-    if (filters.estado && p.status !== filters.estado) return false;
     if (terms.length) {
       const haystack = searchText(p, categories);
       if (!terms.every((t) => haystack.includes(t))) return false;
@@ -129,8 +124,6 @@ export function sortProducts(products: Product[], sort: SortKey): Product[] {
   return list.sort((a, b) => Number(b.featured) - Number(a.featured) || byOrder(a, b));
 }
 
-const STATUSES: CommercialStatus[] = ["consultar", "por-encargo", "proximamente", "no-disponible"];
-
 /** Lee filtros desde parámetros de URL, ignorando valores inválidos. */
 export function parseFilters(
   params: { get(name: string): string | null },
@@ -138,13 +131,11 @@ export function parseFilters(
 ): CatalogFilters {
   const categoria = params.get("categoria");
   const tecnologia = params.get("tecnologia");
-  const estado = params.get("estado");
   const orden = params.get("orden");
   return {
     q: (params.get("q") ?? "").slice(0, 80),
     categoria: categories.some((c) => c.slug === categoria) ? categoria : null,
     tecnologia: tecnologia === "qr" || tecnologia === "nfc" ? tecnologia : null,
-    estado: STATUSES.includes(estado as CommercialStatus) ? (estado as CommercialStatus) : null,
     orden: orden === "nombre" ? "nombre" : "destacados",
   };
 }
@@ -155,16 +146,10 @@ export function filtersToSearchParams(filters: CatalogFilters): URLSearchParams 
   if (filters.q.trim()) params.set("q", filters.q.trim());
   if (filters.categoria) params.set("categoria", filters.categoria);
   if (filters.tecnologia) params.set("tecnologia", filters.tecnologia);
-  if (filters.estado) params.set("estado", filters.estado);
   if (filters.orden !== DEFAULT_FILTERS.orden) params.set("orden", filters.orden);
   return params;
 }
 
 export function hasActiveFilters(filters: CatalogFilters): boolean {
-  return (
-    filters.q.trim() !== "" ||
-    filters.categoria !== null ||
-    filters.tecnologia !== null ||
-    filters.estado !== null
-  );
+  return filters.q.trim() !== "" || filters.categoria !== null || filters.tecnologia !== null;
 }

@@ -1,7 +1,7 @@
 import { SITE } from "@/data/site";
 import type { CartItem } from "./cart";
 import { describeVariants, type Selection } from "./selection";
-import { formatARS, lineTotal, orderTotals, unitPrice } from "./pricing";
+import { formatARS, lineTotal, orderTotals, referencePrice, unitPrice } from "./pricing";
 import type { Product } from "./types";
 
 /**
@@ -61,15 +61,24 @@ function selectionLines(product: ProductLike, selection: Selection): string[] {
   if (f.notes.trim()) lines.push(`Observaciones: ${f.notes.trim()}`);
   const unit = unitPrice(product, selection.variants);
   if (unit === null) {
-    lines.push("Precio: a presupuestar");
+    const from = referencePrice(product, selection.variants);
+    lines.push(from !== null ? `Precio: a presupuestar (desde ${formatARS(from)}, importe de referencia)` : "Precio: a presupuestar");
   } else {
-    lines.push(`Precio unitario: ${formatARS(unit)}`);
-    lines.push(`Subtotal: ${formatARS(lineTotal(product, selection)!)}`);
+    lines.push(`Precio unitario de referencia: ${formatARS(unit)}`);
+    lines.push(`Subtotal de referencia: ${formatARS(lineTotal(product, selection)!)}`);
   }
   return lines;
 }
 
+const REFERENCE_NOTE =
+  "Los importes son de referencia: el precio final, la personalización, el pago y el envío se confirman antes de cerrar el pedido.";
+
 const CLOSING = "Quisiera confirmar el precio final, el diseño, las condiciones de pago y el envío.";
+
+/** ¿La línea muestra algún importe (precio o "desde")? */
+function priceShown(product: ProductLike, selection: Selection): boolean {
+  return unitPrice(product, selection.variants) !== null || referencePrice(product, selection.variants) !== null;
+}
 
 export function buildProductInquiryMessage(product: ProductLike, selection: Selection): string {
   return [
@@ -77,8 +86,14 @@ export function buildProductInquiryMessage(product: ProductLike, selection: Sele
     "",
     ...selectionLines(product, selection),
     "",
+    ...(priceShown(product, selection) ? [REFERENCE_NOTE, ""] : []),
     CLOSING,
   ].join("\n");
+}
+
+/** Servicio "próximamente": no es un pedido, solo un aviso de interés. */
+export function buildComingSoonMessage(product: Pick<Product, "name">): string {
+  return `Hola, me interesa el servicio ${product.name} de ${SITE.name}. Quisiera que me avisen cuando esté disponible.`;
 }
 
 export interface OrderMessageInput {
@@ -96,14 +111,16 @@ export function buildOrderMessage({ items, customerName, customerCity, notes }: 
 
   const totals = orderTotals(items.map(({ product, item }) => ({ product, selection: item.selection })));
   if (totals.total !== null) {
-    lines.push(`TOTAL ESTIMADO: ${formatARS(totals.total)}`, "");
+    lines.push(`TOTAL DE REFERENCIA: ${formatARS(totals.total)}`, "");
   } else if (totals.pricedCount > 0) {
     lines.push(
-      `Subtotal de productos con precio: ${formatARS(totals.pricedSubtotal)}`,
+      `Subtotal de referencia de los productos con precio: ${formatARS(totals.pricedSubtotal)}`,
       `Productos a presupuestar: ${totals.quoteCount}`,
       "",
     );
   }
+
+  if (items.some(({ product, item }) => priceShown(product, item.selection))) lines.push(REFERENCE_NOTE, "");
 
   const data: string[] = [];
   if (customerName?.trim()) data.push(`Nombre: ${customerName.trim()}`);

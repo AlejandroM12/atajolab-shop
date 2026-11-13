@@ -64,7 +64,7 @@ describe("carrito", () => {
     const id = cart.items[0].id;
     expect(updateQuantity(cart, id, 12).items[0].selection.quantity).toBe(12);
     expect(updateQuantity(cart, id, 0).items[0].selection.quantity).toBe(sticker.quantity.min);
-    expect(updateQuantity(cart, id, 99999).items[0].selection.quantity).toBe(sticker.quantity.max);
+    expect(updateQuantity(cart, id, 999999).items[0].selection.quantity).toBe(sticker.quantity.max);
   });
 
   it("elimina productos", () => {

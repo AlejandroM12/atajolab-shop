@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getAllProducts } from "./catalog";
-import { formatARS, lineTotal, orderTotals, priceLabel, priceSummary, QUOTE_LABEL, unitPrice } from "./pricing";
+import { formatARS, lineTotal, orderTotals, priceLabel, priceSummary, QUOTE_LABEL, referencePrice, unitPrice } from "./pricing";
 import type { Product } from "./types";
 
 type P = Pick<Product, "price" | "variantGroups">;
@@ -93,6 +93,24 @@ describe("unitPrice / lineTotal", () => {
       ],
     };
     expect(unitPrice(two, { a: "1", b: "2" })).toBe(300);
+  });
+});
+
+describe("precio base 'desde' (se presupuesta)", () => {
+  const cartel: P = { price: { amount: 22900, currency: "ARS", from: true } };
+  it("muestra 'Desde' pero no calcula importe ni total", () => {
+    expect(priceSummary(cartel)).toEqual({ kind: "from", amount: 22900 });
+    expect(nbsp(priceLabel(priceSummary(cartel)))).toBe("Desde $ 22.900");
+    expect(unitPrice(cartel, {})).toBeNull();
+    expect(referencePrice(cartel, {})).toBe(22900);
+    expect(lineTotal(cartel, { variants: {}, quantity: 4 })).toBeNull();
+    const t = orderTotals([{ product: cartel, selection: { variants: {}, quantity: 4 } }]);
+    expect(t.total).toBeNull();
+    expect(t.pricedSubtotal).toBe(0);
+    expect(t.quoteCount).toBe(1);
+  });
+  it("un precio fijo no tiene precio de referencia aparte", () => {
+    expect(referencePrice(fixed, {})).toBeNull();
   });
 });
 

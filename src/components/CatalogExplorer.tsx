@@ -9,7 +9,6 @@ import {
   hasActiveFilters,
   parseFilters,
   SORT_LABELS,
-  STATUS_LABELS,
   type CatalogFilters,
 } from "@/lib/catalog";
 import type { Category, Product } from "@/lib/types";
@@ -64,9 +63,9 @@ export function CatalogExplorer({
           e.preventDefault();
           update({ q: query });
         }}
-        className="grid grid-cols-2 gap-3 rounded-lg bg-paper-2 p-3 sm:p-4 lg:grid-cols-5"
+        className="grid grid-cols-2 gap-3 rounded-lg bg-paper-2 p-3 sm:p-4 lg:grid-cols-4"
       >
-        <div className="col-span-2 lg:col-span-5">
+        <div className="col-span-2 lg:col-span-4">
           <label htmlFor="q" className="mb-1 block text-sm font-semibold">
             Buscar productos
           </label>
@@ -113,24 +112,6 @@ export function CatalogExplorer({
             <option value="">QR y NFC</option>
             <option value="qr">Incluye QR</option>
             <option value="nfc">Incluye NFC</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="estado" className="mb-1 block text-sm font-semibold">
-            Disponibilidad
-          </label>
-          <select
-            id="estado"
-            className={selectCls}
-            value={filters.estado ?? ""}
-            onChange={(e) => update({ estado: (e.target.value || null) as CatalogFilters["estado"] })}
-          >
-            <option value="">Todas</option>
-            {(Object.keys(STATUS_LABELS) as Array<keyof typeof STATUS_LABELS>).map((s) => (
-              <option key={s} value={s}>
-                {STATUS_LABELS[s]}
-              </option>
-            ))}
           </select>
         </div>
         <div>

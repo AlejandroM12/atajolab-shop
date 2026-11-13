@@ -3,6 +3,7 @@ import { addItem, EMPTY_CART } from "./cart";
 import { getProduct } from "./catalog";
 import { createDefaultSelection } from "./selection";
 import {
+  buildComingSoonMessage,
   buildCustomRequestMessage,
   buildMailtoUrl,
   buildOrderMessage,
@@ -140,24 +141,45 @@ describe("mensajes con precios", () => {
   it("la consulta incluye precio unitario y subtotal si hay precio", () => {
     const m = flat(buildProductInquiryMessage(priced, { ...createDefaultSelection(sticker), quantity: 2, variants: { t: "g" } }));
     expect(m).toContain("Hola, quiero consultar por el producto Soporte de prueba.");
-    expect(m).toContain("Precio unitario: $ 15.000");
-    expect(m).toContain("Subtotal: $ 30.000");
+    expect(m).toContain("Precio unitario de referencia: $ 15.000");
+    expect(m).toContain("Subtotal de referencia: $ 30.000");
+    expect(m).toContain("Los importes son de referencia");
   });
   it("sin precio indica que se presupuesta", () => {
     expect(buildProductInquiryMessage(quote, createDefaultSelection(sticker))).toContain("Precio: a presupuestar");
   });
   it("el pedido con todo cotizado informa el total", () => {
     const m = flat(buildOrderMessage({ items: [{ product: priced, item: sel(2) }, { product: priced, item: sel(1, { t: "g" }) }] }));
-    expect(m).toContain("TOTAL ESTIMADO: $ 35.000");
+    expect(m).toContain("TOTAL DE REFERENCIA: $ 35.000");
   });
   it("el pedido mixto no informa total y detalla lo que se presupuesta", () => {
     const m = flat(buildOrderMessage({ items: [{ product: priced, item: sel(1) }, { product: quote, item: sel(3) }] }));
     expect(m).not.toContain("TOTAL");
-    expect(m).toContain("Subtotal de productos con precio: $ 10.000");
+    expect(m).toContain("Subtotal de referencia de los productos con precio: $ 10.000");
     expect(m).toContain("Productos a presupuestar: 1");
   });
   it("el pedido sin precios no muestra importes", () => {
     const m = buildOrderMessage({ items: [{ product: quote, item: sel(1) }] });
     expect(m).not.toContain("$");
+  });
+});
+
+describe("productos con precio base 'desde'", () => {
+  const desde = { name: "Cartel a medida", price: { amount: 22900, currency: "ARS" as const, from: true }, variantGroups: [] };
+  const flat = (m: string) => m.replace(/\s/g, " ");
+  it("no suma como total ni como $0: se presupuesta y muestra el 'desde' como referencia", () => {
+    const sel = { ...createDefaultSelection(sticker), quantity: 3 };
+    const one = flat(buildProductInquiryMessage(desde, sel));
+    expect(one).toContain("a presupuestar (desde $ 22.900, importe de referencia)");
+    expect(one).not.toContain("Subtotal");
+    const order = flat(buildOrderMessage({ items: [{ product: desde, item: { selection: sel } }] }));
+    expect(order).not.toContain("TOTAL");
+    expect(order).toContain("Los importes son de referencia");
+  });
+  it("el aviso 'próximamente' no es un pedido", () => {
+    const m = buildComingSoonMessage({ name: "Carta digital editable" });
+    expect(m).toContain("Carta digital editable");
+    expect(m).toContain("cuando esté disponible");
+    expect(m).not.toContain("Precio");
   });
 });

@@ -106,7 +106,7 @@ export default async function ProductoPage({ params }: PageProps<"/productos/[sl
         <div>
           <p className="text-sm text-ink-soft">
             {TECH_LABELS[product.technology]}
-            {(product.status === "proximamente" || product.status === "no-disponible") &&
+            {product.status === "proximamente" &&
               ` · ${STATUS_LABELS[product.status]}`}
           </p>
           <h1 className="mt-1 text-2xl font-semibold leading-tight sm:text-3xl">{product.name}</h1>

@@ -36,7 +36,9 @@ export function priceSummary(product: PricedProduct): PriceSummary {
   }
   if (amounts.length === 0) return { kind: "quote" };
   const min = Math.min(...amounts);
-  return amounts.some((a) => a !== min) ? { kind: "from", amount: min } : { kind: "fixed", amount: min };
+  // "Desde": precio base de un producto que se presupuesta, o variantes con precios distintos.
+  const isFrom = product.price?.from === true || amounts.some((a) => a !== min);
+  return isFrom ? { kind: "from", amount: min } : { kind: "fixed", amount: min };
 }
 
 export function priceLabel(summary: PriceSummary): string {
@@ -55,7 +57,15 @@ export function unitPrice(product: PricedProduct, variants: Selection["variants"
     if (option && valid(option.price)) chosen = chosen === null ? option.price : Math.max(chosen, option.price);
   }
   if (chosen !== null) return chosen;
+  // Un precio "desde" es solo una referencia: el importe final se presupuesta.
+  if (product.price?.from) return null;
   return valid(product.price?.amount) ? product.price.amount : null;
+}
+
+/** Precio base "desde" de un producto que se presupuesta (null si no corresponde). */
+export function referencePrice(product: PricedProduct, variants: Selection["variants"]): number | null {
+  if (unitPrice(product, variants) !== null) return null;
+  return product.price?.from && valid(product.price.amount) ? product.price.amount : null;
 }
 
 type Priced = Pick<Selection, "variants" | "quantity">;

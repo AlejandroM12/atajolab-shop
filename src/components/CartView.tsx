@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { getCategory, getAllProducts, TECH_LABELS } from "@/lib/catalog";
-import { formatARS, lineTotal, orderTotals, unitPrice } from "@/lib/pricing";
+import { formatARS, lineTotal, orderTotals, referencePrice, unitPrice } from "@/lib/pricing";
 import { describeVariants } from "@/lib/selection";
 import { useCart } from "@/lib/useCart";
 import type { CartItem } from "@/lib/cart";
@@ -165,7 +165,14 @@ export function CartView() {
                           <strong>{formatARS(lineTotal(product, item.selection)!)}</strong>
                         </>
                       ) : (
-                        <strong>A presupuestar</strong>
+                        <>
+                          {referencePrice(product, item.selection.variants) !== null && (
+                            <span className="block text-ink-soft">
+                              Desde {formatARS(referencePrice(product, item.selection.variants)!)} c/u
+                            </span>
+                          )}
+                          <strong>A presupuestar</strong>
+                        </>
                       )}
                     </p>
                     <button
@@ -228,7 +235,7 @@ export function CartView() {
         <dl className="mt-4 space-y-1.5 text-sm" data-testid="order-totals">
           {totals.pricedCount > 0 && (
             <div className="flex justify-between gap-3">
-              <dt>{totals.total !== null ? "Total estimado" : "Subtotal de productos con precio"}</dt>
+              <dt>{totals.total !== null ? "Total de referencia" : "Subtotal de referencia (productos con precio)"}</dt>
               <dd className="font-semibold" data-testid="order-subtotal">
                 {formatARS(totals.pricedSubtotal)}
               </dd>
@@ -245,7 +252,7 @@ export function CartView() {
         </dl>
         <p className="mt-2 text-sm text-ink-soft">
           {totals.total !== null
-            ? "Importe estimado: el precio final, el diseño y la entrega se confirman por WhatsApp."
+            ? "Importes de referencia: el precio final, la personalización, el pago y el envío se confirman por WhatsApp antes de cerrar el pedido."
             : "Hay productos sin precio cerrado, por eso no mostramos un total. Te pasamos el presupuesto por WhatsApp."}
         </p>
 

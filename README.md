@@ -1,209 +1,234 @@
 # AtajoLab Shop
 
-Tienda online de productos físicos personalizados con **QR y NFC** (soportes para reseñas de Google, menús para restaurantes, tarjetas, stickers y credenciales para eventos). Es una unidad comercial de [AtajoLab](https://atajolab.dev), pensada para publicarse en `https://tienda.atajolab.dev`.
+**Tienda online de productos físicos personalizados con QR y NFC.**
 
-Todo pedido se cierra por **WhatsApp**: no hay pagos online, base de datos, backend ni panel administrativo.
+Soportes para reseñas de Google, menús para restaurantes, tarjetas digitales, stickers y credenciales para eventos. Unidad comercial de [AtajoLab](https://atajolab.dev).
 
-## Stack
+[![Sitio en vivo](https://img.shields.io/badge/sitio-tienda.atajolab.dev-ff6a13?style=flat-square)](https://tienda.atajolab.dev)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38BDF8?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Cloudflare Pages](https://img.shields.io/badge/Cloudflare%20Pages-estático-F38020?style=flat-square&logo=cloudflare&logoColor=white)](https://pages.cloudflare.com/)
 
-- Next.js (App Router) con **exportación estática** (`output: "export"`) y TypeScript estricto
-- Tailwind CSS v4
-- Vitest (tests unitarios) y Playwright + axe (E2E y accesibilidad)
-- ESLint
+<p align="center">
+  <img src="./public/hero.webp" alt="AtajoLab Shop — productos QR y NFC personalizados" width="920" />
+</p>
+
+<p align="center">
+  <a href="https://tienda.atajolab.dev"><strong>Ver tienda en vivo</strong></a>
+  ·
+  <a href="https://atajolab.dev">AtajoLab</a>
+  ·
+  <a href="https://qr.atajolab.dev">Crear mi QR</a>
+</p>
+
+---
+
+## Qué es
+
+AtajoLab Shop es un **catálogo estático** pensado para vender productos físicos personalizados sin backend, sin pagos online y sin panel de administración.
+
+El flujo es simple:
+
+1. El visitante elige productos y los personaliza (nombre, enlace, cantidad).
+2. Arma un pedido en el navegador (`localStorage`).
+3. Envía la solicitud por **WhatsApp** con el mensaje ya armado.
+
+Ideal para un negocio que cierra ventas por chat y quiere un escaparate rápido, liviano y fácil de mantener.
+
+## Características
+
+- Catálogo con búsqueda y filtros por categoría
+- Fichas de producto con variantes, personalización y precios de referencia
+- Pedido persistente en el navegador y mensaje listo para WhatsApp
+- Temas **claro / oscuro / sistema** desde el header
+- SEO básico: sitemap, robots, Open Graph y metadatos
+- Sitio 100% estático, desplegable en Cloudflare Pages
+- Tests unitarios (Vitest) y E2E + accesibilidad (Playwright + axe)
+- Contenido y catálogo en archivos TypeScript (sin CMS)
+
+### Categorías
+
+| Categoría | Ejemplos |
+| --- | --- |
+| Reseñas de Google | Soportes y stickers QR / NFC |
+| Menús para restaurantes y bares | Soportes de mesa, carteles |
+| Eventos | Credenciales, identificadores, colgantes |
+| Tarjetas digitales | Tarjetas QR y NFC de contacto |
+| Stickers y etiquetas | Stickers QR/NFC, adhesivos |
+
+## Tecnologías
+
+| Área | Stack |
+| --- | --- |
+| Framework | **Next.js 16** (App Router) con `output: "export"` |
+| UI | **React 19** + **Tailwind CSS 4** |
+| Lenguaje | **TypeScript** estricto |
+| Calidad | **ESLint**, **Vitest**, **Playwright** + **axe-core** |
+| Hosting | **Cloudflare Pages** (HTML/CSS/JS estático en `out/`) |
+| Pedidos | Enlaces `wa.me` generados en cliente |
+
+Sin base de datos, sin API propia y sin autenticación de usuarios.
 
 ## Requisitos
 
-- Node.js 20 o superior y npm
+- Node.js **20+** (recomendado 22; el repo incluye `.node-version`)
+- npm
 
-## Instalación y desarrollo local
+## Desarrollo local
 
 ```bash
 npm install
-cp .env.example .env.local   # completar las variables (ver más abajo)
+cp .env.example .env.local   # opcional; el sitio ya funciona sin variables
 npm run dev                  # http://localhost:3000
+```
+
+### Scripts
+
+| Comando | Descripción |
+| --- | --- |
+| `npm run dev` | Servidor de desarrollo |
+| `npm run build` | Build estático → `out/` |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | Generación de tipos + `tsc` |
+| `npm test` | Tests unitarios (Vitest) |
+| `npm run test:e2e` | E2E + accesibilidad (Playwright) |
+| `npm run check` | lint + typecheck + tests + build |
+| `npm run deploy` | Build + deploy a Cloudflare Pages (`atajolab-shop`) |
+
+Para E2E con Chromium descargado por Playwright:
+
+```bash
+npx playwright install chromium
+PW_CHANNEL=chromium npm run test:e2e
 ```
 
 ## Variables de entorno
 
-Todas son **opcionales**: el sitio funciona sin definir ninguna.
+Todas son **opcionales**.
 
 | Variable | Descripción |
 | --- | --- |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Reemplaza el número comercial. Formato internacional, solo dígitos (sin `+`, espacios ni guiones). Por defecto se usa el número oficial `5493705204454` (+54 9 370 5204454), definido en `src/data/site.ts`. |
-| `NEXT_PUBLIC_SITE_URL` | URL pública (canonical, sitemap, Open Graph). Por defecto `https://tienda.atajolab.dev`. |
-| `NEXT_PUBLIC_CONTACT_EMAIL` | Muestra un email de contacto adicional. |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Reemplaza el número comercial. Solo dígitos, formato internacional (ej. `5493705204454`). Por defecto usa el de `src/data/site.ts`. |
+| `NEXT_PUBLIC_SITE_URL` | URL pública (canonical, sitemap, Open Graph). Default: `https://tienda.atajolab.dev`. |
+| `NEXT_PUBLIC_CONTACT_EMAIL` | Email de contacto adicional. |
 
-Las variables `NEXT_PUBLIC_*` se incorporan **en el build**: después de cambiarlas hay que volver a generar el sitio.
+Las variables `NEXT_PUBLIC_*` se incorporan en el **build**: si las cambiás, volvé a generar el sitio.
 
-### WhatsApp
+## Cómo funciona el negocio (resumen)
 
-Una sola fuente de verdad: `getWhatsAppNumber()` en `src/lib/whatsapp.ts`. Todos los botones y enlaces (`WhatsAppButton`, `WhatsAppLink`) y los mensajes (`buildProductInquiryMessage`, `buildOrderMessage`, `buildCustomRequestMessage`, `buildGeneralInquiryMessage`) salen de ese módulo. El enlace es `https://wa.me/5493705204454?text=<mensaje codificado>`.
+- **Pedidos por WhatsApp:** se abre `https://wa.me/<número>?text=...` con el texto listo; el cliente lo envía.
+- **Por encargo, sin stock:** no hay inventario. El estado `proximamente` es el único que bloquea agregar al pedido.
+- **Precios de referencia:** se muestran en el sitio y viajan en el mensaje; el importe final se confirma por chat. No hay pagos online.
+- **Imágenes ilustrativas:** renders 3D (no fotos de productos fabricados), con la aclaración correspondiente en la UI.
 
-El mensaje nunca se envía solo: se abre WhatsApp con el texto escrito y el cliente lo envía. Abrir WhatsApp **no** vacía el pedido. Si el número configurado fuera inválido, los botones ofrecen copiar el mensaje (o email, si existe).
+Detalle de precios, variantes y reglas del carrito: ver secciones internas más abajo y [`docs/`](docs/).
 
-## Precios
+## Estructura del proyecto
 
-Los precios cargados son **precios comerciales de lanzamiento, sujetos a revisión** (propuesta en [`docs/ESTUDIO_PRECIOS_ARGENTINA.md`](docs/ESTUDIO_PRECIOS_ARGENTINA.md), columna "1 u."). No son costos confirmados y **no hay escalas ni descuentos por cantidad publicados**. En el sitio se presentan como "de referencia": el importe final se confirma por WhatsApp antes de cerrar el pedido.
-
-```ts
-// src/data/products.ts
-price: { amount: 29900, currency: "ARS" },                 // precio fijo de referencia
-price: { amount: 22900, currency: "ARS", from: true },     // "Desde $ X": se presupuesta
-// sin price                                                  // "Solicitar presupuesto"
-variantGroups: [{ id: "t", label: "Tamaño", options: [{ id: "g", label: "Grande", price: 15000 }] }], // precio por variante
-```
-
-- **Fijo:** tarjeta, ficha y pedido muestran el importe; el subtotal es unitario × cantidad.
-- **"Desde" / sin precio:** se presupuestan. **Nunca suman $0 ni entran en el total.** Con "Desde" se muestra el precio base como referencia.
-- **Total:** solo se muestra ("Total de referencia") si **todos** los productos del pedido tienen precio fijo; si no, se informa el subtotal de los que tienen precio y cuántos quedan a presupuestar.
-- Los importes viajan en el mensaje de WhatsApp como **importes de referencia**. No hay pagos online ni anticipo fijo.
-
-## Modelo de venta: por encargo, sin stock
-
-Todo producto físico se hace por encargo: no hay inventario, existencias ni disponibilidad inmediata, y la falta de stock nunca impide enviar una solicitud. Se puede pedir cualquier cantidad. El único estado que bloquea el pedido es `proximamente` (servicio no implementado, como la carta digital editable).
-
-## Scripts
-
-| Comando | Qué hace |
-| --- | --- |
-| `npm run dev` | Servidor de desarrollo |
-| `npm run build` | Genera el sitio estático en `out/` |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | Tipos (`next typegen` + `tsc`) |
-| `npm test` | Tests unitarios (Vitest) |
-| `npm run test:e2e` | E2E + accesibilidad (Playwright; hace build con un número de WhatsApp de prueba y levanta `out/`) |
-| `npm run check` | lint + typecheck + tests + build |
-
-Para E2E se usa el Chrome instalado (`channel: "chrome"`). Si no lo tenés: `npx playwright install chromium` y ejecutá `PW_CHANNEL=chromium npm run test:e2e`.
-
-## Estructura
-
-```
+```text
 src/
   app/            Rutas (App Router), sitemap, robots, 404
-  components/     UI reutilizable; Client Components solo donde hay interactividad
-  data/           Catálogo, categorías, contenido y configuración (separados de la UI)
-  lib/            Lógica pura y testeada: catálogo/filtros, selección, carrito, WhatsApp, SEO
-e2e/              Pruebas Playwright
-docs/             Documentación técnica (arquitectura futura, datos pendientes)
-public/           Imágenes y archivos estáticos
+  components/     UI; Client Components solo donde hay interactividad
+  data/           Catálogo, categorías, copy y config del sitio
+  lib/            Lógica pura y testeada (filtros, pedido, WhatsApp, SEO)
+e2e/              Playwright
+docs/             Documentación técnica y pendientes comerciales
+public/           Imágenes, iconos, headers
+tools/renders/    Generación de renders (independiente del build)
 ```
 
-Rutas: `/`, `/productos/`, `/productos/[slug]/`, `/categorias/[slug]/`, `/pedido/`, `/como-comprar/`, `/personalizados/`, `/preguntas-frecuentes/`, `/condiciones-comerciales/`, `/contacto/`, `/menu-digital/` (servicio en preparación).
+Rutas principales: `/`, `/productos/`, `/productos/[slug]/`, `/categorias/[slug]/`, `/pedido/`, `/como-comprar/`, `/personalizados/`, `/preguntas-frecuentes/`, `/condiciones-comerciales/`, `/contacto/`, `/privacidad/`, `/menu-digital/` (en preparación).
 
-## Cómo agregar productos
+## Agregar un producto
 
-Editá `src/data/products.ts` y agregá un objeto `Product` (tipo en `src/lib/types.ts`). No hay que tocar componentes ni lógica.
+Editá `src/data/products.ts` (tipo en `src/lib/types.ts`). No hace falta tocar la UI.
 
 ```ts
 {
-  id: "p-021",                 // único
-  slug: "mi-producto",         // URL: /productos/mi-producto/
+  id: "p-021",
+  slug: "mi-producto",                 // /productos/mi-producto/
   name: "Mi producto",
-  categorySlug: "stickers-etiquetas",   // ver src/data/categories.ts
+  categorySlug: "stickers-etiquetas",  // ver src/data/categories.ts
   shortDescription: "...",
   description: ["Párrafo 1", "Párrafo 2"],
   benefits: ["..."],
-  images: [{ alt: "Descripción", illustrative: true }],
-  technology: "qr",            // "qr" | "nfc" | "qr-nfc"
-  visual: "sticker",           // silueta de respaldo si no hay imagen
-  customizations: ["businessName", "destinationUrl", "notes"],  // solo los campos que apliquen
+  images: [{ src: "/productos/mi-producto.webp", alt: "...", illustrative: true }],
+  technology: "qr",                    // "qr" | "nfc" | "qr-nfc"
+  visual: "sticker",
+  customizations: ["businessName", "destinationUrl", "notes"],
   quantity: { min: 1, max: 500 },
-  status: "por-encargo",       // "por-encargo" | "proximamente" (sin stock)
+  status: "por-encargo",               // "por-encargo" | "proximamente"
   featured: false,
   order: 21,
+  price: { amount: 18900, currency: "ARS" }, // opcional
 }
 ```
 
-- `materials` y `dimensions` son **opcionales** y hoy no están definidos: agregalos solo cuando estén confirmados (si faltan, la ficha no muestra esas filas). `price` es opcional (ver "Precios").
-- `variantGroups` solo debe contener opciones confirmadas como disponibles.
-- El estado `proximamente` no se puede agregar al pedido (solo avisar interés).
-- Nuevas categorías: `src/data/categories.ts`.
+- `price` omitido → “Solicitar presupuesto”
+- `price: { ..., from: true }` → “Desde $ X”
+- Nuevas categorías: `src/data/categories.ts`
+- Fotos reales: reemplazá el WebP en `public/productos/` y marcá `illustrative: false`
 
-## Imágenes
+## Precios en el pedido
 
-Todas las imágenes de producto, categoría y portada son **renders ilustrativos originales** (modelos 3D generados con three.js; los códigos QR codifican `https://atajolab.dev`). **No son fotografías de productos fabricados.** Se muestran con la aclaración "Imagen ilustrativa. El diseño final puede variar." en la portada y en las fichas, y en el pie del sitio.
+- **Fijo:** entra al subtotal (unitario × cantidad).
+- **“Desde” / sin precio:** se presupuestan; **no suman $0** ni entran al total.
+- **Total de referencia:** solo si todos los ítems tienen precio fijo.
+- Los importes en WhatsApp se etiquetan como referencia.
 
-Están en `public/productos/<slug>.webp`, `public/categorias/<slug>.webp` y `public/hero.webp` (WebP, 1200×900 / 1600×1000).
+Propuesta de precios de lanzamiento: [`docs/ESTUDIO_PRECIOS_ARGENTINA.md`](docs/ESTUDIO_PRECIOS_ARGENTINA.md).
 
-Para reemplazar un render por una fotografía real:
+## Despliegue (Cloudflare Pages)
 
-1. Guardá la foto en `public/productos/<slug>.webp` (o `.jpg`), proporción 4:3.
-2. En el producto, ajustá `images` en `src/data/products.ts`:
-   ```ts
-   images: [{ src: "/productos/sticker-qr.webp", alt: "Sticker QR pegado en una vidriera", illustrative: false }],
-   ```
-   Con `illustrative: false` desaparece la aclaración sobre la imagen. Usá `true` solo para renders o ilustraciones.
-3. Sumá más imágenes al arreglo para armar la galería (frente, detalle, uso).
+El build genera el sitio en `out/`.
 
-Si un producto no define `src`, se muestra una silueta neutra como último recurso (`ProductVisual`).
+### Opción A — conectar el repo (recomendada)
 
-Los renders se pueden regenerar con el código de [`tools/renders`](tools/renders/README.md) (three.js; herramienta independiente, no forma parte del build).
+1. Cloudflare → **Workers & Pages → Create → Pages → Connect to Git** → este repositorio.
+2. Build command: `npm run build`
+3. Output directory: `out`
+4. Production branch: `main`
 
-Imagen social por defecto: `public/og-default.png` (1200×630).
-
-## Despliegue en Cloudflare Pages
-
-El sitio es 100% estático; el resultado del build está en `out/` (`npm run build`). `.node-version` fija Node 22 y `wrangler.toml` declara `pages_build_output_dir = "out"`.
-
-### Opción A: conectar el repositorio (recomendada)
-
-1. Cloudflare → **Workers & Pages → Create → Pages → Connect to Git** → `AlejandroM12/atajolab-shop`.
-2. Build command: `npm run build` · Build output directory: `out` · Production branch: `main`.
-3. No hace falta ninguna variable de entorno (el número de WhatsApp ya está configurado). Opcionales: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CONTACT_EMAIL`.
-4. Deploy y verificar primero en la URL `*.pages.dev`.
-
-### Opción B: subida directa desde tu máquina
+### Opción B — desde tu máquina
 
 ```bash
-npx wrangler login          # abre el navegador para autorizar
-npm run deploy              # build + wrangler pages deploy out
+npx wrangler login
+npm run deploy
 ```
 
-La primera vez, Wrangler pregunta si crear el proyecto `atajolab-shop`.
+Dominio de producción: [tienda.atajolab.dev](https://tienda.atajolab.dev). El DNS y los custom domains se configuran en el panel de Cloudflare (este repo no los modifica).
 
-### Dominio `tienda.atajolab.dev`
+## Limitaciones actuales
 
-1. En el proyecto de Pages: **Custom domains → Set up a custom domain** → `tienda.atajolab.dev`.
-2. Si `atajolab.dev` ya está en Cloudflare, el CNAME se crea solo; si no, creá `tienda` → `<proyecto>.pages.dev`.
-3. Esperá a que el certificado SSL quede activo.
+- Catálogo en archivos locales (sin CMS ni panel)
+- Sin pagos online ni cuentas de usuario
+- Pedido solo en el dispositivo del visitante (`localStorage`)
+- Imágenes ilustrativas (faltan fotos de productos fabricados)
+- Solo español (Argentina)
+- Carta digital editable y check-in de eventos: aún no implementados
 
-> Este repositorio no modifica DNS ni configuraciones de Cloudflare: esos pasos se hacen manualmente.
+Pendientes comerciales: [`docs/PENDIENTES.md`](docs/PENDIENTES.md).
 
-### Verificación posterior al despliegue
+## Roadmap
 
-- `https://tienda.atajolab.dev/` carga con imágenes y sin errores en consola.
-- `/sitemap.xml` y `/robots.txt` responden y apuntan al dominio final.
-- Un botón de WhatsApp abre `https://wa.me/5493705204454?text=...` con el mensaje precompletado.
-- Agregar un producto, recargar `/pedido/` y comprobar que el pedido persiste.
-- `/personalizados/`: "Crear mi QR" abre `https://qr.atajolab.dev`.
-- Una URL inexistente muestra la página 404 de la tienda.
+1. Fotografías reales de productos
+2. Precios, materiales, medidas y plazos confirmados
+3. Política de envíos y cambios/devoluciones
+4. Plataforma de carta digital editable ([`docs/ARQUITECTURA-MENU-DIGITAL.md`](docs/ARQUITECTURA-MENU-DIGITAL.md))
+5. Productos para eventos con registro / check-in por QR
+6. Inglés y otros idiomas
 
-`public/_headers` agrega cabeceras de seguridad básicas y caché para los assets de Next.
+## Documentación extra
 
-## Limitaciones del MVP
+| Doc | Contenido |
+| --- | --- |
+| [`docs/PENDIENTES.md`](docs/PENDIENTES.md) | Datos comerciales por confirmar |
+| [`docs/ESTUDIO_PRECIOS_ARGENTINA.md`](docs/ESTUDIO_PRECIOS_ARGENTINA.md) | Estudio / propuesta de precios |
+| [`docs/ARQUITECTURA-MENU-DIGITAL.md`](docs/ARQUITECTURA-MENU-DIGITAL.md) | Arquitectura futura del menú digital |
+| [`tools/renders/README.md`](tools/renders/README.md) | Regenerar renders 3D |
 
-- Catálogo en archivos locales; sin CMS, base de datos ni panel.
-- Sin pagos online, sin carga de archivos (el logo se envía por WhatsApp), sin cuentas de usuario.
-- El pedido vive en el navegador del cliente (`localStorage`): no se comparte entre dispositivos.
-- Sin precios, materiales, medidas, plazos ni cobertura de envíos confirmados (la estructura de precios ya está lista).
-- Imágenes: renders ilustrativos; faltan fotografías propias de productos fabricados.
-- Solo español (argentino). La estructura permite sumar otros idiomas, pero no hay selector.
-- Carta digital editable y validación de accesos para eventos: **no implementados** (ver `docs/`).
+---
 
-## Datos comerciales pendientes de confirmar
-
-Ver [`docs/PENDIENTES.md`](docs/PENDIENTES.md).
-
-## Próximas funcionalidades
-
-1. Fotografías propias de productos y reemplazo de ilustraciones.
-2. Precios, materiales, medidas y plazos confirmados.
-3. Política de envíos y de cambios/devoluciones (completar `/condiciones-comerciales/`).
-4. Plataforma de **carta digital editable** (ver [`docs/ARQUITECTURA-MENU-DIGITAL.md`](docs/ARQUITECTURA-MENU-DIGITAL.md)).
-5. Productos para eventos con registro de invitados y check-in por QR.
-6. Inglés y otros idiomas.
-
-## Notas de despliegue estático (Next.js 16)
-
-Con `output: "export"`, Next.js genera los datos de prefetch por segmento en carpetas (`out/productos/__next.productos/__PAGE__.txt`), pero el cliente los pide con puntos (`/productos/__next.productos.__PAGE__.txt`). En cualquier host estático esas URLs daban 404 (la navegación funcionaba, sin prefetch y con errores en consola). `npm run build` ejecuta `scripts/export-prefetch-aliases.mjs` después de `next build` y copia cada archivo al nombre que pide el cliente. No requiere configuración en Cloudflare.
+Hecho con Next.js y desplegado en Cloudflare Pages · Parte del ecosistema [AtajoLab](https://atajolab.dev)
